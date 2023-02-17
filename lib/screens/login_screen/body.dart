@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:student_management/components/forms/password_field.dart';
 import 'package:student_management/components/forms/text_field.dart';
 import 'package:student_management/components/submit_button.dart';
@@ -55,13 +56,28 @@ class _BodyState extends State<Body> {
               ),
               SubmitButton(
                 label: "Login",
-                onClick: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const HomeScreen(),
-                    ),
-                  );
+                onClick: () async {
+                  // material page route
+                  if (formKey.currentState!.validate()) {
+                    if (await Permission.storage.request().isGranted) {
+                      openAppSettings();
+                      // Either the permission was already granted before or the user just granted it.
+                      // ignore: use_build_context_synchronously
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const HomeScreen(),
+                        ),
+                      );
+                    }
+
+// You can request multiple permissions at once.
+                    Map<Permission, PermissionStatus> statuses = await [
+                      
+                      Permission.storage,
+                    ].request();
+                    print(statuses[Permission.location]);
+                  } else {}
                 },
               ),
             ],
