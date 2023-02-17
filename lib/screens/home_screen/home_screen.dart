@@ -1,7 +1,11 @@
+// ignore_for_file: override_on_non_overriding_member
+
 import 'package:flutter/material.dart';
 import 'package:student_management/components/app_bar.dart';
 import 'package:student_management/components/sidebar.dart';
 import 'package:student_management/screens/home_screen/body.dart';
+
+import '../../components/bottom_bar.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -25,6 +29,8 @@ class HomeScreen extends StatelessWidget {
       body: const Body(),
       drawer: const SideBar(),
       backgroundColor: Colors.white,
+      bottomNavigationBar: BottomBar(),
     );
   }
+
 }

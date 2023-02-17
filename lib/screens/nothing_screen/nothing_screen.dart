@@ -17,15 +17,7 @@ class _NothingState extends State<Nothing> {
     // ignore: prefer_const_constructors
     return Scaffold(
       key: key,
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(size.height * 0.065),
-        child: Builder(
-          builder: (context) => ApplicationBar(
-            title: 'Nothing',
-            onClick: () => key.currentState!.openDrawer(),
-          ),
-        ),
-      ),
+      appBar:AppBar(),
       body: const Center(child: Text("Nothing")),
       backgroundColor: Colors.white,
     );

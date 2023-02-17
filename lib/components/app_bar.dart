@@ -17,7 +17,7 @@ class ApplicationBar extends StatelessWidget {
       centerTitle: true,
       backgroundColor: Colors.white,
       leading: IconButton(
-        icon: const Icon(Icons.short_text_rounded),
+       icon: const Icon(Icons.short_text_rounded),
         onPressed: () => onClick(),
       ),
       elevation: 0,

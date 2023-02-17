@@ -41,15 +41,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
     Size size = MediaQuery.of(context).size;
 
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(size.height * 0.065),
-        child: Builder(
-          builder: (context) => ApplicationBar(
-            title: "Attendance",
-            onClick: () => Scaffold.of(context).openDrawer(),
-          ),
-        ),
-      ),
+      appBar: AppBar(),
       backgroundColor: Colors.white,
       body: Column(
         children: <Widget>[

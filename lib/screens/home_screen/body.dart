@@ -2,9 +2,49 @@ import 'package:flutter/material.dart';
 import 'package:student_management/components/tile.dart';
 import 'package:student_management/screens/attendance_screen/attendance_screen.dart';
 import 'package:student_management/screens/nothing_screen/nothing_screen.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
-class Body extends StatelessWidget {
+class Body extends StatefulWidget {
   const Body({super.key});
+
+  @override
+  State<Body> createState() => _BodyState();
+}
+
+class _BodyState extends State<Body> {
+  @override
+  initState() {
+    permission();
+    super.initState();
+  }
+
+  permission() async {
+    if (await Permission.storage.request().isGranted) {
+     // openAppSettings();
+      // Either the permission was already granted before or the user just granted it.
+      // ignore: use_build_context_synchronously
+      Fluttertoast.showToast(
+          msg: "File acess permission granted",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 300,
+          // toastDuration: Duration(seconds: 2),
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
+    } else {
+      Fluttertoast.showToast(
+          msg: "File acess permission Not granted",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 300,
+          // toastDuration: Duration(seconds: 2),
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
