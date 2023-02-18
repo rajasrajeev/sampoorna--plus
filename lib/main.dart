@@ -78,7 +78,7 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSwatch().copyWith(
           primary: primaryColor,
-          secondary: backgroundColor,
+          secondary: secondaryColor,
         ),
       ),
       initialRoute: '/',

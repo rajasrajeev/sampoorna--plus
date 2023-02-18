@@ -7,7 +7,7 @@ class ApplicationBar extends StatelessWidget {
       : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  PreferredSizeWidget build(BuildContext context) {
     // ignore: no_leading_underscores_for_local_identifiers
     return AppBar(
       title: Text(

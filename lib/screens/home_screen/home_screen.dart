@@ -17,19 +17,19 @@ class HomeScreen extends StatelessWidget {
     // ignore: prefer_const_constructors
     return Scaffold(
       key: key,
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(size.height * 0.065),
-        child: Builder(
-          builder: (context) => ApplicationBar(
-            title: 'Sampoorna Plus',
-            onClick: () => key.currentState!.openDrawer(),
-          ),
-        ),
-      ),
+      // appBar: PreferredSize(
+      //   preferredSize: Size.fromHeight(size.height * 0.065),
+      //   child: Builder(
+      //     builder: (context) => ApplicationBar(
+      //       title: 'Sampoorna Plus',
+      //       onClick: () => key.currentState!.openDrawer(),
+      //     ),
+      //   ),
+      // ),
       body: const Body(),
       drawer: const SideBar(),
       backgroundColor: Colors.white,
-      bottomNavigationBar: BottomBar(),
+    //  bottomNavigationBar: BottomBar(),
     );
   }
 

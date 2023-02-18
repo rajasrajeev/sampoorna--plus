@@ -4,6 +4,8 @@ import 'package:student_management/components/forms/text_field.dart';
 import 'package:student_management/components/submit_button.dart';
 import 'package:student_management/screens/home_screen/home_screen.dart';
 
+import '../main_screen/main_screen.dart';
+
 class Body extends StatefulWidget {
   const Body({super.key});
 
@@ -61,7 +63,7 @@ class _BodyState extends State<Body> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const HomeScreen(),
+                          builder: (context) => const MainScreen(),
                         ),
                       );
                   } else {}

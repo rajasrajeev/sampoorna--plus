@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:student_management/components/app_bar.dart';
+import 'package:student_management/components/sidebar.dart';
 import 'package:student_management/constants.dart';
 
 class AttendanceScreen extends StatefulWidget {
@@ -41,7 +42,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
     Size size = MediaQuery.of(context).size;
 
     return Scaffold(
-      appBar: AppBar(),
+      appBar:AppBar(),
       backgroundColor: Colors.white,
       body: Column(
         children: <Widget>[
@@ -88,7 +89,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                 child: ElevatedButton(
                   onPressed: () {},
                   style: ElevatedButton.styleFrom(
-                    // shape: const StadiumBorder(),
+                    //shape: const StadiumBorder(),
                     backgroundColor: Colors.green,
                     padding: EdgeInsets.all(size.width * 0.03),
                     minimumSize: const Size.fromHeight(54),
@@ -152,8 +153,18 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                         onChanged: (val) {
                           setState(() {
                             checked1 = !checked1;
+                           
                           });
-                        })),
+                        },
+                        //checkColor:const Color.fromARGB(255, 254, 0, 190),
+                        //activeColor:Color.fromARGB(255, 8, 237, 12),
+                    //     hoverColor: const Color.fromARGB(249, 253, 169, 0),
+                    //       side: BorderSide(
+                    //   color: Color.fromARGB(248, 55, 253, 0), //your desire colour here
+                    //   width: 1.5,
+                    // ),
+                        )
+                        ),
                     DataCell(Checkbox(
                         value: checked2,
                         onChanged: (val) {

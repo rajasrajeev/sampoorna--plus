@@ -4,6 +4,7 @@ import 'package:student_management/components/sidebar.dart';
 import 'package:student_management/constants.dart';
 import 'package:student_management/screens/attendance_screen/attendance_screen.dart';
 import 'package:student_management/screens/home_screen/home_screen.dart';
+import 'package:student_management/screens/nothing_screen/nothing_screen.dart';
 
 
 class MainScreen extends StatefulWidget {
@@ -22,21 +23,21 @@ class _MainScreenState extends State<MainScreen> {
 
         final List<Widget> screens = [
       const HomeScreen(),
-      const AttendanceScreen(),
-      //const PhotosScreen(showAppbar: false),
-      //const ShareHoldersScreen(),
+      const Nothing(),
+      const Nothing(),
+      const Nothing(),
     ];
         List<IconData> listOfIcons = [
       Icons.home_rounded,
       Icons.price_change_outlined,
-      //Icons.panorama_outlined,
-     // Icons.account_tree_outlined,
+      Icons.receipt,
+      Icons.person_2,
     ];
         List labels = [
       "Home",
-      "Attendance",
-     // "Photos",
-      //"Partner",
+      "About",
+      "Contact",
+      "opt3",
     ];
 
      void onTabTapped(int index) {
@@ -54,7 +55,7 @@ class _MainScreenState extends State<MainScreen> {
       margin: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
       height: size.width * .160,
       decoration: BoxDecoration(
-        color: primaryColor,
+        color: Color.fromARGB(44, 1, 1, 242),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(.15),
@@ -86,7 +87,7 @@ class _MainScreenState extends State<MainScreen> {
                 width: size.width * .128,
                 height: index == currentIndex ? size.width * .014 : 0,
                 decoration: const BoxDecoration(
-                  color: Colors.white,
+                  color: primaryColor,
                   borderRadius: BorderRadius.vertical(
                     bottom: Radius.circular(10),
                   ),
@@ -95,13 +96,13 @@ class _MainScreenState extends State<MainScreen> {
               Icon(
                 listOfIcons[index],
                 size: size.width * .066,
-                color: index == currentIndex ? Colors.white : Colors.black54,
+                color: index == currentIndex ? primaryColor : Colors.white,
               ),
               Text(
                 labels[index],
                 style: TextStyle(
                     color:
-                        index == currentIndex ? Colors.white : Colors.black54,
+                        index == currentIndex ? primaryColor : Colors.black54,
                     fontWeight: FontWeight.w500),
               ),
               SizedBox(height: size.width * .02),
