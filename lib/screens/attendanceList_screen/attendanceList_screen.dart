@@ -13,67 +13,66 @@ class AttendanceList extends StatefulWidget {
 class _AttendanceListState extends State<AttendanceList> {
   @override
   Widget build(BuildContext context) {
-        Size size = MediaQuery.of(context).size;
-          // Initial Selected Value
-  String dropdownvalue = 'Class 1';
+    Size size = MediaQuery.of(context).size;
+    // Initial Selected Value
+    String dropdownvalue = 'Class 1';
 
-  // List of items in our dropdown menu
-  var items = [
-    'Class 1',
-    'Class 2',
-    'Class 3',
-    'Class 4',
-    'Class 5',
-  ];
+    // List of items in our dropdown menu
+    var items = [
+      'Class 1',
+      'Class 2',
+      'Class 3',
+      'Class 4',
+      'Class 5',
+    ];
+    final myProducts = List<String>.generate(1000, (i) => 'Product $i');
     return Scaffold(
       appBar: AppBar(),
-      body: Column(children: 
-        <Widget>[
-           const SizedBox(height: 50),
-           Row(
-             children: <Widget>[
-               const Spacer(),
-               Container(
-                 padding: EdgeInsets.all(size.width * 0.03),
+      body: Column(
+        children: <Widget>[
+          const SizedBox(height: 50),
+          Row(
+            children: <Widget>[
+              const Spacer(),
+              Container(
+                padding: EdgeInsets.all(size.width * 0.03),
                 height: 56,
                 width: size.width * 0.60,
                 decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(30.0),
-                    border: Border.all(
-                      style: BorderStyle.solid,
-                      width: 2.0,
-                      color: primaryColor,
-                    ),
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(30.0),
+                  border: Border.all(
+                    style: BorderStyle.solid,
+                    width: 2.0,
+                    color: primaryColor,
                   ),
-                 child: 
-                 DropdownButton(
-                            value: dropdownvalue,
-                            icon: const Icon(Icons.keyboard_arrow_down),
-                            isExpanded: true,
-                            alignment: Alignment.bottomCenter,
-                            dropdownColor: Colors.white,
-                            underline: const SizedBox(),
-                            elevation: 16,
-                            style: const TextStyle(color: Colors.black87),
-                            // Array list of items
-                            items: items.map((String items) {
-                              return DropdownMenuItem(
-                                value: items,
-                                child: Text(items),
-                              );
-                            }).toList(),
-                            // After selecting the desired option,it will
-                            // change button value to selected value
-                            onChanged: (String? newValue) {
-                              setState(() {
-                                dropdownvalue = newValue!;
-                              });
-                            },
-                          ),
-
-               ),
-               const SizedBox(width: 10),
+                ),
+                child: DropdownButton(
+                  value: dropdownvalue,
+                  icon: const Icon(Icons.keyboard_arrow_down),
+                  isExpanded: true,
+                  alignment: Alignment.bottomCenter,
+                  dropdownColor: Colors.white,
+                  underline: const SizedBox(),
+                  elevation: 16,
+                  style: const TextStyle(color: Colors.black87),
+                  // Array list of items
+                  items: items.map((String items) {
+                    return DropdownMenuItem(
+                      value: items,
+                      child: Text(items),
+                    );
+                  }).toList(),
+                  // After selecting the desired option,it will
+                  // change button value to selected value
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      dropdownvalue = newValue!;
+                    });
+                  },
+                ),
+              ),
+              const SizedBox(width: 10),
               SizedBox(
                 width: size.width * 0.20,
                 child: ElevatedButton(
@@ -83,20 +82,45 @@ class _AttendanceListState extends State<AttendanceList> {
                     backgroundColor: Colors.white,
                     padding: EdgeInsets.all(size.width * 0.03),
                     minimumSize: const Size.fromHeight(54),
-                    
                   ),
                   child: const Icon(
-                        Icons.filter_list,
-                        size: 30,
-                        color: Colors.red,
-                      ),
-                  
+                    Icons.filter_list,
+                    size: 30,
+                    color: Colors.red,
+                  ),
                 ),
               ),
               const Spacer(),
-             ],
-
-           ),
+            ],
+          ),
+          const SizedBox(height: 20),
+          Row(
+            children: <Widget>[
+              Expanded(
+                child: SizedBox(
+                  
+                  height:MediaQuery.of(context).size.height*0.7,
+                  
+                  child: ListView.builder(
+                      // the number of items in the list
+                      itemCount: myProducts.length,
+                      shrinkWrap: true,
+                      // display each item of the product list
+                      itemBuilder: (context, index) {
+                        return Card(
+                          // In many cases, the key isn't mandatory
+                          key: ValueKey(myProducts[index]),
+                          margin: const EdgeInsets.symmetric(
+                              vertical: 5, horizontal: 15),
+                          child: Padding(
+                              padding: const EdgeInsets.all(10),
+                              child: Text(myProducts[index])),
+                        );
+                      }),
+                ),
+              )
+            ],
+          )
         ],
       ),
     );
