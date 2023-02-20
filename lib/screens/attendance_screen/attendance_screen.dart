@@ -12,15 +12,15 @@ class AttendanceScreen extends StatefulWidget {
 
 class _AttendanceScreenState extends State<AttendanceScreen> {
   // Initial Selected Value
-  String dropdownvalue = 'Item 1';
+  String dropdownvalue = 'Class 1';
 
   // List of items in our dropdown menu
   var items = [
-    'Item 1',
-    'Item 2',
-    'Item 3',
-    'Item 4',
-    'Item 5',
+    'Class 1',
+    'Class 2',
+    'Class 3',
+    'Class 4',
+    'Class 5',
   ];
   bool checked1 = true;
   bool checked2 = true;
@@ -57,45 +57,58 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
       backgroundColor: Colors.white,
       body: Column(
         children: <Widget>[
-          const SizedBox(height: 20),
-          Container(
-            padding: EdgeInsets.all(size.width * 0.03),
-            height: 46,
-                width: size.width * 0.60,
-                decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(5)),
-                  color: Color.fromARGB(222, 154, 154, 159),
+          const SizedBox(height: 50),
+          Column(
+            children: [
+              Padding(
+                padding:EdgeInsets.all(size.width * 0.03),
+                child: Container(
+                 // padding: EdgeInsets.all(size.width * 0.03),
+                  height: 50,
+                  width: size.width * 0.90,
+                  decoration:  BoxDecoration(
+                    borderRadius: const BorderRadius.all(Radius.circular(50)),
+                    color: Color.fromARGB(222, 245, 245, 246),
+                    border: Border.all(color: Color.fromARGB(255, 156, 156, 156))
+                  ),
+                  
+                  child:Padding(
+    padding: const EdgeInsets.only(left:30, right:30),
+     child:
+     Column(
+                      // mainAxisAlignment: MainAxisAlignment.spaceAround,
+
+                      children: [
+                        DropdownButton(
+                            isDense: false,
+                          value: dropdownvalue,
+                          icon: const Icon(Icons.keyboard_arrow_down),
+                          isExpanded: true,
+                          // Array list of items
+                          items: items.map((String items) {
+                            return DropdownMenuItem(
+                              value: items,
+                              child: Text(items),
+                            );
+                          }).toList(),
+                          // After selecting the desired option,it will
+                          // change button value to selected value
+                          onChanged: (String? newValue) {
+                            setState(() {
+                              dropdownvalue = newValue!;
+                            });
+                          },
+                        )
+                      ]),
+     ),
+                   
                 ),
-                child: 
-                Column(
-                 // mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  
-                  children: [
-                  
-                  DropdownButton(
-                    value: dropdownvalue,
-                    icon: const Icon(Icons.keyboard_arrow_down),
-                    // Array list of items
-                    items: items.map((String items) {
-                      return DropdownMenuItem(
-                        value: items,
-                        child: Text(items),
-                      );
-                    }).toList(),
-                    // After selecting the desired option,it will
-                    // change button value to selected value
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        dropdownvalue = newValue!;
-                      });
-                    },
-                  )
-                ]),
               ),
+            ],
+          ),
           Row(
             children: <Widget>[
               const Spacer(),
-              
               Container(
                 padding: EdgeInsets.all(size.width * 0.03),
                 height: 56,
@@ -103,7 +116,6 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                 decoration: const BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(10)),
                   color: primaryColor,
-                  
                 ),
                 child: Row(
                   children: <Widget>[
