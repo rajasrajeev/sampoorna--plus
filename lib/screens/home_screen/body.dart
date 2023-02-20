@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:student_management/components/tile.dart';
+import 'package:student_management/screens/attendanceList_screen/attendanceList_screen.dart';
 import 'package:student_management/screens/attendance_screen/attendance_screen.dart';
 import 'package:student_management/screens/nothing_screen/nothing_screen.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -122,6 +123,23 @@ class _BodyState extends State<Body> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => const Nothing()),
+                    );
+                  },
+                ),
+                
+              ],
+            ),
+            const SizedBox(height: 12),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                Tile(
+                  label: "Attendance List",
+                  image: "assets/images/attendance.png",
+                  onClick: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const AttendanceList()),
                     );
                   },
                 )

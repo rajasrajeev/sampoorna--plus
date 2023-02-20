@@ -61,47 +61,55 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
           Column(
             children: [
               Padding(
-                padding:EdgeInsets.all(size.width * 0.03),
+                padding: EdgeInsets.all(size.width * 0.03),
                 child: Container(
-                 // padding: EdgeInsets.all(size.width * 0.03),
-                  height: 50,
-                  width: size.width * 0.90,
-                  decoration:  BoxDecoration(
-                    borderRadius: const BorderRadius.all(Radius.circular(50)),
-                    color: Color.fromARGB(222, 245, 245, 246),
-                    border: Border.all(color: Color.fromARGB(255, 156, 156, 156))
+                  // padding: EdgeInsets.all(size.width * 0.03),
+                  height: 52,
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  margin: const EdgeInsets.symmetric(horizontal: 10),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(30.0),
+                    border: Border.all(
+                      style: BorderStyle.solid,
+                      width: 2.0,
+                      color: primaryColor,
+                    ),
                   ),
-                  
-                  child:Padding(
-    padding: const EdgeInsets.only(left:30, right:30),
-     child:
-     Column(
-                      // mainAxisAlignment: MainAxisAlignment.spaceAround,
 
-                      children: [
-                        DropdownButton(
-                            isDense: false,
-                          value: dropdownvalue,
-                          icon: const Icon(Icons.keyboard_arrow_down),
-                          isExpanded: true,
-                          // Array list of items
-                          items: items.map((String items) {
-                            return DropdownMenuItem(
-                              value: items,
-                              child: Text(items),
-                            );
-                          }).toList(),
-                          // After selecting the desired option,it will
-                          // change button value to selected value
-                          onChanged: (String? newValue) {
-                            setState(() {
-                              dropdownvalue = newValue!;
-                            });
-                          },
-                        )
-                      ]),
-     ),
-                   
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 30, right: 30),
+                    child: Column(
+                        // mainAxisAlignment: MainAxisAlignment.spaceAround,
+
+                        children: [
+                          DropdownButton(
+                            value: dropdownvalue,
+                            icon: const Icon(Icons.keyboard_arrow_down),
+                            isExpanded: true,
+                            alignment: Alignment.bottomCenter,
+                            dropdownColor: Colors.white,
+                            underline: const SizedBox(),
+                            elevation: 16,
+                            style: const TextStyle(color: Colors.black87),
+                            // Array list of items
+                            items: items.map((String items) {
+                              return DropdownMenuItem(
+                                value: items,
+                                child: Text(items),
+                              );
+                            }).toList(),
+                            // After selecting the desired option,it will
+                            // change button value to selected value
+                            onChanged: (String? newValue) {
+                              setState(() {
+                                dropdownvalue = newValue!;
+                              });
+                            },
+                          )
+                        ]),
+                  ),
                 ),
               ),
             ],
