@@ -55,10 +55,10 @@ class _MainScreenState extends State<MainScreen> {
       margin: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
       height: size.width * .160,
       decoration: BoxDecoration(
-        color: Color.fromARGB(44, 1, 1, 242),
+        color: Color.fromARGB(213, 255, 255, 255),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(.15),
+            color: Color.fromARGB(255, 147, 12, 12).withOpacity(.15),
             blurRadius: 30,
             offset: const Offset(0, 10),
           ),
@@ -96,7 +96,7 @@ class _MainScreenState extends State<MainScreen> {
               Icon(
                 listOfIcons[index],
                 size: size.width * .066,
-                color: index == currentIndex ? primaryColor : Colors.white,
+                color: index == currentIndex ? primaryColor : Color.fromARGB(255, 34, 33, 33),
               ),
               Text(
                 labels[index],

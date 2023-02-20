@@ -11,6 +11,17 @@ class AttendanceScreen extends StatefulWidget {
 }
 
 class _AttendanceScreenState extends State<AttendanceScreen> {
+  // Initial Selected Value
+  String dropdownvalue = 'Item 1';
+
+  // List of items in our dropdown menu
+  var items = [
+    'Item 1',
+    'Item 2',
+    'Item 3',
+    'Item 4',
+    'Item 5',
+  ];
   bool checked1 = true;
   bool checked2 = true;
   bool checked3 = false;
@@ -42,20 +53,57 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
     Size size = MediaQuery.of(context).size;
 
     return Scaffold(
-      appBar:AppBar(),
+      appBar: AppBar(),
       backgroundColor: Colors.white,
       body: Column(
         children: <Widget>[
           const SizedBox(height: 20),
+          Container(
+            padding: EdgeInsets.all(size.width * 0.03),
+            height: 46,
+                width: size.width * 0.60,
+                decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(5)),
+                  color: Color.fromARGB(222, 154, 154, 159),
+                ),
+                child: 
+                Column(
+                 // mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  
+                  children: [
+                  
+                  DropdownButton(
+                    value: dropdownvalue,
+                    icon: const Icon(Icons.keyboard_arrow_down),
+                    // Array list of items
+                    items: items.map((String items) {
+                      return DropdownMenuItem(
+                        value: items,
+                        child: Text(items),
+                      );
+                    }).toList(),
+                    // After selecting the desired option,it will
+                    // change button value to selected value
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        dropdownvalue = newValue!;
+                      });
+                    },
+                  )
+                ]),
+              ),
           Row(
             children: <Widget>[
               const Spacer(),
+              
               Container(
+                padding: EdgeInsets.all(size.width * 0.03),
                 height: 56,
                 width: size.width * 0.60,
                 decoration: const BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(10)),
                   color: primaryColor,
+                  
                 ),
                 child: Row(
                   children: <Widget>[
@@ -149,22 +197,20 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                     const DataCell(Text('1')),
                     const DataCell(Text('Sarath')),
                     DataCell(Checkbox(
-                        value: checked1,
-                        onChanged: (val) {
-                          setState(() {
-                            checked1 = !checked1;
-                           
-                          });
-                        },
-                        //checkColor:const Color.fromARGB(255, 254, 0, 190),
-                        //activeColor:Color.fromARGB(255, 8, 237, 12),
-                    //     hoverColor: const Color.fromARGB(249, 253, 169, 0),
-                    //       side: BorderSide(
-                    //   color: Color.fromARGB(248, 55, 253, 0), //your desire colour here
-                    //   width: 1.5,
-                    // ),
-                        )
-                        ),
+                      value: checked1,
+                      onChanged: (val) {
+                        setState(() {
+                          checked1 = !checked1;
+                        });
+                      },
+                      //checkColor:const Color.fromARGB(255, 254, 0, 190),
+                      //activeColor:Color.fromARGB(255, 8, 237, 12),
+                      //     hoverColor: const Color.fromARGB(249, 253, 169, 0),
+                      //       side: BorderSide(
+                      //   color: Color.fromARGB(248, 55, 253, 0), //your desire colour here
+                      //   width: 1.5,
+                      // ),
+                    )),
                     DataCell(Checkbox(
                         value: checked2,
                         onChanged: (val) {

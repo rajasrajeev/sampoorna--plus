@@ -18,7 +18,7 @@ class _NothingState extends State<Nothing> {
     return Scaffold(
       key: key,
      // appBar:AppBar(),
-      body: const Center(child: Text("Nothing")),
+      body: const Center(child: Text("Under Maintenance")),
       backgroundColor: Colors.white,
     );
   }
