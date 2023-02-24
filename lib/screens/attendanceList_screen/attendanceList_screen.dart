@@ -102,7 +102,7 @@ class _AttendanceListState extends State<AttendanceList> {
                   height: MediaQuery.of(context).size.height * 0.7,
                   child: ListView.builder(
                       // the number of items in the list
-                      itemCount: myProducts.length,
+                      itemCount: 10,
                       shrinkWrap: true,
                       // display each item of the product list
                       itemBuilder: (context, index) {
@@ -117,12 +117,31 @@ class _AttendanceListState extends State<AttendanceList> {
                           },
                           child: Card(
                             // In many cases, the key isn't mandatory
-                            key: ValueKey(myProducts[index]),
+                            // key: ValueKey(myProducts[index]),
+                            borderOnForeground: true,
                             margin: const EdgeInsets.symmetric(
                                 vertical: 5, horizontal: 15),
                             child: Padding(
                                 padding: const EdgeInsets.all(10),
-                                child: Text(myProducts[index])),
+                                child: Row(
+                                  children: [
+                                    Container(
+                                        width: 70,
+                                        height: 70,
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(15)),
+                                        alignment: Alignment.center,
+                                        child: Image.asset(
+                                            "assets/images/profile.png")),
+                                    const SizedBox(width: 30),
+                                    const Text("Ram"),
+                                    const SizedBox(width: 20),
+                                    const Text("IX A"),
+                                    const SizedBox(width: 20),
+                                    const Text("02/07/2022")
+                                  ],
+                                )),
                           ),
                         );
                       }),
