@@ -22,9 +22,9 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
-   final Connectivity _connectivity = Connectivity();
+  final Connectivity _connectivity = Connectivity();
   late StreamSubscription<ConnectivityResult> _connectivitySubscription;
-    @override
+  @override
   void initState() {
     super.initState();
     initConnectivity();
@@ -55,32 +55,31 @@ class _MyAppState extends State<MyApp> {
 
   Future<void> _updateConnectionStatus(ConnectivityResult result) async {
     if (result == ConnectivityResult.none) {
-     Fluttertoast.showToast(
-        msg: "No Network",
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb:300,
-       // toastDuration: Duration(seconds: 2),
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-        fontSize: 16.0
-    );
-    }
-    else{
+      Fluttertoast.showToast(
+          msg: "No Network",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 300,
+          // toastDuration: Duration(seconds: 2),
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
+    } else {
       //Fluttertoast.cancel();
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSwatch().copyWith(
-          primary: primaryColor,
-          secondary: secondaryColor,
-        ),
-      ),
+          colorScheme: ColorScheme.fromSwatch().copyWith(
+            primary: primaryColor,
+            secondary: secondaryColor,
+          ),
+          fontFamily: 'NunitoSans'),
       initialRoute: '/',
       routes: {
         '/': (context) => const SplashScreen(),

@@ -63,7 +63,7 @@ class _BodyState extends State<Body> {
               children: <Widget>[
                 Tile(
                   label: "Attendance List",
-                  image: "assets/images/attendance.png",
+                  image: "assets/images/attendance_list.png",
                   onClick: () {
                     Navigator.push(
                       context,
@@ -102,7 +102,7 @@ class _BodyState extends State<Body> {
               children: <Widget>[
                 Tile(
                   label: "Students List",
-                  image: "assets/images/profile.png",
+                  image: "assets/images/student_list.png",
                   onClick: () {
                     Navigator.push(
                       context,
