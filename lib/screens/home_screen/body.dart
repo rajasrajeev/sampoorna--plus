@@ -3,6 +3,8 @@ import 'package:student_management/components/tile.dart';
 import 'package:student_management/screens/attendanceList_screen/attendanceList_screen.dart';
 import 'package:student_management/screens/attendance_screen/attendance_screen.dart';
 import 'package:student_management/screens/nothing_screen/nothing_screen.dart';
+import 'package:student_management/screens/teachers_profile_screen/teachers_profile_screen.dart';
+import 'package:student_management/screens/students_list_screen/students_list_screen.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -22,10 +24,10 @@ class _BodyState extends State<Body> {
 
   permission() async {
     if (await Permission.storage.request().isGranted) {
-     // openAppSettings();
+      // openAppSettings();
       // Either the permission was already granted before or the user just granted it.
       // ignore: use_build_context_synchronously
-      Fluttertoast.showToast(
+      /* Fluttertoast.showToast(
           msg: "File acess permission granted",
           toastLength: Toast.LENGTH_LONG,
           gravity: ToastGravity.BOTTOM,
@@ -33,7 +35,7 @@ class _BodyState extends State<Body> {
           // toastDuration: Duration(seconds: 2),
           backgroundColor: Colors.red,
           textColor: Colors.white,
-          fontSize: 16.0);
+          fontSize: 16.0); */
     } else {
       Fluttertoast.showToast(
           msg: "File acess permission Not granted",
@@ -60,17 +62,18 @@ class _BodyState extends State<Body> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
                 Tile(
-                  label: "Configure",
-                  image: "assets/images/config.png",
+                  label: "Attendance List",
+                  image: "assets/images/attendance.png",
                   onClick: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const Nothing()),
+                      MaterialPageRoute(
+                          builder: (context) => const AttendanceList()),
                     );
                   },
                 ),
                 Tile(
-                  label: "Attendance",
+                  label: "Add Attendance",
                   image: "assets/images/attendance.png",
                   onClick: () {
                     Navigator.push(
@@ -81,12 +84,13 @@ class _BodyState extends State<Body> {
                   },
                 ),
                 Tile(
-                  label: "Exams",
-                  image: "assets/images/exam.png",
+                  label: "Profile",
+                  image: "assets/images/profile.png",
                   onClick: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const Nothing()),
+                      MaterialPageRoute(
+                          builder: (context) => const TeachersProfileScreen()),
                     );
                   },
                 ),
@@ -96,6 +100,17 @@ class _BodyState extends State<Body> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
+                Tile(
+                  label: "Students List",
+                  image: "assets/images/profile.png",
+                  onClick: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const StudentsListScreen()),
+                    );
+                  },
+                ),
                 Tile(
                   label: "Calendar",
                   image: "assets/images/calendar.png",
@@ -116,17 +131,6 @@ class _BodyState extends State<Body> {
                     );
                   },
                 ),
-                Tile(
-                  label: "Profile",
-                  image: "assets/images/profile.png",
-                  onClick: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const Nothing()),
-                    );
-                  },
-                ),
-                
               ],
             ),
             const SizedBox(height: 12),
@@ -134,15 +138,25 @@ class _BodyState extends State<Body> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
                 Tile(
-                  label: "Attendance List",
-                  image: "assets/images/attendance.png",
+                  label: "Exams",
+                  image: "assets/images/exam.png",
                   onClick: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const AttendanceList()),
+                      MaterialPageRoute(builder: (context) => const Nothing()),
                     );
                   },
-                )
+                ),
+                Tile(
+                  label: "Configure",
+                  image: "assets/images/config.png",
+                  onClick: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const Nothing()),
+                    );
+                  },
+                ),
               ],
             ),
           ],

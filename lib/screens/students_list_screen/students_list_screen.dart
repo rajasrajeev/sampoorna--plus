@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:student_management/constants.dart';
-import 'package:student_management/screens/individual_attendance_screen/individual_attendance_screen.dart';
+import 'package:student_management/screens/students_profile_screen/students_profile_screen.dart';
 
-class AttendanceList extends StatefulWidget {
-  const AttendanceList({super.key});
+class StudentsListScreen extends StatefulWidget {
+  const StudentsListScreen({super.key});
 
   @override
-  State<AttendanceList> createState() => _AttendanceListState();
+  State<StudentsListScreen> createState() => _StudentsListScreenState();
 }
 
-class _AttendanceListState extends State<AttendanceList> {
+class _StudentsListScreenState extends State<StudentsListScreen> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -26,7 +26,7 @@ class _AttendanceListState extends State<AttendanceList> {
       'Class 4',
       'Class 5',
     ];
-    final myProducts = List<String>.generate(1000, (i) => 'Product $i');
+    final myProducts = List<String>.generate(10, (i) => 'Product $i');
     return Scaffold(
       appBar: AppBar(),
       body: Column(
@@ -112,7 +112,7 @@ class _AttendanceListState extends State<AttendanceList> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
-                                      const IndividualAttendanceScreen()),
+                                      const StudentsProfileScreen()),
                             );
                           },
                           child: Card(
