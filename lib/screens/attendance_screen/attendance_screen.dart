@@ -82,7 +82,6 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                     padding: const EdgeInsets.only(left: 30, right: 30),
                     child: Column(
                         // mainAxisAlignment: MainAxisAlignment.spaceAround,
-
                         children: [
                           DropdownButton(
                             value: dropdownvalue,
@@ -114,13 +113,14 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
               ),
             ],
           ),
+          const SizedBox(height: 20),
           Row(
             children: <Widget>[
               const Spacer(),
               Container(
-                padding: EdgeInsets.all(size.width * 0.03),
+               // padding: EdgeInsets.all(size.width * 0.0),
                 height: 56,
-                width: size.width * 0.60,
+                width: size.width * 0.50,
                 decoration: const BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(10)),
                   color: primaryColor,
@@ -136,15 +136,18 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    const SizedBox(width: 20),
-                    IconButton(
-                      onPressed: () {
-                        _selectDate(context);
-                      },
-                      icon: const Icon(
-                        Icons.date_range,
-                        size: 30,
-                        color: Colors.white,
+                    const SizedBox(width: 10),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(0,0,0,0),
+                      child: IconButton(
+                        onPressed: () {
+                          _selectDate(context);
+                        },
+                        icon: const Icon(
+                          Icons.date_range,
+                          size: 30,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                     const Spacer(),
