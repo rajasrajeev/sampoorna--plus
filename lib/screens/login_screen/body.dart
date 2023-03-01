@@ -91,14 +91,7 @@ class _BodyState extends State<Body> {
                         fontSize: 15.0,
                       );
                     }
-                    /* Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const MainScreen(),
-                      ),
-                    ); */
-                    /*  */
-                  } else {}
+                  }
                 },
               ),
             ],
