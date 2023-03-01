@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:student_management/constants.dart';
 
-class PasswordField extends StatelessWidget {
+class PasswordField extends StatefulWidget {
   final String? label;
   final int? minLine;
   final int? maxLine;
   final Function validator;
   final bool? enabled;
+
   final TextEditingController? controller;
 
   const PasswordField({
@@ -20,33 +21,44 @@ class PasswordField extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<PasswordField> createState() => _PasswordFieldState();
+}
+
+class _PasswordFieldState extends State<PasswordField> {
+  bool obscureText = true;
+
+  @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
       child: TextFormField(
-        obscureText: true,
-        minLines: minLine,
-        maxLines: maxLine,
-        enabled: enabled,
+        obscureText: obscureText,
+        minLines: widget.minLine,
+        maxLines: widget.maxLine,
+        enabled: widget.enabled,
         cursorColor: Colors.black87,
-        controller: controller,
+        controller: widget.controller,
         decoration: InputDecoration(
           suffixIcon: IconButton(
             icon: const Icon(
               Icons.visibility_off,
               color: primaryColor,
             ),
-            onPressed: () {},
+            onPressed: () {
+              setState(() {
+                obscureText = !obscureText;
+              });
+            },
           ),
           contentPadding:
               const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-          hintText: label,
+          hintText: widget.label,
           hintStyle: const TextStyle(
             fontSize: 16,
             color: Colors.black87,
           ),
           filled: true,
-          fillColor: enabled == true ? Colors.white : Colors.grey[300],
+          fillColor: widget.enabled == true ? Colors.white : Colors.grey[300],
           enabledBorder: OutlineInputBorder(
             borderSide: const BorderSide(color: primaryColor, width: 2.0),
             borderRadius: BorderRadius.circular(30),
@@ -73,7 +85,7 @@ class PasswordField extends StatelessWidget {
           ),
         ),
         validator: (value) {
-          return validator(value);
+          return widget.validator(value);
         },
       ),
     );

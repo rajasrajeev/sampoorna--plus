@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:student_management/components/forms/password_field.dart';
 import 'package:student_management/components/forms/text_field.dart';
 import 'package:student_management/components/submit_button.dart';
@@ -16,8 +17,8 @@ class Body extends StatefulWidget {
 
 class _BodyState extends State<Body> {
   final formKey = GlobalKey<FormState>();
-  final usernameController = TextEditingController();
-  final passwordController = TextEditingController();
+  final TextEditingController usernameController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +80,23 @@ class _BodyState extends State<Body> {
                           builder: (context) => const MainScreen(),
                         ),
                       );
+                    } else {
+                      Fluttertoast.showToast(
+                        msg:
+                            "Username or password is incorrect. Please try again later!!!",
+                        gravity: ToastGravity.TOP,
+                        timeInSecForIosWeb: 1,
+                        backgroundColor: Colors.red,
+                        textColor: Colors.white,
+                        fontSize: 15.0,
+                      );
                     }
+                    /* Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const MainScreen(),
+                      ),
+                    ); */
                     /*  */
                   } else {}
                 },
