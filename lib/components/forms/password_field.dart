@@ -37,7 +37,7 @@ class _PasswordFieldState extends State<PasswordField> {
         maxLines: widget.maxLine,
         enabled: widget.enabled,
         cursorColor: Colors.black87,
-        controller: widget.controller,
+        controller: widget.controller, 
         decoration: InputDecoration(
           suffixIcon: IconButton(
             icon: const Icon(
