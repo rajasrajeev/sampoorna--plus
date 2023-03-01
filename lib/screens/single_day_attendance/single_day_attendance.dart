@@ -3,16 +3,16 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:student_management/constants.dart';
 import 'package:student_management/screens/individual_attendance_screen/individual_attendance_screen.dart';
-import 'package:student_management/screens/single_day_attendance/single_day_attendance.dart';
 
-class AttendanceList extends StatefulWidget {
-  const AttendanceList({super.key});
+class SingleDayAttendanceScreen extends StatefulWidget {
+  const SingleDayAttendanceScreen({super.key});
 
   @override
-  State<AttendanceList> createState() => _AttendanceListState();
+  State<SingleDayAttendanceScreen> createState() =>
+      _SingleDayAttendanceScreenState();
 }
 
-class _AttendanceListState extends State<AttendanceList> {
+class _SingleDayAttendanceScreenState extends State<SingleDayAttendanceScreen> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -113,7 +113,7 @@ class _AttendanceListState extends State<AttendanceList> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
-                                      const SingleDayAttendanceScreen()),
+                                      const IndividualAttendanceScreen()),
                             );
                           },
                           child: Card(
@@ -127,19 +127,20 @@ class _AttendanceListState extends State<AttendanceList> {
                                 child: Row(
                                   children: [
                                     Container(
-                                      width: 70,
-                                      height: 70,
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(15)),
-                                      alignment: Alignment
-                                          .center, /* child: Image.asset("") */
-                                    ),
-                                    // const SizedBox(width: 30),
-
-                                    const Text("02/07/2022"),
+                                        width: 70,
+                                        height: 70,
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(15)),
+                                        alignment: Alignment.center,
+                                        child: Image.asset(
+                                            "assets/images/profile.png")),
                                     const SizedBox(width: 30),
-                                    const Text("18")
+                                    const Text("Ram"),
+                                    const SizedBox(width: 20),
+                                    const Text("IX A"),
+                                    const SizedBox(width: 20),
+                                    const Text("02/07/2022")
                                   ],
                                 )),
                           ),

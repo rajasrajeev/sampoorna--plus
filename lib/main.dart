@@ -79,7 +79,7 @@ class _MyAppState extends State<MyApp> {
             primary: primaryColor,
             secondary: secondaryColor,
           ),
-          fontFamily: 'NunitoSans'),
+          fontFamily: 'RobotoCondensed'),
       initialRoute: '/',
       routes: {
         '/': (context) => const SplashScreen(),

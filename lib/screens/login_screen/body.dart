@@ -3,6 +3,7 @@ import 'package:student_management/components/forms/password_field.dart';
 import 'package:student_management/components/forms/text_field.dart';
 import 'package:student_management/components/submit_button.dart';
 import 'package:student_management/screens/home_screen/home_screen.dart';
+import 'package:student_management/services/api_services.dart';
 
 import '../main_screen/main_screen.dart';
 
@@ -15,6 +16,8 @@ class Body extends StatefulWidget {
 
 class _BodyState extends State<Body> {
   final formKey = GlobalKey<FormState>();
+  final usernameController = TextEditingController();
+  final passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -36,6 +39,7 @@ class _BodyState extends State<Body> {
                 minLine: 1,
                 maxLine: 1,
                 enabled: true,
+                controller: usernameController,
                 validator: (value) {
                   if (value == null || value.length < 1) {
                     return "please enter username";
@@ -48,6 +52,7 @@ class _BodyState extends State<Body> {
                 minLine: 1,
                 maxLine: 1,
                 enabled: true,
+                controller: passwordController,
                 validator: (value) {
                   if (value == null || value.length < 1) {
                     return "please enter password";
@@ -59,13 +64,23 @@ class _BodyState extends State<Body> {
                 label: "Login",
                 onClick: () async {
                   // material page route
-                  if (formKey.currentState!.validate()) {                  
+                  if (formKey.currentState!.validate()) {
+                    var data = {
+                      "username": usernameController.text,
+                      "password": passwordController.text,
+                      "usert_type": "TEACHER"
+                    };
+                    final res = await postLogin(data);
+                    if (res.statusCode == 200) {
+                      // ignore: use_build_context_synchronously
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => const MainScreen(),
                         ),
                       );
+                    }
+                    /*  */
                   } else {}
                 },
               ),
