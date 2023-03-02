@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:student_management/components/custom_dropdown.dart';
 import 'package:student_management/components/forms/password_field.dart';
 import 'package:student_management/components/forms/text_field.dart';
 import 'package:student_management/components/submit_button.dart';
-import 'package:student_management/screens/home_screen/home_screen.dart';
 import 'package:student_management/services/api_services.dart';
 
 import '../main_screen/main_screen.dart';
@@ -19,7 +19,25 @@ class _BodyState extends State<Body> {
   final formKey = GlobalKey<FormState>();
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+    final TextEditingController dropDownController = TextEditingController();
+  String role = "";
+  List roles = [
+                 {"id":"TEACHER", "name":"TEACHER"},
+                 {"id":"HM", "name":"HM"},
+                 {"id":"STUDENTS", "name":"STUDENTS"}
+               ];
+@override
+void initState(){
+  super.initState();
+ // getRoles();
+}
+Future<void> getRoles() async{
+ setState((){
+   roles=[
 
+   ];
+ });
+}
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -35,6 +53,18 @@ class _BodyState extends State<Body> {
           key: formKey,
           child: Column(
             children: <Widget>[
+             CustomDropDown(
+               label: "Select Your Role",
+               value: role,
+               data: roles,
+               
+                onChange: (value){
+                  setState(() {
+                    role=value;
+                  });
+                },               
+               ),
+               const SizedBox(height: 5),
               CustomTextField(
                 label: "Username",
                 minLine: 1,
@@ -69,7 +99,7 @@ class _BodyState extends State<Body> {
                     var data = {
                       "username": usernameController.text,
                       "password": passwordController.text,
-                      "usert_type": "TEACHER"
+                      "usert_type":role,
                     };
                     final res = await postLogin(data);
                     if (res.statusCode == 200) {
