@@ -19,25 +19,25 @@ class _BodyState extends State<Body> {
   final formKey = GlobalKey<FormState>();
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-    final TextEditingController dropDownController = TextEditingController();
+  final TextEditingController dropDownController = TextEditingController();
   String role = "";
   List roles = [
-                 {"id":"TEACHER", "name":"TEACHER"},
-                 {"id":"HM", "name":"HM"},
-                 {"id":"STUDENTS", "name":"STUDENTS"}
-               ];
-@override
-void initState(){
-  super.initState();
- // getRoles();
-}
-Future<void> getRoles() async{
- setState((){
-   roles=[
+    {"id": "TEACHER", "name": "TEACHER"},
+    {"id": "HM", "name": "HM"},
+    {"id": "STUDENTS", "name": "STUDENTS"}
+  ];
+  @override
+  void initState() {
+    super.initState();
+    // getRoles();
+  }
 
-   ];
- });
-}
+  Future<void> getRoles() async {
+    setState(() {
+      roles = [];
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -53,18 +53,17 @@ Future<void> getRoles() async{
           key: formKey,
           child: Column(
             children: <Widget>[
-             CustomDropDown(
-               label: "Select Your Role",
-               value: role,
-               data: roles,
-               
-                onChange: (value){
+              CustomDropDown(
+                label: "Select Your Role",
+                value: role,
+                data: roles,
+                onChange: (value) {
                   setState(() {
-                    role=value;
+                    role = value;
                   });
-                },               
-               ),
-               const SizedBox(height: 5),
+                },
+              ),
+              const SizedBox(height: 5),
               CustomTextField(
                 label: "Username",
                 minLine: 1,
@@ -95,7 +94,7 @@ Future<void> getRoles() async{
                 label: "Login",
                 onClick: () async {
                   // material page route
-                  if (formKey.currentState!.validate()) {
+                  /* if (formKey.currentState!.validate()) {
                     var data = {
                       "username": usernameController.text,
                       "password": passwordController.text,
@@ -121,7 +120,13 @@ Future<void> getRoles() async{
                         fontSize: 15.0,
                       );
                     }
-                  }
+                  } */
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const MainScreen(),
+                    ),
+                  );
                 },
               ),
             ],

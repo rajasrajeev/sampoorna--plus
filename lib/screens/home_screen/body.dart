@@ -5,6 +5,7 @@ import 'package:student_management/screens/attendance_screen/attendance_screen.d
 import 'package:student_management/screens/nothing_screen/nothing_screen.dart';
 import 'package:student_management/screens/teachers_profile_screen/teachers_profile_screen.dart';
 import 'package:student_management/screens/students_list_screen/students_list_screen.dart';
+import 'package:student_management/components/banner.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -53,48 +54,55 @@ class _BodyState extends State<Body> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          // mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const SizedBox(height: 30),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                Tile(
-                  label: "Attendance List",
-                  image: "assets/images/attendance_list.png",
-                  onClick: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const AttendanceList()),
-                    );
-                  },
-                ),
-                Tile(
-                  label: "Add Attendance",
-                  image: "assets/images/attendance.png",
-                  onClick: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const AttendanceScreen()),
-                    );
-                  },
-                ),
-                Tile(
-                  label: "Profile",
-                  image: "assets/images/profile.png",
-                  onClick: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const TeachersProfileScreen()),
-                    );
-                  },
-                ),
-              ],
+            const CommonBanner(
+                imageUrl: "assets/images/profile.png",
+                name: "Test Teacher",
+                grade: "VIIIA"),
+            const SizedBox(height: 10),
+            Container(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  Tile(
+                    label: "Attendance List",
+                    image: "assets/images/attendance_list.png",
+                    onClick: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const AttendanceList()),
+                      );
+                    },
+                  ),
+                  Tile(
+                    label: "Add Attendance",
+                    image: "assets/images/attendance.png",
+                    onClick: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const AttendanceScreen()),
+                      );
+                    },
+                  ),
+                  Tile(
+                    label: "Profile",
+                    image: "assets/images/profile.png",
+                    onClick: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                const TeachersProfileScreen()),
+                      );
+                    },
+                  ),
+                ],
+              ),
             ),
             const SizedBox(height: 12),
             Row(

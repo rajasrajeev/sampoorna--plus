@@ -53,7 +53,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
     Size size = MediaQuery.of(context).size;
 
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(title: const Text("Add Attendance")),
       backgroundColor: Colors.white,
       body: Column(
         children: <Widget>[
@@ -118,7 +118,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
             children: <Widget>[
               const Spacer(),
               Container(
-               // padding: EdgeInsets.all(size.width * 0.0),
+                // padding: EdgeInsets.all(size.width * 0.0),
                 height: 56,
                 width: size.width * 0.50,
                 decoration: const BoxDecoration(
@@ -138,7 +138,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                     ),
                     const SizedBox(width: 10),
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(0,0,0,0),
+                      padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
                       child: IconButton(
                         onPressed: () {
                           _selectDate(context);

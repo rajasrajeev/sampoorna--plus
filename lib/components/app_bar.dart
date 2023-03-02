@@ -14,13 +14,14 @@ class ApplicationBar extends StatelessWidget {
         title,
         style: const TextStyle(color: Colors.black),
       ),
-      centerTitle: true,
-      backgroundColor: Colors.white,
+      // centerTitle: true,
+      // backgroundColor: Colors.white,
       leading: IconButton(
-       icon: const Icon(Icons.short_text_rounded),
+        icon: const Icon(Icons.short_text_rounded),
         onPressed: () => onClick(),
       ),
-      elevation: 0,
+      elevation: 1,
+      bottomOpacity: 0,
       iconTheme: const IconThemeData(color: Color.fromARGB(221, 133, 133, 133)),
       actions: const <Widget>[],
     );

@@ -19,27 +19,13 @@ class Tile extends StatelessWidget {
     return GestureDetector(
       child: Container(
         width: size.width * 0.29,
-        height: 150,
+        height: 130,
         // ignore: prefer_const_constructors
         decoration: BoxDecoration(
           borderRadius: const BorderRadius.all(Radius.circular(10)),
           color: Colors.white,
           // ignore: prefer_const_literals_to_create_immutables
           boxShadow: [
-            // BoxShadow(
-            //   color: Colors.purple.shade300,
-            //   spreadRadius: 1,
-            //   blurRadius: 5,
-            //   offset: const Offset(0, 5),
-            // ),
-            // BoxShadow(
-            //   color: Colors.purple.shade300,
-            //   offset: const Offset(-5, 0),
-            // ),
-            // BoxShadow(
-            //   color: Colors.purple.shade300,
-            //   offset: const Offset(5, 0),
-            // ),
             const BoxShadow(
               color: primaryColor,
               spreadRadius: 1,
@@ -55,8 +41,8 @@ class Tile extends StatelessWidget {
               child: Image.asset(
                 image,
                 fit: BoxFit.fill,
-                // height: size.width * 0.35,
-                // width: size.width * 0.35,
+                height: 75,
+                width: 75,
               ),
             ),
             const Spacer(),
