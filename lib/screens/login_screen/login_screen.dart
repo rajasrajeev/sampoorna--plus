@@ -6,9 +6,16 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Body(),
-      backgroundColor: Colors.white,
+    return Container(
+      constraints: const BoxConstraints.expand(),
+      decoration: const BoxDecoration(
+          image: DecorationImage(
+              image: AssetImage("assets/images/login_background.jpg"),
+              fit: BoxFit.cover)),
+      child: const Scaffold(
+        backgroundColor: Colors.transparent,
+        body: Body(),
+      ),
     );
   }
 }

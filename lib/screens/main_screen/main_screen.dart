@@ -28,8 +28,8 @@ class _MainScreenState extends State<MainScreen> {
     ];
     List<IconData> listOfIcons = [
       Icons.home_rounded,
-      Icons.price_change_outlined,
-      Icons.receipt,
+      Icons.info_outline,
+      Icons.contact_support_sharp,
       Icons.person_2,
     ];
     List labels = [

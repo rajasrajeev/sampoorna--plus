@@ -45,7 +45,7 @@ class _BodyState extends State<Body> {
       children: <Widget>[
         const Spacer(),
         Image.asset(
-          "assets/images/splash.png",
+          "assets/images/sampoorna.png",
           width: 200,
           height: 200,
         ),
