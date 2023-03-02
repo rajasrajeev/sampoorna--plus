@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:student_management/components/custom_dropdown.dart';
+import 'package:student_management/components/custom_loader.dart';
 import 'package:student_management/components/forms/password_field.dart';
 import 'package:student_management/components/forms/text_field.dart';
 import 'package:student_management/components/submit_button.dart';
@@ -19,25 +20,25 @@ class _BodyState extends State<Body> {
   final formKey = GlobalKey<FormState>();
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-    final TextEditingController dropDownController = TextEditingController();
+  final TextEditingController dropDownController = TextEditingController();
   String role = "";
   List roles = [
-                 {"id":"TEACHER", "name":"TEACHER"},
-                 {"id":"HM", "name":"HM"},
-                 {"id":"STUDENTS", "name":"STUDENTS"}
-               ];
-@override
-void initState(){
-  super.initState();
- // getRoles();
-}
-Future<void> getRoles() async{
- setState((){
-   roles=[
+    {"id": "TEACHER", "name": "TEACHER"},
+    {"id": "HM", "name": "HM"},
+    {"id": "STUDENTS", "name": "STUDENTS"}
+  ];
+  @override
+  void initState() {
+    super.initState();
+    // getRoles();
+  }
 
-   ];
- });
-}
+  Future<void> getRoles() async {
+    setState(() {
+      roles = [];
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -53,18 +54,17 @@ Future<void> getRoles() async{
           key: formKey,
           child: Column(
             children: <Widget>[
-             CustomDropDown(
-               label: "Select Your Role",
-               value: role,
-               data: roles,
-               
-                onChange: (value){
+              CustomDropDown(
+                label: "Select Your Role",
+                value: role,
+                data: roles,
+                onChange: (value) {
                   setState(() {
-                    role=value;
+                    role = value;
                   });
-                },               
-               ),
-               const SizedBox(height: 5),
+                },
+              ),
+              const SizedBox(height: 5),
               CustomTextField(
                 label: "Username",
                 minLine: 1,
@@ -99,10 +99,41 @@ Future<void> getRoles() async{
                     var data = {
                       "username": usernameController.text,
                       "password": passwordController.text,
-                      "usert_type":role,
+                      "usert_type": role,
                     };
+                    // ignore: use_build_context_synchronously
+                    showDialog(
+                        // The user CANNOT close this dialog  by pressing outsite it
+                        barrierDismissible: true,
+                        context: context,
+                        builder: (_) {
+                          return Dialog(
+                            // The background color
+                            backgroundColor: Colors.white,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 20),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: const [
+                                  // The loading indicator
+                                  CircularProgressIndicator(),
+                                  SizedBox(
+                                    height: 15,
+                                  ),
+                                  // Some text
+                                  Text('Loading...')
+                                ],
+                              ),
+                            ),
+                          );
+                        });
+
                     final res = await postLogin(data);
+                
                     if (res.statusCode == 200) {
+                      //await Future.delayed(const Duration(seconds: 3));
+                      // ignore: use_build_context_synchronously
+                      Navigator.of(context).pop();
                       // ignore: use_build_context_synchronously
                       Navigator.push(
                         context,
@@ -111,6 +142,8 @@ Future<void> getRoles() async{
                         ),
                       );
                     } else {
+                      // ignore: use_build_context_synchronously
+                      Navigator.of(context).pop();
                       Fluttertoast.showToast(
                         msg:
                             "Username or password is incorrect. Please try again later!!!",
