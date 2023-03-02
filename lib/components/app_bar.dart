@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:student_management/constants.dart';
 
 class ApplicationBar extends StatelessWidget {
   final Function onClick;
@@ -10,20 +11,20 @@ class ApplicationBar extends StatelessWidget {
   PreferredSizeWidget build(BuildContext context) {
     // ignore: no_leading_underscores_for_local_identifiers
     return AppBar(
-      title: Text(
-        title,
-        style: const TextStyle(color: Colors.black),
-      ),
-      // centerTitle: true,
-      // backgroundColor: Colors.white,
-      leading: IconButton(
-        icon: const Icon(Icons.short_text_rounded),
-        onPressed: () => onClick(),
-      ),
-      elevation: 1,
-      bottomOpacity: 0,
-      iconTheme: const IconThemeData(color: Color.fromARGB(221, 133, 133, 133)),
-      actions: const <Widget>[],
-    );
+        title: Text(
+          title,
+          style: const TextStyle(color: Colors.black),
+        ),
+        centerTitle: true,
+        backgroundColor: Colors.white,
+        leading: IconButton(
+          icon: const Icon(Icons.short_text_rounded),
+          onPressed: () => onClick(),
+        ),
+        elevation: 1,
+        bottomOpacity: 0,
+        iconTheme:
+            const IconThemeData(color: Color.fromARGB(221, 133, 133, 133)),
+        actions: const <Widget>[]);
   }
 }

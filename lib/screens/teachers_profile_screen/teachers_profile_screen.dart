@@ -19,7 +19,7 @@ class _TeachersProfileScreenState extends State<TeachersProfileScreen> {
     // ignore: prefer_const_constructors
     return Scaffold(
       key: key,
-      appBar: AppBar(title: const Text("Profile")),
+      appBar: AppBar(title: const Text("Teacher's Profile")),
       body: Column(
         children: <Widget>[
           const ProfileHeader(
