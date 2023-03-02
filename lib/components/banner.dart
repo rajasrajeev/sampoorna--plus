@@ -30,10 +30,9 @@ class _CommonBannerState extends State<CommonBanner> {
                   gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
-                colors: [
+                colors: [              
                   primaryColor,
-                  primaryColor,
-                  secondaryColor,
+                  secondaryColor,                  
                 ],
               )),
               height: height,
@@ -46,7 +45,7 @@ class _CommonBannerState extends State<CommonBanner> {
                     borderRadius: BorderRadius.circular(100.0),
                     child: Image.asset(
                       widget.imageUrl,
-                      fit: BoxFit.fill,
+                      fit: BoxFit.cover,
                       height: 75,
                       width: 75,
                     ),
@@ -61,7 +60,7 @@ class _CommonBannerState extends State<CommonBanner> {
                         textAlign: TextAlign.center,
                         style: const TextStyle(
                           fontSize: 17,
-                          color: Colors.black87,
+                          color: Color.fromARGB(221, 255, 255, 255),
                           fontWeight: FontWeight.w700,
                         ),
                       ),
@@ -70,7 +69,7 @@ class _CommonBannerState extends State<CommonBanner> {
                         textAlign: TextAlign.center,
                         style: const TextStyle(
                           fontSize: 17,
-                          color: Colors.black87,
+                          color: Color.fromARGB(221, 255, 255, 255),
                           fontWeight: FontWeight.w700,
                         ),
                       ),

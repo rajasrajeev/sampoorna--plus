@@ -27,7 +27,7 @@ class Tile extends StatelessWidget {
           // ignore: prefer_const_literals_to_create_immutables
           boxShadow: [
             const BoxShadow(
-              color: primaryColor,
+              color: Color.fromARGB(166, 142, 138, 138),
               spreadRadius: 1,
               blurRadius: 1,
             )
@@ -40,7 +40,7 @@ class Tile extends StatelessWidget {
               borderRadius: BorderRadius.circular(10.0),
               child: Image.asset(
                 image,
-                fit: BoxFit.fill,
+                fit: BoxFit.cover,
                 height: 75,
                 width: 75,
               ),
@@ -51,8 +51,8 @@ class Tile extends StatelessWidget {
               label,
               textAlign: TextAlign.center,
               style: const TextStyle(
-                fontSize: 17,
-                color: Colors.black87,
+                fontSize: 14,
+                color: Color.fromARGB(221, 43, 42, 42),
                 fontWeight: FontWeight.w700,
               ),
             ),

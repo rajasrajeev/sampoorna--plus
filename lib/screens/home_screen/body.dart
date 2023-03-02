@@ -56,48 +56,97 @@ class _BodyState extends State<Body> {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 0),
         child: Column(
-          // mainAxisAlignment: MainAxisAlignment.center,
+           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             const CommonBanner(
                 imageUrl: "assets/images/profile.png",
                 name: "Test Teacher",
                 grade: "VIIIA"),
             const SizedBox(height: 10),
-            Container(
+             
+            Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left:15.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      Tile(
+                        label: "Attendance List",
+                        image: "assets/images/attendance_list.png",
+                        onClick: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const AttendanceList()),
+                          );
+                        },
+                      ),
+                       const SizedBox(width: 12),
+                      Tile(
+                        label: "Add Attendance",
+                        image: "assets/images/attendance.png",
+                        onClick: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const AttendanceScreen()),
+                          );
+                        },
+                      ),
+                       const SizedBox(width: 12),
+                      Tile(
+                        label: "Profile",
+                        image: "assets/images/profile.png",
+                        onClick: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    const TeachersProfileScreen()),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 12),
+            Padding(
+              padding: const EdgeInsets.only(left:15.0),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
                   Tile(
-                    label: "Attendance List",
-                    image: "assets/images/attendance_list.png",
+                    label: "Students List",
+                    image: "assets/images/student_list.png",
                     onClick: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const AttendanceList()),
+                            builder: (context) => const StudentsListScreen()),
                       );
                     },
                   ),
+                   const SizedBox(width: 12),
                   Tile(
-                    label: "Add Attendance",
-                    image: "assets/images/attendance.png",
+                    label: "Calendar",
+                    image: "assets/images/calendar.png",
                     onClick: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(
-                            builder: (context) => const AttendanceScreen()),
+                        MaterialPageRoute(builder: (context) => const Nothing()),
                       );
                     },
                   ),
+                   const SizedBox(width: 12),
                   Tile(
-                    label: "Profile",
-                    image: "assets/images/profile.png",
+                    label: "Reports",
+                    image: "assets/images/report.png",
                     onClick: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                const TeachersProfileScreen()),
+                        MaterialPageRoute(builder: (context) => const Nothing()),
                       );
                     },
                   ),
@@ -105,68 +154,38 @@ class _BodyState extends State<Body> {
               ),
             ),
             const SizedBox(height: 12),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                Tile(
-                  label: "Students List",
-                  image: "assets/images/student_list.png",
-                  onClick: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const StudentsListScreen()),
-                    );
-                  },
-                ),
-                Tile(
-                  label: "Calendar",
-                  image: "assets/images/calendar.png",
-                  onClick: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const Nothing()),
-                    );
-                  },
-                ),
-                Tile(
-                  label: "Reports",
-                  image: "assets/images/report.png",
-                  onClick: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const Nothing()),
-                    );
-                  },
-                ),
+            Padding(
+              padding: const EdgeInsets.only(left:15.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  Tile(
+                    label: "Exams",
+                    image: "assets/images/exam.png",
+                    onClick: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const Nothing()),
+                      );
+                    },
+                  ),
+                  const SizedBox(width: 12),
+                  Tile(
+                    label: "Configure",
+                    image: "assets/images/config.png",
+                    onClick: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const Nothing()),
+                      );
+                    },
+                  ),
+                ],
+              ),
+            ),
               ],
             ),
-            const SizedBox(height: 12),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                Tile(
-                  label: "Exams",
-                  image: "assets/images/exam.png",
-                  onClick: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const Nothing()),
-                    );
-                  },
-                ),
-                Tile(
-                  label: "Configure",
-                  image: "assets/images/config.png",
-                  onClick: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const Nothing()),
-                    );
-                  },
-                ),
-              ],
-            ),
+            
           ],
         ),
       ),

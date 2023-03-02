@@ -57,7 +57,7 @@ class _MainScreenState extends State<MainScreen> {
         color: Color.fromARGB(213, 255, 255, 255),
         boxShadow: [
           BoxShadow(
-            color: Color.fromARGB(255, 147, 12, 12).withOpacity(.15),
+            color: Color.fromARGB(0, 147, 12, 12).withOpacity(.15),
             blurRadius: 30,
             offset: const Offset(0, 10),
           ),
@@ -118,7 +118,9 @@ class _MainScreenState extends State<MainScreen> {
       child: Scaffold(
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(size.height * 0.060),
-          child: AppBar(),
+          child: AppBar(
+            elevation: 0,
+          ),
         ),
         drawer: const SideBar(),
         extendBody: true,
