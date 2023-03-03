@@ -47,13 +47,16 @@ class Tile extends StatelessWidget {
             ),
             const Spacer(),
             // ignore: prefer_const_constructors
-            Text(
-              label,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontSize: 14,
-                color: Color.fromARGB(221, 43, 42, 42),
-                fontWeight: FontWeight.w700,
+            Padding(
+              padding: const EdgeInsets.all(5.0),
+              child: Text(
+                label,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  fontSize: 14,
+                  color: Color.fromARGB(221, 43, 42, 42),
+                  fontWeight: FontWeight.w700,
+                ),
               ),
             ),
             const Spacer(),
