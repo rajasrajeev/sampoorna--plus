@@ -24,19 +24,16 @@ class _MainScreenState extends State<MainScreen> {
       const HomeScreen(),
       const Nothing(),
       const Nothing(),
-      const Nothing(),
     ];
     List<IconData> listOfIcons = [
       Icons.home_rounded,
-      Icons.info_outline,
-      Icons.contact_support_sharp,
-      Icons.person_2,
+      Icons.location_pin,
+      Icons.info_rounded,
     ];
     List labels = [
       "Home",
-      "About",
-      "Contact",
-      "opt3",
+      "Contact Information",
+      "About Us",
     ];
 
     void onTabTapped(int index) {
@@ -54,60 +51,62 @@ class _MainScreenState extends State<MainScreen> {
       margin: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
       height: size.width * .175,
       decoration: BoxDecoration(
-        color: Color.fromARGB(213, 255, 255, 255),
+        color: const Color.fromARGB(213, 255, 255, 255),
         boxShadow: [
           BoxShadow(
-            color: Color.fromARGB(0, 147, 12, 12).withOpacity(.15),
+            color: const Color.fromARGB(0, 147, 12, 12).withOpacity(.15),
             blurRadius: 30,
             offset: const Offset(0, 10),
           ),
         ],
         borderRadius: BorderRadius.circular(50),
       ),
-      child: ListView.builder(
-        itemCount: 4,
-        scrollDirection: Axis.horizontal,
-        padding: EdgeInsets.symmetric(horizontal: size.width * .024),
-        itemBuilder: (context, index) => InkWell(
-          onTap: () => onTabTapped(index),
-          splashColor: Colors.transparent,
-          highlightColor: Colors.transparent,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              AnimatedContainer(
-                duration: const Duration(milliseconds: 1500),
-                curve: Curves.fastLinearToSlowEaseIn,
-                margin: EdgeInsets.only(
-                  bottom: index == currentIndex ? 0 : size.width * .029,
-                  right: size.width * .0422,
-                  left: size.width * .0422,
-                ),
-                width: size.width * .128,
-                height: index == currentIndex ? size.width * .014 : 0,
-                decoration: const BoxDecoration(
-                  color: primaryColor,
-                  borderRadius: BorderRadius.vertical(
-                    bottom: Radius.circular(10),
+      child: Center(
+        child: ListView.builder(
+          shrinkWrap: true,
+          itemCount: 3, //Count of icons in bottom bar
+          scrollDirection: Axis.horizontal,
+          padding: EdgeInsets.symmetric(horizontal: size.width * .029),
+          itemBuilder: (context, index) => InkWell(
+            onTap: () => onTabTapped(index),
+            splashColor: Colors.transparent,
+            highlightColor: Colors.transparent,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                AnimatedContainer(
+                  duration: const Duration(milliseconds: 1500),
+                  curve: Curves.fastLinearToSlowEaseIn,
+                  margin: EdgeInsets.only(
+                    bottom: index == currentIndex ? 0 : size.width * .029,
+                    right: size.width * .0422,
+                    left: size.width * .0422,
+                  ),
+                  width: size.width * .128,
+                  height: index == currentIndex ? size.width * .014 : 0,
+                  decoration: const BoxDecoration(
+                    color: primaryColor,
+                    borderRadius: BorderRadius.vertical(
+                      bottom: Radius.circular(10),
+                    ),
                   ),
                 ),
-              ),
-              Icon(
-                listOfIcons[index],
-                size: size.width * .066,
-                color: index == currentIndex
-                    ? primaryColor
-                    : Color.fromARGB(255, 34, 33, 33),
-              ),
-              Text(
-                labels[index],
-                style: TextStyle(
-                    color:
-                        index == currentIndex ? primaryColor : Colors.black54,
-                    fontWeight: FontWeight.w500),
-              ),
-              SizedBox(height: size.width * .02),
-            ],
+                Icon(
+                  listOfIcons[index],
+                  size: size.width * .066,
+                  color: index == currentIndex
+                      ? primaryColor
+                      : const Color.fromARGB(255, 101, 100, 100),
+                ),
+                Text(
+                  labels[index],
+                  style: TextStyle(
+                      color:
+                          index == currentIndex ? primaryColor : Colors.black54,
+                      fontWeight: FontWeight.w500),
+                ),
+              ],
+            ),
           ),
         ),
       ),
