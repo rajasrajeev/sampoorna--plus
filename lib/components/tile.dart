@@ -53,7 +53,7 @@ class Tile extends StatelessWidget {
                 label,
                 textAlign: TextAlign.center,
                 style: const TextStyle(
-                  fontSize: 14,
+                  fontSize: 12,
                   color: Color.fromARGB(221, 43, 42, 42),
                   fontWeight: FontWeight.w700,
                 ),

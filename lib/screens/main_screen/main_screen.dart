@@ -32,7 +32,7 @@ class _MainScreenState extends State<MainScreen> {
     ];
     List labels = [
       "Home",
-      "Contact Information",
+      "Contact",
       "About Us",
     ];
 
