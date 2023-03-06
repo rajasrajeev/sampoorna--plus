@@ -23,9 +23,13 @@ Future postLogin(data) async {
 
   var tokenData = parseJwtAndSave(token['token']);
   await prefs.setString('school_id', tokenData['token']['school_id']);
+  await prefs.setString('first_name', tokenData['token']['first_name']);
+  await prefs.setString('last_name', tokenData['token']['last_name']);
   await prefs.setString('username', tokenData['token']['username']);
   await prefs.setString(
       'permittedBatches', tokenData['permittedBatches'][0]['batch_id']);
+  await prefs.setString('class', tokenData['permittedBatches'][0]['class']);
+  await prefs.setString('name', tokenData['permittedBatches'][0]['name']);
   await prefs.setString('tokenData', tokenData.toString());
   return response;
 }

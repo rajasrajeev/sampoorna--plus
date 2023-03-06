@@ -71,8 +71,12 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
       //await Future.delayed(const Duration(seconds: 3));
       Navigator.of(context).pop();
       // print("-=-===-=-=-=-=-=-=---=> ${responseData['data']}");
-      studentsList = parseJwtAndSave(responseData['data']);
-      print("==================> ${studentsList['token'][0]['full_name']}");
+      var data = parseJwtAndSave(responseData['data']);
+      print(data);
+      setState(() {
+        studentsList = data['token'];
+      });
+      print("==================> ${studentsList}");
     } else {
       Navigator.of(context).pop();
       Fluttertoast.showToast(
@@ -181,7 +185,7 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
                     height: MediaQuery.of(context).size.height * 0.7,
                     child: ListView.builder(
                         // the number of items in the list
-                        itemCount: studentsList['token'].length,
+                        itemCount: studentsList.length,
                         shrinkWrap: true,
                         // display each item of the product list
                         itemBuilder: (context, index) {
@@ -214,10 +218,18 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
                                           child: Image.asset(
                                               "assets/images/profile.png")),
                                       const SizedBox(width: 30),
-                                      Text(
-                                          "${studentsList['token'][index]['full_name']}"),
-                                      const SizedBox(width: 20),
-                                      Text("IX A")
+                                      Column(
+                                        children: <Widget>[
+                                          Text(
+                                              "${studentsList[index]['full_name']}"),
+                                          Text(
+                                              "Student Code: ${studentsList[index]['student_code']}"),
+                                          Text(
+                                              "Admission No: ${studentsList[index]['admission_no']}"),
+                                        ],
+                                      ),
+                                      // const SizedBox(width: 20),
+                                      // Text("IX A")
                                     ],
                                   )),
                             ),

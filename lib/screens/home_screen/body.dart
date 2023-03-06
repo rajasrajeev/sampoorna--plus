@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:student_management/components/tile.dart';
 import 'package:student_management/screens/attendanceList_screen/attendanceList_screen.dart';
 import 'package:student_management/screens/attendance_screen/attendance_screen.dart';
@@ -8,6 +9,7 @@ import 'package:student_management/screens/students_list_screen/students_list_sc
 import 'package:student_management/components/banner.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:student_management/services/helper.dart';
 
 class Body extends StatefulWidget {
   const Body({super.key});
@@ -17,26 +19,28 @@ class Body extends StatefulWidget {
 }
 
 class _BodyState extends State<Body> {
+  String userName = "";
+  String grade = "";
+
   @override
   initState() {
     permission();
+    getUserData();
     super.initState();
+  }
+
+  getUserData() async {
+    final prefs = await SharedPreferences.getInstance();
+
+    setState(() {
+      userName =
+          "${prefs.getString('first_name')} ${prefs.getString('last_name')}";
+      grade = "${prefs.getString('class')} ${prefs.getString('name')}";
+    });
   }
 
   permission() async {
     if (await Permission.storage.request().isGranted) {
-      // openAppSettings();
-      // Either the permission was already granted before or the user just granted it.
-      // ignore: use_build_context_synchronously
-      /* Fluttertoast.showToast(
-          msg: "File acess permission granted",
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 300,
-          // toastDuration: Duration(seconds: 2),
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-          fontSize: 16.0); */
     } else {
       Fluttertoast.showToast(
           msg: "File acess permission Not granted",
@@ -59,10 +63,10 @@ class _BodyState extends State<Body> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const CommonBanner(
+            CommonBanner(
                 imageUrl: "assets/images/profile.png",
-                name: "Test Teacher",
-                grade: "VIIIA"),
+                name: userName,
+                grade: grade),
             const SizedBox(height: 10),
             Padding(
               padding: const EdgeInsets.all(8.0),
