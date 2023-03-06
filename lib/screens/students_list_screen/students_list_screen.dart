@@ -194,8 +194,10 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) =>
-                                        const StudentsProfileScreen()),
+                                    builder: (context) => StudentsProfileScreen(
+                                        studentCode: studentsList[index]
+                                                ['student_code']
+                                            .toString())),
                               );
                             },
                             child: Card(

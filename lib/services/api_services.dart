@@ -45,13 +45,32 @@ Future studentList(data) async {
     },
     body: data,
   );
-/*   // print("${response.body}");
-  final token = jsonDecode(response.body);
-  await prefs.setString('token', token['token']);
-  await prefs.setString('user_id', token['user_id']);
-  await prefs.setString('user_type', token['user_type']);
+  return response;
+}
 
-  var tokenData = parseJwtAndSave(token['token']);
-  await prefs.setString('tokenData', tokenData.toString()); */
+//API TO POST LOGIN
+Future studentDetails(studentCode) async {
+  final prefs = await SharedPreferences.getInstance();
+  var token = await prefs.getString('token');
+  final response = await http.post(
+    Uri.parse(
+        '$apiUrl/getStudentDetailsById/studentCode/${studentCode}/format/json/'),
+    headers: {
+      'Authorization': 'Bearer ${token}',
+    },
+  );
+  return response;
+}
+
+//API TO POST LOGIN
+Future teacherProfile(user_id) async {
+  final prefs = await SharedPreferences.getInstance();
+  var token = await prefs.getString('token');
+  final response = await http
+      .post(Uri.parse('$apiUrl/teacherProfileById/format/json/'), headers: {
+    'Authorization': 'Bearer ${token}',
+  }, body: {
+    "user_id": user_id
+  });
   return response;
 }
