@@ -69,132 +69,131 @@ class _BodyState extends State<Body> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
-                children: [                  
+                children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
-                   Tile(
-                     label: "Attendance List",
-                     image: "assets/images/attendance_list.png",
-                     onClick: () {
-                       Navigator.push(
-                         context,
-                         MaterialPageRoute(
-                             builder: (context) => const AttendanceList()),
-                       );
-                     },
-                   ),
-                    SizedBox(width:size.width*0.029),
-                   Tile(
-                     label: "Add Attendance",
-                     image: "assets/images/attendance.png",
-                     onClick: () {
-                       Navigator.push(
-                         context,
-                         MaterialPageRoute(
-                             builder: (context) => const AttendanceScreen()),
-                       );
-                     },
-                   ),
-                   SizedBox(width:size.width*0.029),
-                   Tile(
-                     label: "Profile",
-                     image: "assets/images/profile.png",
-                     onClick: () {
-                       Navigator.push(
-                         context,
-                         MaterialPageRoute(
-                             builder: (context) =>
-                                 const TeachersProfileScreen()),
-                       );
-                     },
-                   ),
+                      Tile(
+                        label: "Attendance List",
+                        image: "assets/images/attendance_list.png",
+                        onClick: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const AttendanceList()),
+                          );
+                        },
+                      ),
+                      SizedBox(width: size.width * 0.029),
+                      Tile(
+                        label: "Add Attendance",
+                        image: "assets/images/attendance.png",
+                        onClick: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const AttendanceScreen()),
+                          );
+                        },
+                      ),
+                      SizedBox(width: size.width * 0.029),
+                      Tile(
+                        label: "Profile",
+                        image: "assets/images/profile.png",
+                        onClick: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    const TeachersProfileScreen()),
+                          );
+                        },
+                      ),
                     ],
                   ),
-                  SizedBox(height:size.width*0.030),
+                  SizedBox(height: size.width * 0.030),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
-                   Tile(
-                     label: "Students List",
-                     image: "assets/images/student_list.png",
-                     onClick: () {
-                       Navigator.push(
-                         context,
-                         MaterialPageRoute(
-                             builder: (context) =>
-                                 const StudentsListScreen()),
-                       );
-                     },
-                   ),
-                   SizedBox(width:size.width*0.029),
-                   Tile(
-                     label: "Calendar",
-                     image: "assets/images/calendar.png",
-                     onClick: () {
-                       Navigator.push(
-                         context,
-                         MaterialPageRoute(
-                             builder: (context) => const Nothing()),
-                       );
-                     },
-                   ),
-                   SizedBox(width:size.width*0.029),
-                   Tile(
-                     label: "Reports",
-                     image: "assets/images/report.png",
-                     onClick: () {
-                       Navigator.push(
-                         context,
-                         MaterialPageRoute(
-                             builder: (context) => const Nothing()),
-                       );
-                     },
-                   ),
+                      Tile(
+                        label: "Students List",
+                        image: "assets/images/student_list.png",
+                        onClick: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    const StudentsListScreen()),
+                          );
+                        },
+                      ),
+                      SizedBox(width: size.width * 0.029),
+                      Tile(
+                        label: "Calendar",
+                        image: "assets/images/calendar.png",
+                        onClick: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const Nothing()),
+                          );
+                        },
+                      ),
+                      SizedBox(width: size.width * 0.029),
+                      Tile(
+                        label: "Reports",
+                        image: "assets/images/report.png",
+                        onClick: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const Nothing()),
+                          );
+                        },
+                      ),
                     ],
                   ),
-                  SizedBox(height:size.width*0.030),
+                  SizedBox(height: size.width * 0.030),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
-                   
-                   Tile(
-                     label: "Exams",
-                     image: "assets/images/exam.png",
-                     onClick: () {
-                       Navigator.push(
-                         context,
-                         MaterialPageRoute(
-                             builder: (context) => const Nothing()),
-                       );
-                     },
-                   ),
-                   SizedBox(width:size.width*0.029),
-                   Tile(
-                     label: "Configure",
-                     image: "assets/images/config.png",
-                     onClick: () {
-                       Navigator.push(
-                         context,
-                         MaterialPageRoute(
-                             builder: (context) => const Nothing()),
-                       );
-                     },
-                   ),
-                   SizedBox(width:size.width*0.029),
-                   SizedBox( width: size.width * 0.29,),
-                   
+                      Tile(
+                        label: "Exams",
+                        image: "assets/images/exam.png",
+                        onClick: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const Nothing()),
+                          );
+                        },
+                      ),
+                      SizedBox(width: size.width * 0.029),
+                      Tile(
+                        label: "Configure",
+                        image: "assets/images/config.png",
+                        onClick: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const Nothing()),
+                          );
+                        },
+                      ),
+                      SizedBox(width: size.width * 0.029),
+                      SizedBox(
+                        width: size.width * 0.29,
+                      ),
                     ],
                   ),
-                  
                 ],
               ),
             ),
-            SizedBox( height: size.height * 0.49,),
+            SizedBox(
+              height: size.height * 0.49,
+            ),
           ],
-          
         ),
-        
       ),
     );
   }

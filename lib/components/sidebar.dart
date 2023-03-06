@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:student_management/constants.dart';
+import 'package:student_management/screens/login_screen/login_screen.dart';
 
 class SideBar extends StatelessWidget {
   const SideBar({super.key});
@@ -36,6 +37,18 @@ class SideBar extends StatelessWidget {
             leading: const Icon(Icons.error_outline_outlined),
             onTap: () {
               Navigator.pop(context);
+            },
+          ),
+          ListTile(
+            title: const Text('Logout', style: TextStyle(fontSize: 16)),
+            leading: const Icon(Icons.logout_outlined),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const LoginScreen(),
+                ),
+              );
             },
           ),
         ],

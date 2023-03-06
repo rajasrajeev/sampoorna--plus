@@ -1,9 +1,17 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:student_management/components/banner.dart';
 import 'package:student_management/constants.dart';
 import 'package:student_management/screens/students_profile_screen/students_profile_screen.dart';
+import 'package:student_management/services/api_services.dart';
+import 'package:student_management/services/jwt_token_parser.dart';
 
 class StudentsListScreen extends StatefulWidget {
   const StudentsListScreen({super.key});
@@ -13,6 +21,71 @@ class StudentsListScreen extends StatefulWidget {
 }
 
 class _StudentsListScreenState extends State<StudentsListScreen> {
+  dynamic studentsList = [];
+
+  @override
+  void initState() {
+    getStudentsData();
+    super.initState();
+  }
+
+  getStudentsData() async {
+    final prefs = await SharedPreferences.getInstance();
+
+    var data = {
+      "batch_id": prefs.getString('permittedBatches'),
+      "school_id": prefs.getString('school_id'),
+      "user_type": prefs.getString('user_type')
+    };
+
+    showDialog(
+        // The user CANNOT close this dialog  by pressing outsite it
+        barrierDismissible: true,
+        context: context,
+        builder: (_) {
+          return Dialog(
+            // The background color
+            backgroundColor: Colors.white,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 20),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: const [
+                  // The loading indicator
+                  CircularProgressIndicator(),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  // Some text
+                  Text('Loading...')
+                ],
+              ),
+            ),
+          );
+        });
+
+    final res = await studentList(data);
+    final responseData = jsonDecode(res.body);
+
+    if (res.statusCode == 200) {
+      //await Future.delayed(const Duration(seconds: 3));
+      Navigator.of(context).pop();
+      // print("-=-===-=-=-=-=-=-=---=> ${responseData['data']}");
+      studentsList = parseJwtAndSave(responseData['data']);
+      print("==================> ${studentsList['token'][0]['full_name']}");
+    } else {
+      Navigator.of(context).pop();
+      Fluttertoast.showToast(
+        msg: "Unable to Sync Students List Now",
+        gravity: ToastGravity.TOP,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 15.0,
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -108,7 +181,7 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
                     height: MediaQuery.of(context).size.height * 0.7,
                     child: ListView.builder(
                         // the number of items in the list
-                        itemCount: 5,
+                        itemCount: studentsList['token'].length,
                         shrinkWrap: true,
                         // display each item of the product list
                         itemBuilder: (context, index) {
@@ -141,9 +214,10 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
                                           child: Image.asset(
                                               "assets/images/profile.png")),
                                       const SizedBox(width: 30),
-                                      const Text("Ram"),
+                                      Text(
+                                          "${studentsList['token'][index]['full_name']}"),
                                       const SizedBox(width: 20),
-                                      const Text("IX A")
+                                      Text("IX A")
                                     ],
                                   )),
                             ),

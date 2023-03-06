@@ -22,6 +22,32 @@ Future postLogin(data) async {
   await prefs.setString('user_type', token['user_type']);
 
   var tokenData = parseJwtAndSave(token['token']);
+  await prefs.setString('school_id', tokenData['token']['school_id']);
+  await prefs.setString('username', tokenData['token']['username']);
+  await prefs.setString(
+      'permittedBatches', tokenData['permittedBatches'][0]['batch_id']);
   await prefs.setString('tokenData', tokenData.toString());
+  return response;
+}
+
+//API TO POST LOGIN
+Future studentList(data) async {
+  final prefs = await SharedPreferences.getInstance();
+  var token = await prefs.getString('token');
+  final response = await http.post(
+    Uri.parse('$apiUrl/student_list_all/format/json/'),
+    headers: {
+      'Authorization': 'Bearer ${token}',
+    },
+    body: data,
+  );
+/*   // print("${response.body}");
+  final token = jsonDecode(response.body);
+  await prefs.setString('token', token['token']);
+  await prefs.setString('user_id', token['user_id']);
+  await prefs.setString('user_type', token['user_type']);
+
+  var tokenData = parseJwtAndSave(token['token']);
+  await prefs.setString('tokenData', tokenData.toString()); */
   return response;
 }
