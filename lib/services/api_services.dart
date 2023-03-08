@@ -15,8 +15,10 @@ Future postLogin(data) async {
     Uri.parse('$apiUrl/authenticateUser/format/json'),
     body: data,
   );
-  // print("${response.body}");
-  final token = jsonDecode(response.body);
+   print("${response.body}");
+
+   if(response.statusCode != 403){
+final token = jsonDecode(response.body);
   await prefs.setString('token', token['token']);
   await prefs.setString('user_id', token['user_id']);
   await prefs.setString('user_type', token['user_type']);
@@ -31,6 +33,10 @@ Future postLogin(data) async {
   await prefs.setString('class', tokenData['permittedBatches'][0]['class']);
   await prefs.setString('name', tokenData['permittedBatches'][0]['name']);
   await prefs.setString('tokenData', tokenData.toString());
+   }
+  else{
+    
+  }
   return response;
 }
 

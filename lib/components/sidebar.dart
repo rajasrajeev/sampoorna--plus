@@ -14,9 +14,14 @@ class SideBar extends StatelessWidget {
           // ignore: prefer_const_constructors
           DrawerHeader(
             decoration: const BoxDecoration(
-              color: primaryColor,
+              color: Colors.white10,
             ),
-            child: const Center(child: Text("Nothing")),
+            child:
+        Image.asset(
+          "assets/images/sampoorna.png",
+          width: 200,
+          height: 200,
+        ),
           ),
           ListTile(
             title: const Text('Popular', style: TextStyle(fontSize: 16)),

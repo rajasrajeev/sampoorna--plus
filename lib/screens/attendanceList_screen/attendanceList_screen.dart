@@ -33,6 +33,7 @@ class _AttendanceListState extends State<AttendanceList> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Attendance List"),
+        elevation: 0,
       ),
       body: SingleChildScrollView(
         child: Column(
