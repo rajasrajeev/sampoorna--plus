@@ -29,7 +29,7 @@ class _AttendanceListState extends State<AttendanceList> {
       'Class 4',
       'Class 5',
     ];
-    final myProducts = List<String>.generate(1000, (i) => 'Product $i');
+    //final myProducts = List<String>.generate(1000, (i) => 'Product $i');
     return Scaffold(
       appBar: AppBar(
         title: const Text("Attendance List"),

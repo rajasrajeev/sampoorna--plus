@@ -106,7 +106,10 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
     ];
     final myProducts = List<String>.generate(10, (i) => 'Product $i');
     return Scaffold(
-      appBar: AppBar(title: const Text("Students List")),
+      appBar: AppBar(
+        title: const Text("Students List"),
+        elevation: 0,
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[

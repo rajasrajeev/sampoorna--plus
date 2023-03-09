@@ -44,6 +44,7 @@ dependencies:
   flutter_secure_storage: ^8.0.0
   shared_preferences: ^2.0.18
   table_calendar: ^3.0.9
+  upgrader: ^6.0.1
 
 dev_dependencies:
   flutter_test:

@@ -33,8 +33,7 @@ class _BodyState extends State<Body> {
     final prefs = await SharedPreferences.getInstance();
 
     setState(() {
-      userName =
-          "${prefs.getString('first_name')} ${prefs.getString('last_name')}";
+      userName ="${prefs.getString('first_name')} ${prefs.getString('last_name')}";
       grade = "${prefs.getString('class')} ${prefs.getString('name')}";
     });
   }
