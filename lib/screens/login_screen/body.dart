@@ -63,8 +63,14 @@ class _BodyState extends State<Body> {
                     role = value;
                   });
                 },
+                  validator: (value) {
+                  if (value == null || value.length < 1) {
+                    return "please select your role";
+                  }
+                  return null;
+                },
               ),
-              const SizedBox(height: 5),
+              const SizedBox(height: 15),
               CustomTextField(
                 label: "Username",
                 minLine: 1,
