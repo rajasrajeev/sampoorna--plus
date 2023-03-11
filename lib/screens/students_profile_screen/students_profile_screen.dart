@@ -66,11 +66,11 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
       Navigator.of(context).pop();
       // print("-=-===-=-=-=-=-=-=---=> ${responseData['data']}");
       var data = parseJwtAndSave(responseData['data']);
-      print(data);
-      /* setState(() {
-        studentDetails = data['token'];
-      }); */
-      print("==================> ${studentDetails}");
+      // print(data);
+      setState(() {
+        studentDetail = data;
+      });
+      print("==================> ${studentDetail}");
     } else {
       Navigator.of(context).pop();
       Fluttertoast.showToast(
@@ -99,12 +99,19 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
               grade: "VIII A"),
           Center(
             child: Column(
-              children: const <Widget>[
-                ProfileDetails(title: "First Name", value: "Teacher"),
-                ProfileDetails(title: "Last Name", value: "1340A"),
-                ProfileDetails(title: "Email", value: "teacher@mailinator.com"),
-                ProfileDetails(title: "School ID", value: "5033"),
-                ProfileDetails(title: "Email", value: "Teacher"),
+              children: <Widget>[
+                ProfileDetails(
+                    title: "Full Name",
+                    value: studentDetail['personal_details']['full_name']),
+                ProfileDetails(
+                    title: "Admission No",
+                    value: studentDetail['personal_details']['admission_no']),
+                ProfileDetails(
+                    title: "Gender",
+                    value: studentDetail['personal_details']['gender']),
+                ProfileDetails(
+                    title: "School Name",
+                    value: studentDetail['personal_details']['school_name']),
               ],
             ),
           ),

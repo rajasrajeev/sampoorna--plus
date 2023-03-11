@@ -17,26 +17,24 @@ Future postLogin(data) async {
   );
   // print("${response.body}");
 
-   if(response.statusCode != 403){
-final token = jsonDecode(response.body);
-  await prefs.setString('token', token['token']);
-  await prefs.setString('user_id', token['user_id']);
-  await prefs.setString('user_type', token['user_type']);
-  //await prefs.setString('isLoggedIn',"true");
+  if (response.statusCode != 403) {
+    final token = jsonDecode(response.body);
+    await prefs.setString('token', token['token']);
+    await prefs.setString('user_id', token['user_id']);
+    await prefs.setString('user_type', token['user_type']);
+    //await prefs.setString('isLoggedIn',"true");
 
-  var tokenData = parseJwtAndSave(token['token']);
-  await prefs.setString('school_id', tokenData['token']['school_id']);
-  await prefs.setString('first_name', tokenData['token']['first_name']);
-  await prefs.setString('last_name', tokenData['token']['last_name']);
-  await prefs.setString('username', tokenData['token']['username']);
-  await prefs.setString('permittedBatches', tokenData['permittedBatches'][0]['batch_id']);
-  await prefs.setString('class', tokenData['permittedBatches'][0]['class']);
-  await prefs.setString('name', tokenData['permittedBatches'][0]['name']);
-  await prefs.setString('tokenData', tokenData.toString());
-   }
-  else{
-    
-  }
+    var tokenData = parseJwtAndSave(token['token']);
+    await prefs.setString('school_id', tokenData['token']['school_id']);
+    await prefs.setString('first_name', tokenData['token']['first_name']);
+    await prefs.setString('last_name', tokenData['token']['last_name']);
+    await prefs.setString('username', tokenData['token']['username']);
+    await prefs.setString(
+        'permittedBatches', tokenData['permittedBatches'][0]['batch_id']);
+    await prefs.setString('class', tokenData['permittedBatches'][0]['class']);
+    await prefs.setString('name', tokenData['permittedBatches'][0]['name']);
+    await prefs.setString('tokenData', tokenData.toString());
+  } else {}
   return response;
 }
 
@@ -58,13 +56,12 @@ Future studentList(data) async {
 Future studentDetails(studentCode) async {
   final prefs = await SharedPreferences.getInstance();
   var token = await prefs.getString('token');
-  final response = await http.post(
-    Uri.parse(
-        '$apiUrl/getStudentDetailsById/studentCode/${studentCode}/format/json/'),
-    headers: {
-      'Authorization': 'Bearer ${token}',
-    },
-  );
+  final response = await http
+      .post(Uri.parse('$apiUrl/getStudentDetailsById/format/json/'), headers: {
+    'Authorization': 'Bearer ${token}',
+  }, body: {
+    "studentCode": studentCode
+  });
   return response;
 }
 
