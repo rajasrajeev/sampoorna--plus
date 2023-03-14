@@ -224,17 +224,25 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
                                               "assets/images/profile.png")),
                                       const SizedBox(width: 30),
                                       Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
                                         children: <Widget>[
                                           Text(
-                                              "${studentsList[index]['full_name']}"),
+                                            "${studentsList[index]['full_name']}",
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          /* Text(
+                                              "Student Code: ${studentsList[index]['student_code']}" ), */
                                           Text(
-                                              "Student Code: ${studentsList[index]['student_code']}"),
-                                          Text(
-                                              "Admission No: ${studentsList[index]['admission_no']}"),
+                                              "(Adm No: ${studentsList[index]['admission_no']})"),
                                         ],
                                       ),
                                       // const SizedBox(width: 20),
                                       // Text("IX A")
+                                      const SizedBox(width: 30),
                                     ],
                                   )),
                             ),
