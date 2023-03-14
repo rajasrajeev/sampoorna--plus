@@ -143,7 +143,7 @@ class _BodyState extends State<Body> {
                       // ignore: use_build_context_synchronously
                       Navigator.of(context).pop();
                       // ignore: use_build_context_synchronously
-                      Navigator.push(
+                      Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
                           builder: (context) => const MainScreen(),
