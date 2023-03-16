@@ -146,6 +146,21 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
                       color: primaryColor,
                     ),
                   ),
+                ),
+                const Spacer(),
+                Container(
+                  padding: EdgeInsets.all(size.width * 0.03),
+                  height: 56,
+                  width: size.width * 0.30,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(30.0),
+                    border: Border.all(
+                      style: BorderStyle.solid,
+                      width: 2.0,
+                      color: primaryColor,
+                    ),
+                  ),
                   child: DropdownButton(
                     value: dropdownvalue,
                     icon: const Icon(Icons.keyboard_arrow_down),
@@ -167,7 +182,6 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
                     // After selecting the desired option,it will
                     // change button value to selected value
                     onChanged: (newValue) {
-                      // print("-===-=-=-=-=-==-> $newValue");
                       setState(() {
                         dropdownvalue = newValue.toString();
                       });
@@ -175,7 +189,7 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
                     },
                   ),
                 ),
-                const SizedBox(width: 10),
+                /* const SizedBox(width: 10),
                 SizedBox(
                   width: size.width * 0.20,
                   child: ElevatedButton(
@@ -192,7 +206,7 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
                       color: Colors.red,
                     ),
                   ),
-                ),
+                ), */
                 const Spacer(),
               ],
             ),
