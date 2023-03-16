@@ -189,24 +189,6 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
                     },
                   ),
                 ),
-                /* const SizedBox(width: 10),
-                SizedBox(
-                  width: size.width * 0.20,
-                  child: ElevatedButton(
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                      //shape: const StadiumBorder(),
-                      backgroundColor: Colors.white,
-                      padding: EdgeInsets.all(size.width * 0.03),
-                      minimumSize: const Size.fromHeight(54),
-                    ),
-                    child: const Icon(
-                      Icons.filter_list,
-                      size: 30,
-                      color: Colors.red,
-                    ),
-                  ),
-                ), */
                 const Spacer(),
               ],
             ),
