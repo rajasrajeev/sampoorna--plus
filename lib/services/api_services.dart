@@ -1,10 +1,14 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:student_management/constants.dart';
 import 'package:http/http.dart' as http;
+import 'package:student_management/models/permitted_classes.dart';
+import 'package:student_management/models/teachers.dart';
 import 'package:student_management/services/jwt_token_parser.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -17,7 +21,7 @@ Future postLogin(data) async {
   );
   // print("${response.body}");
 
-  if (response.statusCode != 403) {
+  if (response.statusCode == 200) {
     final token = jsonDecode(response.body);
     await prefs.setString('token', token['token']);
     await prefs.setString('user_id', token['user_id']);
@@ -25,6 +29,7 @@ Future postLogin(data) async {
     //await prefs.setString('isLoggedIn',"true");
 
     var tokenData = parseJwtAndSave(token['token']);
+
     await prefs.setString('school_id', tokenData['token']['school_id']);
     await prefs.setString('first_name', tokenData['token']['first_name']);
     await prefs.setString('last_name', tokenData['token']['last_name']);
@@ -34,6 +39,7 @@ Future postLogin(data) async {
     await prefs.setString('class', tokenData['permittedBatches'][0]['class']);
     await prefs.setString('name', tokenData['permittedBatches'][0]['name']);
     await prefs.setString('tokenData', tokenData.toString());
+    Teachers res = Teachers.fromJson(tokenData);
   } else {}
   return response;
 }
