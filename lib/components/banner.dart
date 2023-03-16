@@ -42,7 +42,7 @@ class _CommonBannerState extends State<CommonBanner> {
 
   @override
   Widget build(BuildContext context) {
-        Size size = MediaQuery.of(context).size;
+    Size size = MediaQuery.of(context).size;
     //final double height = MediaQuery.of(context).size.height * 0.15;
     return ClipPath(
       clipper: BezierClipper(1),
@@ -58,7 +58,7 @@ class _CommonBannerState extends State<CommonBanner> {
                   secondaryColor,
                 ],
               )),
-              height: size.height*0.15,
+              height: size.height * 0.15,
               child: Row(
                 // mainAxisAlignment: MainAxisAlignment.center,
                 // crossAxisAlignment: CrossAxisAlignment.center,
@@ -88,20 +88,22 @@ class _CommonBannerState extends State<CommonBanner> {
                         ),
                       ),
                       SizedBox(
-                        width: size.width*0.3,
-                        height: size.height*0.05,
+                        width: size.width * 0.3,
+                        height: size.height * 0.05,
                         child: ListView.builder(
                             itemCount: permittedBatches.length,
                             scrollDirection: Axis.horizontal,
                             shrinkWrap: true,
                             itemBuilder: (context, index) {
                               return Container(
-                                width: size.width*0.1,
+                                width: size.width * 0.1,
                                 // height: size.height*0.02,
-                                margin: const EdgeInsets.all(10.0),
-                                padding:const EdgeInsets.all(0.1),
+                                margin: const EdgeInsets.all(8),
+                                padding: const EdgeInsets.all(0.1),
                                 decoration: BoxDecoration(
-                                    border: Border.all(color: Color.fromARGB(255, 255, 255, 255)),
+                                    border: Border.all(
+                                        color:
+                                            Color.fromARGB(255, 255, 255, 255)),
                                     borderRadius: BorderRadius.circular(10)),
                                 child: Text(
                                   "${permittedBatches[index]['class']} ${permittedBatches[index]['name']}",

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:student_management/constants.dart';
 import 'package:student_management/screens/single_day_attendance/single_day_attendance.dart';
 import 'package:student_management/services/utils.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -60,11 +61,11 @@ class _AttendanceListCalenderState extends State<AttendanceListCalender> {
       });
 
       _selectedEvents.value = _getEventsForDay(selectedDay);
-      Navigator.push(
+      /* Navigator.push(
         context,
         MaterialPageRoute(
             builder: (context) => const SingleDayAttendanceScreen()),
-      );
+      ); */
     }
   }
 
@@ -102,6 +103,18 @@ class _AttendanceListCalenderState extends State<AttendanceListCalender> {
       calendarStyle: const CalendarStyle(
         // Use `CalendarStyle` to customize the UI
         outsideDaysVisible: false,
+        isTodayHighlighted: true,
+        cellMargin: EdgeInsets.all(9),
+        todayDecoration: BoxDecoration(
+          color: secondaryColor,
+          shape: BoxShape.rectangle,
+          // borderRadius: BorderRadius.circular(10)
+        ),
+        selectedDecoration: BoxDecoration(
+          color: primaryColor,
+          shape: BoxShape.rectangle,
+          // borderRadius: BorderRadius.circular(5)
+        ),
       ),
       onDaySelected: _onDaySelected,
       onRangeSelected: _onRangeSelected,

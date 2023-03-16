@@ -39,10 +39,10 @@ class _SingleDayAttendanceScreenState extends State<SingleDayAttendanceScreen> {
                 name: "Test Teacher",
                 grade: "VIIIA"),
             const SizedBox(height: 10),
-            Row(
+            /* Row(
               children: <Widget>[
                 const Spacer(),
-                Container(
+                /* Container(
                   padding: EdgeInsets.all(size.width * 0.03),
                   height: 56,
                   width: size.width * 0.60,
@@ -79,7 +79,7 @@ class _SingleDayAttendanceScreenState extends State<SingleDayAttendanceScreen> {
                       });
                     },
                   ),
-                ),
+                ), */
                 const SizedBox(width: 10),
                 SizedBox(
                   width: size.width * 0.20,
@@ -100,7 +100,7 @@ class _SingleDayAttendanceScreenState extends State<SingleDayAttendanceScreen> {
                 ),
                 const Spacer(),
               ],
-            ),
+            ), */
             const SizedBox(height: 20),
             Row(
               children: <Widget>[
