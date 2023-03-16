@@ -17,7 +17,7 @@ class _NothingState extends State<Nothing> {
     // ignore: prefer_const_constructors
     return Scaffold(
       key: key,
-     // appBar:AppBar(),
+      appBar:AppBar(),
       body: const Center(child: Text("Under Maintenance")),
       backgroundColor: Colors.white,
     );

@@ -273,7 +273,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                     ),
                     DataRow(
                       cells: <DataCell>[
-                        const DataCell(Text('4')),
+                        const DataCell(Text('5')),
                         const DataCell(Text('Sona')),
                         DataCell(Checkbox(
                             value: checked7,
@@ -293,7 +293,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                     ),
                     DataRow(
                       cells: <DataCell>[
-                        const DataCell(Text('5')),
+                        const DataCell(Text('6')),
                         const DataCell(Text('Rajas')),
                         DataCell(Checkbox(
                             value: checked10,
@@ -313,7 +313,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                     ),
                     DataRow(
                       cells: <DataCell>[
-                        const DataCell(Text('6')),
+                        const DataCell(Text('7')),
                         const DataCell(Text('Vishnu')),
                         DataCell(Checkbox(
                             value: checked10,
@@ -333,7 +333,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                     ),
                     DataRow(
                       cells: <DataCell>[
-                        const DataCell(Text('5')),
+                        const DataCell(Text('8')),
                         const DataCell(Text('Rajas')),
                         DataCell(Checkbox(
                             value: checked10,
@@ -353,7 +353,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                     ),
                     DataRow(
                       cells: <DataCell>[
-                        const DataCell(Text('5')),
+                        const DataCell(Text('9')),
                         const DataCell(Text('Siva Kumar Saxena')),
                         DataCell(Checkbox(
                             value: checked10,
@@ -373,7 +373,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                     ),
                     DataRow(
                       cells: <DataCell>[
-                        const DataCell(Text('5')),
+                        const DataCell(Text('10')),
                         const DataCell(Text('Rajas')),
                         DataCell(Checkbox(
                             value: checked10,

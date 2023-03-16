@@ -24,7 +24,7 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
   dynamic studentsList = [];
   List permittedBatches = [];
   String dropdownvalue = '';
-
+int i=1;
   // List of items in our dropdown menu
   List items = [];
 
@@ -174,8 +174,8 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
                     items: items
                         .map(
                           (map) => DropdownMenuItem(
-                            child: Text(map['grade']),
                             value: map['batch_id'],
+                            child: Text(map['grade']),
                           ),
                         )
                         .toList(),
@@ -192,78 +192,98 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
                 const Spacer(),
               ],
             ),
-            const SizedBox(height: 20),
-            Row(
-              children: <Widget>[
-                Expanded(
-                  child: SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.7,
-                    child: ListView.builder(
-                        // the number of items in the list
-                        itemCount: studentsList.length,
-                        shrinkWrap: true,
-                        // display each item of the product list
-                        itemBuilder: (context, index) {
-                          return GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => StudentsProfileScreen(
-                                        studentCode: studentsList[index]
-                                                ['student_code']
-                                            .toString())),
-                              );
-                            },
-                            child: Card(
-                              // In many cases, the key isn't mandatory
-                              // key: ValueKey(myProducts[index]),
-                              borderOnForeground: true,
-                              margin: const EdgeInsets.symmetric(
-                                  vertical: 5, horizontal: 15),
-                              child: Padding(
-                                  padding: const EdgeInsets.all(10),
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                          width: 70,
-                                          height: 70,
-                                          decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(15)),
-                                          alignment: Alignment.center,
-                                          child: Image.asset(
-                                              "assets/images/profile.png")),
-                                      const SizedBox(width: 30),
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: <Widget>[
-                                          Text(
-                                            "${studentsList[index]['full_name']}",
-                                            style: const TextStyle(
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                          /* Text(
-                                              "Student Code: ${studentsList[index]['student_code']}" ), */
-                                          Text(
-                                              "(Adm No: ${studentsList[index]['admission_no']})"),
-                                        ],
-                                      ),
-                                      // const SizedBox(width: 20),
-                                      // Text("IX A")
-                                      const SizedBox(width: 30),
-                                    ],
-                                  )),
-                            ),
-                          );
-                        }),
+            SizedBox(height: size.height*0.05),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                children: [
+                  Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.7,
+                          child: ListView.builder(
+                              // the number of items in the list
+                              itemCount: studentsList.length,
+                              shrinkWrap: true,
+                              // display each item of the product list
+                              itemBuilder: (context, index) {
+                                return GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => StudentsProfileScreen(
+                                              studentCode: studentsList[index]
+                                                      ['student_code']
+                                                  .toString())),
+                                    );
+                                  },
+                                  child: Card(
+                                    // In many cases, the key isn't mandatory
+                                    // key: ValueKey(myProducts[index]),
+                                    borderOnForeground: true,
+                                    margin: const EdgeInsets.symmetric(
+                                        vertical: 5, horizontal: 15),
+                                    child: Padding(
+                                        padding: const EdgeInsets.all(10),
+                                        child: Row(
+                                          children: [
+                                            Container(
+                                                width: 70,
+                                                height: 70,
+                                                decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(15)),
+                                                alignment: Alignment.center,
+                                                child: Image.asset(
+                                                    "assets/images/profile.png")),
+                                            const SizedBox(width: 30),
+                                            Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              children: <Widget>[
+                                                Text(
+                                                  "${i++}",
+                                                  style: const TextStyle(
+                                                      fontWeight: FontWeight.bold),
+                                                ),
+                                                Text(
+                                                  "${studentsList[index]['full_name']}",
+                                                  style: const TextStyle(
+                                                      fontWeight: FontWeight.bold),
+                                                ),
+                                                /* Text(
+                                                    "Student Code: ${studentsList[index]['student_code']}" ), */
+                                                Text(
+                                                    "(Adm No: ${studentsList[index]['admission_no']})"),
+                                              ],
+                                            ),
+                                            // const SizedBox(width: 20),
+                                            // Text("IX A")
+                                            const SizedBox(width: 30),
+                                          ],
+                                        )),
+                                  ),
+                                );
+                              }),
+                        ),
+                      )
+                    ],
                   ),
-                )
-              ],
-            )
+                  const SizedBox(height: 30,),
+                   Row(
+                     children:const [
+                        SizedBox(height: 30,)
+                     ],
+                   )         
+                ],
+              ),
+            ),
+            
+
           ],
         ),
       ),

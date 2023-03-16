@@ -123,7 +123,7 @@ class _MainScreenState extends State<MainScreen> {
         ),
         drawer: const SideBar(),
         extendBody: true,
-        bottomNavigationBar: bottomBar,
+       // bottomNavigationBar: bottomBar,
         body: screens[currentIndex],
       ),
     );
