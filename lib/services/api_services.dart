@@ -39,7 +39,8 @@ Future postLogin(data) async {
     await prefs.setString('class', tokenData['permittedBatches'][0]['class']);
     await prefs.setString('name', tokenData['permittedBatches'][0]['name']);
     await prefs.setString('tokenData', tokenData.toString());
-    Teachers res = Teachers.fromJson(tokenData);
+    // Teachers res = Teachers.fromJson(tokenData);
+    await prefs.setString('loginData', json.encode(tokenData));
   } else {}
   return response;
 }

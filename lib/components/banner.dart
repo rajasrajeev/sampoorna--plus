@@ -1,6 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:student_management/components/bezier_clipper.dart';
 import 'package:student_management/constants.dart';
+import 'package:student_management/models/teachers.dart';
 
 class CommonBanner extends StatefulWidget {
   final String imageUrl;
@@ -18,6 +22,24 @@ class CommonBanner extends StatefulWidget {
 }
 
 class _CommonBannerState extends State<CommonBanner> {
+  List permittedBatches = [];
+
+  @override
+  void initState() {
+    super.initState();
+    getData();
+  }
+
+  getData() async {
+    final prefs = await SharedPreferences.getInstance();
+    var details = await prefs.getString('loginData');
+    dynamic data = json.decode(details!);
+    setState(() {
+      permittedBatches = data['permittedBatches'];
+    });
+    print(permittedBatches);
+  }
+
   @override
   Widget build(BuildContext context) {
     final double height = MediaQuery.of(context).size.height * 0.15;
@@ -30,9 +52,9 @@ class _CommonBannerState extends State<CommonBanner> {
                   gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
-                colors: [              
+                colors: [
                   primaryColor,
-                  secondaryColor,                  
+                  secondaryColor,
                 ],
               )),
               height: height,
@@ -64,15 +86,31 @@ class _CommonBannerState extends State<CommonBanner> {
                           fontWeight: FontWeight.w700,
                         ),
                       ),
-                      Text(
-                        widget.grade,
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          fontSize: 17,
-                          color: Color.fromARGB(221, 255, 255, 255),
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
+                      Expanded(
+                        child: ListView.builder(
+                            itemCount: permittedBatches.length,
+                            scrollDirection: Axis.horizontal,
+                            shrinkWrap: true,
+                            itemBuilder: (context, index) {
+                              return Container(
+                                margin: const EdgeInsets.all(10.0),
+                                padding:
+                                    const EdgeInsets.fromLTRB(15, 10, 15, 0),
+                                decoration: BoxDecoration(
+                                    border: Border.all(color: Colors.black),
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: Text(
+                                  "${permittedBatches[index]['class']} ${permittedBatches[index]['name']}",
+                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(
+                                    fontSize: 17,
+                                    color: Color.fromARGB(221, 255, 255, 255),
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                              );
+                            }),
+                      )
                     ],
                   ),
                   const Spacer(),

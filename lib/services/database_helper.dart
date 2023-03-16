@@ -9,8 +9,8 @@ class DatabaseHelper {
   static const table = 'teachers';
 
   static const columnId = '_id';
-  static const columnName = 'name';
-  static const columnAge = 'age';
+  static const columnName = 'grade';
+  static const columnAge = 'name';
 
   late Database _db;
 
