@@ -22,18 +22,44 @@ class StudentsListScreen extends StatefulWidget {
 
 class _StudentsListScreenState extends State<StudentsListScreen> {
   dynamic studentsList = [];
+  List permittedBatches = [];
+  String dropdownvalue = '';
+
+  // List of items in our dropdown menu
+  List items = [];
 
   @override
   void initState() {
-    getStudentsData();
+    getData();
     super.initState();
   }
 
-  getStudentsData() async {
+  getData() async {
+    final prefs = await SharedPreferences.getInstance();
+    var details = await prefs.getString('loginData');
+    dynamic data = json.decode(details!);
+    setState(() {
+      permittedBatches = data['permittedBatches'];
+      dropdownvalue = permittedBatches[0]['batch_id'];
+    });
+    for (var i = 0; i < permittedBatches.length; i++) {
+      setState(() {
+        items.add({
+          "grade":
+              '${permittedBatches[i]['class']} ${permittedBatches[i]['name']}',
+          "batch_id": '${permittedBatches[i]['batch_id']}'
+        });
+      });
+    }
+
+    getStudentsData(dropdownvalue);
+  }
+
+  getStudentsData(String batchId) async {
     final prefs = await SharedPreferences.getInstance();
 
     var data = {
-      "batch_id": prefs.getString('permittedBatches'),
+      "batch_id": batchId,
       "school_id": prefs.getString('school_id'),
       "user_type": prefs.getString('user_type')
     };
@@ -68,15 +94,11 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
     final responseData = jsonDecode(res.body);
 
     if (res.statusCode == 200) {
-      //await Future.delayed(const Duration(seconds: 3));
       Navigator.of(context).pop();
-      // print("-=-===-=-=-=-=-=-=---=> ${responseData['data']}");
       var data = parseJwtAndSave(responseData['data']);
-      print(data);
       setState(() {
         studentsList = data['token'];
       });
-      print("==================> ${studentsList}");
     } else {
       Navigator.of(context).pop();
       Fluttertoast.showToast(
@@ -94,17 +116,7 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     // Initial Selected Value
-    String dropdownvalue = 'Class 1';
 
-    // List of items in our dropdown menu
-    var items = [
-      'Class 1',
-      'Class 2',
-      'Class 3',
-      'Class 4',
-      'Class 5',
-    ];
-    final myProducts = List<String>.generate(10, (i) => 'Product $i');
     return Scaffold(
       appBar: AppBar(
         title: const Text("Students List"),
@@ -144,18 +156,22 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
                     elevation: 16,
                     style: const TextStyle(color: Colors.black87),
                     // Array list of items
-                    items: items.map((String items) {
-                      return DropdownMenuItem(
-                        value: items,
-                        child: Text(items),
-                      );
-                    }).toList(),
+                    items: items
+                        .map(
+                          (map) => DropdownMenuItem(
+                            child: Text(map['grade']),
+                            value: map['batch_id'],
+                          ),
+                        )
+                        .toList(),
                     // After selecting the desired option,it will
                     // change button value to selected value
-                    onChanged: (String? newValue) {
+                    onChanged: (newValue) {
+                      // print("-===-=-=-=-=-==-> $newValue");
                       setState(() {
-                        dropdownvalue = newValue!;
+                        dropdownvalue = newValue.toString();
                       });
+                      getStudentsData(dropdownvalue);
                     },
                   ),
                 ),
