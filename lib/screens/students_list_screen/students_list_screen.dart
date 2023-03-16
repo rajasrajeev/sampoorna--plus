@@ -9,9 +9,13 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:student_management/components/banner.dart';
 import 'package:student_management/constants.dart';
+import 'package:student_management/screens/home_screen/home_screen.dart';
+import 'package:student_management/screens/main_screen/main_screen.dart';
 import 'package:student_management/screens/students_profile_screen/students_profile_screen.dart';
 import 'package:student_management/services/api_services.dart';
 import 'package:student_management/services/jwt_token_parser.dart';
+
+import '../../components/custom_textfield.dart';
 
 class StudentsListScreen extends StatefulWidget {
   const StudentsListScreen({super.key});
@@ -24,7 +28,7 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
   dynamic studentsList = [];
   List permittedBatches = [];
   String dropdownvalue = '';
-int i=1;
+  final TextEditingController SearchController = TextEditingController();
   // List of items in our dropdown menu
   List items = [];
 
@@ -121,171 +125,191 @@ int i=1;
       appBar: AppBar(
         title: const Text("Students List"),
         elevation: 0,
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            const CommonBanner(
-                imageUrl: "assets/images/profile.png",
-                name: "Test Teacher",
-                grade: "VIIIA"),
-            const SizedBox(height: 10),
-            Row(
-              children: <Widget>[
-                const Spacer(),
-                Container(
-                  padding: EdgeInsets.all(size.width * 0.03),
-                  height: 56,
-                  width: size.width * 0.60,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(30.0),
-                    border: Border.all(
-                      style: BorderStyle.solid,
-                      width: 2.0,
-                      color: primaryColor,
+        actions: <Widget>[
+          Padding(
+              padding: const EdgeInsets.only(right: 20.0),
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const MainScreen(),
                     ),
-                  ),
+                  );
+                },
+                child: const Icon(
+                  Icons.home_filled,
+                  size: 26.0,
                 ),
-                const Spacer(),
-                Container(
-                  padding: EdgeInsets.all(size.width * 0.03),
-                  height: 56,
-                  width: size.width * 0.30,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(30.0),
-                    border: Border.all(
-                      style: BorderStyle.solid,
-                      width: 2.0,
-                      color: primaryColor,
+              )),
+        ],
+      ),
+      body: Column(
+        children: [
+          SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                const CommonBanner(
+                    imageUrl: "assets/images/profile.png",
+                    name: "Test Teacher",
+                    grade: "VIIIA"),
+                const SizedBox(height: 10),
+                Row(
+                  children: <Widget>[
+                    const Spacer(),
+                    SizedBox(
+                      //padding: EdgeInsets.all(size.width * 0.03),
+                      height: size.height * 0.085,
+                      width: size.width * 0.60,
+                     // decoration: BoxDecoration(
+                      //  color: Colors.white,
+                     //   borderRadius: BorderRadius.circular(30.0),
+                     //   border: Border.all(
+                      //    style: BorderStyle.solid,
+                       //   width: 2.0,
+                      //    color: primaryColor,
+                      //  ),
+                     // ),
+                      child: CustomTextField(
+                        label: "Search here",
+                        minLine: 1,
+                        maxLine: 1,
+                        enabled: true,
+                        controller: SearchController,
+                        validator: (value) {
+                          if (value == null || value.length < 1) {
+                            return "please enter username";
+                          }
+                          return null;
+                        },
+                      ),
                     ),
-                  ),
-                  child: DropdownButton(
-                    value: dropdownvalue,
-                    icon: const Icon(Icons.keyboard_arrow_down),
-                    isExpanded: true,
-                    alignment: Alignment.bottomCenter,
-                    dropdownColor: Colors.white,
-                    underline: const SizedBox(),
-                    elevation: 16,
-                    style: const TextStyle(color: Colors.black87),
-                    // Array list of items
-                    items: items
-                        .map(
-                          (map) => DropdownMenuItem(
-                            value: map['batch_id'],
-                            child: Text(map['grade']),
+                    const Spacer(),
+                    Container(
+                      padding: EdgeInsets.all(size.width * 0.03),
+                      height: size.height * 0.07,
+                      width: size.width * 0.30,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(30.0),
+                        border: Border.all(
+                          style: BorderStyle.solid,
+                          width: 2.0,
+                          color: primaryColor,
+                        ),
+                      ),
+                      child: DropdownButton(
+                        value: dropdownvalue,
+                        icon: const Icon(Icons.keyboard_arrow_down),
+                        isExpanded: true,
+                        alignment: Alignment.bottomCenter,
+                        dropdownColor: Colors.white,
+                        underline: const SizedBox(),
+                        elevation: 16,
+                        style: const TextStyle(color: Colors.black87),
+                        // Array list of items
+                        items: items
+                            .map(
+                              (map) => DropdownMenuItem(
+                                value: map['batch_id'],
+                                child: Text(map['grade']),
+                              ),
+                            )
+                            .toList(),
+                        // After selecting the desired option,it will
+                        // change button value to selected value
+                        onChanged: (newValue) {
+                          setState(() {
+                            dropdownvalue = newValue.toString();
+                          });
+                          getStudentsData(dropdownvalue);
+                        },
+                      ),
+                    ),
+                    const Spacer(),
+                  ],
+                ),
+                //  SizedBox(height: size.height * 0.05),
+                Column(
+                  children: [
+                    Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: SizedBox(
+                            height: size.height * 0.6,
+                            child: ListView.builder(
+                                // the number of items in the list
+                                itemCount: studentsList.length,
+                                shrinkWrap: true,
+                                // display each item of the product list
+                                itemBuilder: (context, index) {
+                                  return GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                StudentsProfileScreen(
+                                                    studentCode:
+                                                        studentsList[index]
+                                                                ['student_code']
+                                                            .toString())),
+                                      );
+                                    },
+                                    child: Card(
+                                      // In many cases, the key isn't mandatory
+                                      // key: ValueKey(myProducts[index]),
+                                      borderOnForeground: true,
+                                      margin: const EdgeInsets.symmetric(
+                                          vertical: 5, horizontal: 15),
+                                      child: Padding(
+                                          padding: const EdgeInsets.all(10),
+                                          child: Row(
+                                            children: [
+                                              Container(
+                                                  width: 70,
+                                                  height: 70,
+                                                  decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              15)),
+                                                  alignment: Alignment.center,
+                                                  child: Image.asset(
+                                                      "assets/images/profile.png")),
+                                              const SizedBox(width: 30),
+                                              Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                children: <Widget>[
+                                                  Text(
+                                                    "${studentsList[index]['full_name']}",
+                                                    style: const TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                  /* Text(
+                                                      "Student Code: ${studentsList[index]['student_code']}" ), */
+                                                  Text(
+                                                      "(Adm No: ${studentsList[index]['admission_no']})"),
+                                                ],
+                                              ),
+                                            ],
+                                          )),
+                                    ),
+                                  );
+                                }),
                           ),
                         )
-                        .toList(),
-                    // After selecting the desired option,it will
-                    // change button value to selected value
-                    onChanged: (newValue) {
-                      setState(() {
-                        dropdownvalue = newValue.toString();
-                      });
-                      getStudentsData(dropdownvalue);
-                    },
-                  ),
+                      ],
+                    ),
+                  ],
                 ),
-                const Spacer(),
               ],
             ),
-            SizedBox(height: size.height*0.05),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                children: [
-                  Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.7,
-                          child: ListView.builder(
-                              // the number of items in the list
-                              itemCount: studentsList.length,
-                              shrinkWrap: true,
-                              // display each item of the product list
-                              itemBuilder: (context, index) {
-                                return GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => StudentsProfileScreen(
-                                              studentCode: studentsList[index]
-                                                      ['student_code']
-                                                  .toString())),
-                                    );
-                                  },
-                                  child: Card(
-                                    // In many cases, the key isn't mandatory
-                                    // key: ValueKey(myProducts[index]),
-                                    borderOnForeground: true,
-                                    margin: const EdgeInsets.symmetric(
-                                        vertical: 5, horizontal: 15),
-                                    child: Padding(
-                                        padding: const EdgeInsets.all(10),
-                                        child: Row(
-                                          children: [
-                                            Container(
-                                                width: 70,
-                                                height: 70,
-                                                decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(15)),
-                                                alignment: Alignment.center,
-                                                child: Image.asset(
-                                                    "assets/images/profile.png")),
-                                            const SizedBox(width: 30),
-                                            Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              children: <Widget>[
-                                                Text(
-                                                  "${i++}",
-                                                  style: const TextStyle(
-                                                      fontWeight: FontWeight.bold),
-                                                ),
-                                                Text(
-                                                  "${studentsList[index]['full_name']}",
-                                                  style: const TextStyle(
-                                                      fontWeight: FontWeight.bold),
-                                                ),
-                                                /* Text(
-                                                    "Student Code: ${studentsList[index]['student_code']}" ), */
-                                                Text(
-                                                    "(Adm No: ${studentsList[index]['admission_no']})"),
-                                              ],
-                                            ),
-                                            // const SizedBox(width: 20),
-                                            // Text("IX A")
-                                            const SizedBox(width: 30),
-                                          ],
-                                        )),
-                                  ),
-                                );
-                              }),
-                        ),
-                      )
-                    ],
-                  ),
-                  const SizedBox(height: 30,),
-                   Row(
-                     children:const [
-                        SizedBox(height: 30,)
-                     ],
-                   )         
-                ],
-              ),
-            ),
-            
-
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

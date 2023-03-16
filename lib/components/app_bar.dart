@@ -25,6 +25,17 @@ class ApplicationBar extends StatelessWidget {
         bottomOpacity: 0,
         iconTheme:
             const IconThemeData(color: Color.fromARGB(221, 133, 133, 133)),
-        actions: const <Widget>[]);
+        actions:  <Widget>[
+          Padding(
+      padding: const EdgeInsets.only(right: 20.0),
+      child: GestureDetector(
+        onTap: () {},
+        child: const Icon(
+            Icons.home_filled
+        ),
+      )
+    ),
+
+        ]);
   }
 }

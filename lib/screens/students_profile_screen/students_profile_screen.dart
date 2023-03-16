@@ -8,6 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:student_management/components/app_bar.dart';
 import 'package:student_management/components/profile_details.dart';
 import 'package:student_management/components/profile_header.dart';
+import 'package:student_management/screens/main_screen/main_screen.dart';
 import 'package:student_management/services/api_services.dart';
 import 'package:student_management/services/jwt_token_parser.dart';
 
@@ -90,7 +91,28 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
     // ignore: prefer_const_constructors
     return Scaffold(
       key: key,
-      appBar: AppBar(title: const Text("Profile")),
+      appBar: AppBar(title: const Text("Profile"),
+      elevation: 0,
+        actions: <Widget>[
+          Padding(
+              padding: const EdgeInsets.only(right: 20.0),
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const MainScreen(),
+                    ),
+                  );
+                },
+                child: const Icon(
+                  Icons.home_filled,
+                  size: 26.0,
+                ),
+              )
+            ),
+        ],
+      ),
       body: Column(
         children: <Widget>[
           const ProfileHeader(
