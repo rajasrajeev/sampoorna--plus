@@ -91,43 +91,97 @@ class _AttendanceListCalenderState extends State<AttendanceListCalender> {
   @override
   Widget build(BuildContext context) {
     return TableCalendar<Event>(
-      firstDay: kFirstDay,
-      lastDay: kLastDay,
-      focusedDay: _focusedDay,
-      selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
-      rangeStartDay: _rangeStart,
-      rangeEndDay: _rangeEnd,
-      calendarFormat: _calendarFormat,
-      rangeSelectionMode: _rangeSelectionMode,
-      eventLoader: _getEventsForDay,
-      calendarStyle: const CalendarStyle(
-        // Use `CalendarStyle` to customize the UI
-        outsideDaysVisible: false,
-        isTodayHighlighted: true,
-        cellMargin: EdgeInsets.all(9),
-        todayDecoration: BoxDecoration(
-          color: secondaryColor,
-          shape: BoxShape.rectangle,
-          // borderRadius: BorderRadius.circular(10)
+        firstDay: kFirstDay,
+        lastDay: kLastDay,
+        focusedDay: _focusedDay,
+        selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
+        rangeStartDay: _rangeStart,
+        rangeEndDay: _rangeEnd,
+        rowHeight: 75,
+        calendarFormat: _calendarFormat,
+        rangeSelectionMode: _rangeSelectionMode,
+        eventLoader: _getEventsForDay,
+        daysOfWeekStyle: DaysOfWeekStyle(
+          weekendStyle: const TextStyle().copyWith(color: primaryColor),
         ),
-        selectedDecoration: BoxDecoration(
-          color: primaryColor,
-          shape: BoxShape.rectangle,
-          // borderRadius: BorderRadius.circular(5)
+        enabledDayPredicate: (date) {
+          return date.weekday == DateTime.monday ||
+              date.weekday == DateTime.tuesday ||
+              date.weekday == DateTime.wednesday ||
+              date.weekday == DateTime.thursday ||
+              date.weekday == DateTime.friday;
+        },
+        headerStyle: const HeaderStyle(
+          titleCentered: true,
+          formatButtonVisible: false,
+          // rightChevronVisible: false
         ),
-      ),
-      onDaySelected: _onDaySelected,
-      onRangeSelected: _onRangeSelected,
-      onFormatChanged: (format) {
-        if (_calendarFormat != format) {
-          setState(() {
-            _calendarFormat = format;
-          });
-        }
-      },
-      onPageChanged: (focusedDay) {
-        _focusedDay = focusedDay;
-      },
-    );
+        calendarStyle: const CalendarStyle(
+          // Use `CalendarStyle` to customize the UI
+          outsideDaysVisible: false,
+          isTodayHighlighted: true,
+          tableBorder: TableBorder(
+              // top: BorderSide(color: Colors.black),
+              borderRadius: BorderRadius.all(Radius.circular(15))),
+          cellMargin: EdgeInsets.all(9),
+          todayDecoration: BoxDecoration(
+            color: secondaryColor,
+            shape: BoxShape.rectangle,
+            // borderRadius: BorderRadius.circular(7)
+          ),
+          selectedDecoration: BoxDecoration(
+            color: primaryColor,
+            shape: BoxShape.rectangle,
+            // borderRadius: BorderRadius.circular(7)
+          ),
+        ),
+        onDaySelected: _onDaySelected,
+        onRangeSelected: _onRangeSelected,
+        onFormatChanged: (format) {
+          if (_calendarFormat != format) {
+            setState(() {
+              _calendarFormat = format;
+            });
+          }
+        },
+        onPageChanged: (focusedDay) {
+          _focusedDay = focusedDay;
+        },
+        calendarBuilders: CalendarBuilders(
+          selectedBuilder: (context, date, events) => Container(
+              margin: const EdgeInsets.all(4.0),
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                  color: primaryColor,
+                  borderRadius: BorderRadius.circular(10.0)),
+              child: Text(
+                date.day.toString(),
+                style: const TextStyle(color: Colors.white),
+              )),
+          markerBuilder: (context, day, events) => events.isNotEmpty
+              ? Container(
+                  width: 20,
+                  height: 20,
+                  alignment: Alignment.center,
+                  decoration: const BoxDecoration(
+                      color: Color.fromARGB(112, 92, 92, 92),
+                      borderRadius: BorderRadius.all(Radius.circular(10))),
+                  child: Text(
+                    '${events.length}',
+                    style: const TextStyle(color: Colors.white),
+                  ),
+                )
+              : null,
+          todayBuilder: (context, date, events) => Container(
+              margin: const EdgeInsets.all(4.0),
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                  color: secondaryColor,
+                  borderRadius: BorderRadius.circular(10.0)),
+              child: Text(
+                date.day.toString(),
+                style: const TextStyle(color: Colors.white),
+              )),
+        ));
   }
 }
