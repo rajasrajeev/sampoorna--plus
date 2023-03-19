@@ -152,6 +152,11 @@ class _AttendanceListCalenderState extends State<AttendanceListCalender> {
           }
         },
         onPageChanged: (focusedDay) {
+          final DateFormat formatter = DateFormat('yyyy-MM-dd');
+          final String formatted = formatter.format(focusedDay);
+          int lastday = DateTime(focusedDay.year, focusedDay.month + 1, 0).day;
+          print(
+              "$formatted - ${focusedDay.year}-${focusedDay.month}-${lastday}");
           _focusedDay = focusedDay;
         },
         calendarBuilders: CalendarBuilders(

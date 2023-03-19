@@ -1,11 +1,16 @@
+// ignore_for_file: depend_on_referenced_packages, use_build_context_synchronously
+
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:student_management/components/banner.dart';
 import 'package:student_management/components/calender.dart';
 import 'package:student_management/constants.dart';
-import 'package:student_management/screens/individual_attendance_screen/individual_attendance_screen.dart';
-import 'package:student_management/screens/single_day_attendance/single_day_attendance.dart';
+import 'package:student_management/services/api_services.dart';
+import 'package:student_management/services/jwt_token_parser.dart';
 
 class AttendanceList extends StatefulWidget {
   const AttendanceList({super.key});
@@ -15,20 +20,104 @@ class AttendanceList extends StatefulWidget {
 }
 
 class _AttendanceListState extends State<AttendanceList> {
+  dynamic attendanceDates = [];
+  List permittedBatches = [];
+  String dropdownvalue = '';
+// List of items in our dropdown menu
+  List items = [];
+
+  @override
+  void initState() {
+    super.initState();
+    getData();
+    // getDataBetweenDates();
+  }
+
+  getData() async {
+    final prefs = await SharedPreferences.getInstance();
+    var details = await prefs.getString('loginData');
+    dynamic data = json.decode(details!);
+    setState(() {
+      permittedBatches = data['permittedBatches'];
+      dropdownvalue = permittedBatches[0]['batch_id'];
+    });
+    for (var i = 0; i < permittedBatches.length; i++) {
+      setState(() {
+        items.add({
+          "grade":
+              '${permittedBatches[i]['class']} ${permittedBatches[i]['name']}',
+          "batch_id": '${permittedBatches[i]['batch_id']}'
+        });
+      });
+    }
+  }
+
+  getDataBetweenDates() async {
+    final prefs = await SharedPreferences.getInstance();
+    var schoolId = await prefs.getString('school_id');
+    final DateTime now = DateTime.now();
+    final DateFormat formatter = DateFormat('yyyy-MM-dd');
+    var date2 = formatter.format(now);
+    var date1 = "${now.year}-${now.month}-01";
+    getStudentsData(date1, date2, schoolId!, dropdownvalue);
+  }
+
+  getStudentsData(
+      String date1, String date2, String schoolId, String batchId) async {
+    final prefs = await SharedPreferences.getInstance();
+
+    showDialog(
+        // The user CANNOT close this dialog  by pressing outsite it
+        barrierDismissible: true,
+        context: context,
+        builder: (_) {
+          return Dialog(
+            // The background color
+            backgroundColor: Colors.white,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 20),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: const [
+                  // The loading indicator
+                  CircularProgressIndicator(),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  // Some text
+                  Text('Loading...')
+                ],
+              ),
+            ),
+          );
+        });
+
+    final res = await attendanceBetweenDates(date1, date2, schoolId, batchId);
+    final responseData = jsonDecode(res.body);
+
+    if (res.statusCode == 200) {
+      Navigator.of(context).pop();
+      var data = parseJwtAndSave(responseData['data']);
+      setState(() {
+        attendanceDates = data['token'];
+      });
+    } else {
+      Navigator.of(context).pop();
+      Fluttertoast.showToast(
+        msg: "Unable to Sync Students List Now",
+        gravity: ToastGravity.TOP,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 15.0,
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    // Initial Selected Value
-    String dropdownvalue = 'Class 1';
 
-    // List of items in our dropdown menu
-    var items = [
-      'Class 1',
-      'Class 2',
-      'Class 3',
-      'Class 4',
-      'Class 5',
-    ];
     return Scaffold(
       appBar: AppBar(
         title: const Text("Attendance List"),
@@ -68,15 +157,19 @@ class _AttendanceListState extends State<AttendanceList> {
                     elevation: 16,
                     style: const TextStyle(color: Colors.black87),
                     // Array list of items
-                    items: items.map((String items) {
-                      return DropdownMenuItem(
-                        value: items,
-                        child: Text(items),
-                      );
-                    }).toList(),
-                    onChanged: (String? newValue) {
+                    items: items
+                        .map(
+                          (map) => DropdownMenuItem(
+                            value: map['batch_id'],
+                            child: Text(map['grade']),
+                          ),
+                        )
+                        .toList(),
+                    // After selecting the desired option,it will
+                    // change button value to selected value
+                    onChanged: (newValue) {
                       setState(() {
-                        dropdownvalue = newValue!;
+                        dropdownvalue = newValue.toString();
                       });
                     },
                   ),
