@@ -355,10 +355,10 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                       absentees.add(obj);
                     }
                     dynamic dataToSubmit = {
-                      "ts": "18-03-2023",
-                      "school_id": studentsList[0]["school_id"],
-                      "batch_id": batchid,
-                      "absentees": [
+                      "\"ts\"": "\"18-03-2023\"",
+                      "\"school_id\"": studentsList[0]["school_id"],
+                      "\"batch_id\"": batchid,
+                      "\"absentees\"": [
                         {absentees.join(',')}
                       ]
                     };
