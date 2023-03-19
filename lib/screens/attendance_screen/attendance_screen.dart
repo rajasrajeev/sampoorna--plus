@@ -22,7 +22,7 @@ class AttendanceScreen extends StatefulWidget {
 class _AttendanceScreenState extends State<AttendanceScreen> {
   // Initial Selected Value
   String dropdownvalue = 'Class 1';
-  dynamic batchid="";
+  dynamic batchid = "";
   // List of items in our dropdown menu
   // List of items in our dropdown menu
   List items = [];
@@ -61,15 +61,14 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
 
   getStudentsData(String batchId) async {
     final prefs = await SharedPreferences.getInstance();
- batchid=batchId;
+    batchid = batchId;
     var data = {
       "batch_id": batchId,
-       
       "school_id": prefs.getString('school_id'),
       "user_type": prefs.getString('user_type')
     };
- debugPrint("**************Batch id************************");
-  debugPrint("$data");
+    debugPrint("**************Batch id************************");
+    debugPrint("$data");
     // ignore: use_build_context_synchronously
     showDialog(
         // The user CANNOT close this dialog  by pressing outsite it
@@ -307,7 +306,8 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                     ),
                   ],
                   rows: List.generate(studentsList.length, (index) {
-                    Map<String, dynamic> attendance = attendanceCheckers.firstWhere((item) =>
+                    Map<String, dynamic> attendance =
+                        attendanceCheckers.firstWhere((item) =>
                             item['student_id'] ==
                             studentsList[index]["student_code"]);
                     return DataRow(cells: <DataCell>[
@@ -316,17 +316,17 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                       DataCell(Checkbox(
                         value: attendance["fn"],
                         onChanged: (bool? val) {
-                           setState(() {
-                             attendance["fn"] = val!;
-                           });
+                          setState(() {
+                            attendance["fn"] = val!;
+                          });
                         },
                       )),
                       DataCell(Checkbox(
                         value: attendance["an"],
                         onChanged: (bool? val) {
-                           setState(() {
-                             attendance["an"] = val!;
-                           });
+                          setState(() {
+                            attendance["an"] = val!;
+                          });
                         },
                       )),
                     ]);
@@ -338,25 +338,30 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
           Positioned(
               bottom: 50,
               //left: 50,
-              child: SubmitButton(label: "Submit", onClick: () async {
+              child: SubmitButton(
+                  label: "Submit",
+                  onClick: () async {
                     int listLength = attendanceCheckers.length;
                     List absentees = [];
                     int fn, an;
 
-                     for (int i = 0; i < listLength; i++) {
-                         attendanceCheckers[i]["fn"] == true ? fn = 1 : fn = 0;
-                         attendanceCheckers[i]["an"] == true ? an = 1 : an = 0;
+                    for (int i = 0; i < listLength; i++) {
+                      attendanceCheckers[i]["fn"] == true ? fn = 1 : fn = 0;
+                      attendanceCheckers[i]["an"] == true ? an = 1 : an = 0;
 
-                         String obj = '"${attendanceCheckers[i]["student_id"]}": [-1, $fn, $an, "${attendanceCheckers[i]["full_name"]}" ]';
-                        //String obj = '${attendanceCheckers[i]["student_id"]}: [-1, $fn, $an, ${attendanceCheckers[i]["full_name"]} ]';
-                         absentees.add(obj);
-                     }
-                     dynamic dataToSubmit = {
-                       "\"ts\"":"\"18-03-2023\"",
-                         "\"school_id\"": studentsList[0]["school_id"],
-                        "\"batch_id\"": batchid,
-                        "\"absentees\"": [{absentees.join(',')}]
-                     };
+                      String obj =
+                          '"${attendanceCheckers[i]["student_id"]}": [-1, $fn, $an, "${attendanceCheckers[i]["full_name"]}" ]';
+                      //String obj = '${attendanceCheckers[i]["student_id"]}: [-1, $fn, $an, ${attendanceCheckers[i]["full_name"]} ]';
+                      absentees.add(obj);
+                    }
+                    dynamic dataToSubmit = {
+                      "ts": "18-03-2023",
+                      "school_id": studentsList[0]["school_id"],
+                      "batch_id": batchid,
+                      "absentees": [
+                        {absentees.join(',')}
+                      ]
+                    };
                     //  dynamic dataToSubmit = {
                     //    "ts":"18-03-2023",
                     //     "school_id": studentsList[0]["school_id"],
@@ -365,13 +370,11 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                     //  };
                     // debugPrint("**********Data To submit***********");
                     // debugPrint("$dataToSubmit");
-                      debugPrint("**********Before Response***********");
-                     final res = await addAttendance(dataToSubmit);
-                     debugPrint("**********Response***********");
-                     //debugPrint(res.statusCode.toString());
-              }
-              )
-              )
+                    debugPrint("**********Before Response***********");
+                    final res = await addAttendance(dataToSubmit);
+                    debugPrint("**********Response***********");
+                    //debugPrint(res.statusCode.toString());
+                  }))
         ],
       ),
       // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
