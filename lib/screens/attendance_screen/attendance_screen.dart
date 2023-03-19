@@ -1,10 +1,16 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:student_management/components/app_bar.dart';
 import 'package:student_management/components/sidebar.dart';
 import 'package:student_management/components/submit_button.dart';
 import 'package:student_management/constants.dart';
 
 import '../../components/custom_dropdown.dart';
+import '../../services/api_services.dart';
+import '../../services/jwt_token_parser.dart';
 
 class AttendanceScreen extends StatefulWidget {
   const AttendanceScreen({super.key});
@@ -16,14 +22,13 @@ class AttendanceScreen extends StatefulWidget {
 class _AttendanceScreenState extends State<AttendanceScreen> {
   // Initial Selected Value
   String dropdownvalue = 'Class 1';
-
+  
   // List of items in our dropdown menu
-  String studentClass = "";
-  List studentClasses = [
-    {"id": "1", "name": "Class1B"},
-    {"id": "2", "name": "Class1A"},
-    {"id": "3", "name": "Class2B"}
-  ];
+    // List of items in our dropdown menu
+  List items = [];
+  dynamic studentsList = [];
+  List permittedBatches = [];
+  
   bool checked1 = true;
   bool checked2 = true;
   bool checked3 = false;
@@ -37,6 +42,95 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
 
   DateTime selectedDate = DateTime.now();
 
+  @override
+  void initState() {
+    getData();
+
+    super.initState();
+  }
+    getData() async {
+    final prefs = await SharedPreferences.getInstance();
+    var details = await prefs.getString('loginData');
+    dynamic data = json.decode(details!);
+    setState(() {
+      permittedBatches = data['permittedBatches'];
+      dropdownvalue = permittedBatches[0]['batch_id'];
+    });
+    for (var i = 0; i < permittedBatches.length; i++) {
+      setState(() {
+        items.add({
+          "grade":
+              '${permittedBatches[i]['class']} ${permittedBatches[i]['name']}',
+          "batch_id": '${permittedBatches[i]['batch_id']}'
+        });
+      });
+    }
+
+    getStudentsData(dropdownvalue);
+  }
+
+  getStudentsData(String batchId) async {
+    final prefs = await SharedPreferences.getInstance();
+
+    var data = {
+      "batch_id": batchId,
+      "school_id": prefs.getString('school_id'),
+      "user_type": prefs.getString('user_type')
+    };
+
+    // ignore: use_build_context_synchronously
+    showDialog(
+        // The user CANNOT close this dialog  by pressing outsite it
+        barrierDismissible: true,
+        context: context,
+        builder: (_) {
+          return Dialog(
+            // The background color
+            backgroundColor: Colors.white,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 20),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: const [
+                  // The loading indicator
+                  CircularProgressIndicator(),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  // Some text
+                  Text('Loading...')
+                ],
+              ),
+            ),
+          );
+        });
+
+    final res = await studentList(data);
+    final responseData = jsonDecode(res.body);
+ 
+
+    if (res.statusCode == 200) {
+      Navigator.of(context).pop();
+      var data = parseJwtAndSave(responseData['data']);
+   debugPrint("**************************************");
+      setState(() {
+        studentsList = data['token'];
+      });
+    debugPrint(studentsList.toString());
+    debugPrint("**************************************");
+    } else {
+      Navigator.of(context).pop();
+      Fluttertoast.showToast(
+        msg: "Unable to Sync Students List Now",
+        gravity: ToastGravity.TOP,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 15.0,
+      );
+    }
+  }
+  
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
         context: context,
@@ -66,22 +160,47 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
               children: <Widget>[
                 SizedBox(
                   width: size.width * 0.5,
-                  child: CustomDropDown(
-                    label: "Select Your Class",
-                    value: studentClass,
-                    data: studentClasses,
-                    onChange: (value) {
-                      setState(() {
-                        studentClass = value;
-                      });
-                    },
-                    validator: (value) {
-                      if (value == null || value.length < 1) {
-                        return "please select your Class";
-                      }
-                      return null;
-                    },
-                  ),
+                  child: Container(
+                      padding: EdgeInsets.all(size.width * 0.03),
+                      height: size.height * 0.07,
+                      width: size.width * 0.30,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(30.0),
+                        border: Border.all(
+                          style: BorderStyle.solid,
+                          width: 2.0,
+                          color: primaryColor,
+                        ),
+                      ),
+                      child: DropdownButton(
+                        value: dropdownvalue,
+                        icon: const Icon(Icons.keyboard_arrow_down),
+                        isExpanded: true,
+                        alignment: Alignment.bottomCenter,
+                        dropdownColor: Colors.white,
+                        underline: const SizedBox(),
+                        elevation: 16,
+                        style: const TextStyle(color: Colors.black87),
+                        // Array list of items
+                        items: items
+                            .map(
+                              (map) => DropdownMenuItem(
+                                value: map['batch_id'],
+                                child: Text(map['grade']),
+                              ),
+                            )
+                            .toList(),
+                        // After selecting the desired option,it will
+                        // change button value to selected value
+                        onChanged: (newValue) {
+                          setState(() {
+                            dropdownvalue = newValue.toString();
+                          });
+                          getStudentsData(dropdownvalue);
+                        },
+                      ),
+                    ),
                 ),
                 const Spacer(),
                 Container(
@@ -129,7 +248,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
           const SizedBox(height: 20),
           Expanded(
             child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
+             // scrollDirection: Axis.horizontal,
               //scrollDirection: Axis.values(size),
               child: SingleChildScrollView(
                 scrollDirection: Axis.vertical,
@@ -158,7 +277,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                                 });
                               }),
                           const Text(
-                            'Forenoon',
+                            'FN',
                             style: TextStyle(fontStyle: FontStyle.italic),
                           ),
                         ],
@@ -175,223 +294,44 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                                 });
                               }),
                           const Text(
-                            'Afternoon',
+                            'AN',
                             style: TextStyle(fontStyle: FontStyle.italic),
                           ),
                         ],
                       ),
                     ),
                   ],
-                  rows: <DataRow>[
-                    DataRow(
-                      cells: <DataCell>[
-                        const DataCell(Text('1')),
-                        const DataCell(Text('Sarath')),
-                        DataCell(Checkbox(
-                          value: checked1,
-                          onChanged: (val) {
-                            setState(() {
-                              checked1 = !checked1;
-                            });
-                          },
-                          //checkColor:const Color.fromARGB(255, 254, 0, 190),
-                          //activeColor:Color.fromARGB(255, 8, 237, 12),
-                          //     hoverColor: const Color.fromARGB(249, 253, 169, 0),
-                          //       side: BorderSide(
-                          //   color: Color.fromARGB(248, 55, 253, 0), //your desire colour here
-                          //   width: 1.5,
-                          // ),
-                        )),
-                        DataCell(Checkbox(
-                            value: checked2,
-                            onChanged: (val) {
-                              setState(() {
-                                checked2 = !checked2;
-                              });
-                            })),
-                      ],
-                    ),
-                    DataRow(
-                      cells: <DataCell>[
-                        const DataCell(Text('2')),
-                        const DataCell(Text('Renjith')),
-                        DataCell(Checkbox(
-                            value: checked3,
-                            onChanged: (val) {
-                              setState(() {
-                                checked3 = !checked3;
-                              });
-                            })),
-                        DataCell(Checkbox(
-                            value: checked4,
-                            onChanged: (val) {
-                              setState(() {
-                                checked4 = !checked4;
-                              });
-                            })),
-                      ],
-                    ),
-                    DataRow(
-                      cells: <DataCell>[
-                        const DataCell(Text('3')),
-                        const DataCell(Text('Suben')),
-                        DataCell(Checkbox(
-                            value: checked5,
-                            onChanged: (val) {
-                              setState(() {
-                                checked5 = !checked5;
-                              });
-                            })),
-                        DataCell(Checkbox(
-                            value: checked6,
-                            onChanged: (val) {
-                              setState(() {
-                                checked6 = !checked6;
-                              });
-                            })),
-                      ],
-                    ),
-                    DataRow(
-                      cells: <DataCell>[
-                        const DataCell(Text('4')),
-                        const DataCell(Text('Sona')),
-                        DataCell(Checkbox(
-                            value: checked7,
-                            onChanged: (val) {
-                              setState(() {
-                                checked7 = !checked7;
-                              });
-                            })),
-                        DataCell(Checkbox(
-                            value: checked8,
-                            onChanged: (val) {
-                              setState(() {
-                                checked8 = !checked8;
-                              });
-                            })),
-                      ],
-                    ),
-                    DataRow(
-                      cells: <DataCell>[
-                        const DataCell(Text('5')),
-                        const DataCell(Text('Sona')),
-                        DataCell(Checkbox(
-                            value: checked7,
-                            onChanged: (val) {
-                              setState(() {
-                                checked7 = !checked7;
-                              });
-                            })),
-                        DataCell(Checkbox(
-                            value: checked8,
-                            onChanged: (val) {
-                              setState(() {
-                                checked8 = !checked8;
-                              });
-                            })),
-                      ],
-                    ),
-                    DataRow(
-                      cells: <DataCell>[
-                        const DataCell(Text('6')),
-                        const DataCell(Text('Rajas')),
-                        DataCell(Checkbox(
-                            value: checked10,
-                            onChanged: (val) {
-                              setState(() {
-                                checked10 = !checked10;
-                              });
-                            })),
-                        DataCell(Checkbox(
-                            value: checked9,
-                            onChanged: (val) {
-                              setState(() {
-                                checked9 = !checked9;
-                              });
-                            })),
-                      ],
-                    ),
-                    DataRow(
-                      cells: <DataCell>[
-                        const DataCell(Text('7')),
-                        const DataCell(Text('Vishnu')),
-                        DataCell(Checkbox(
-                            value: checked10,
-                            onChanged: (val) {
-                              setState(() {
-                                checked10 = !checked10;
-                              });
-                            })),
-                        DataCell(Checkbox(
-                            value: checked9,
-                            onChanged: (val) {
-                              setState(() {
-                                checked9 = !checked9;
-                              });
-                            })),
-                      ],
-                    ),
-                    DataRow(
-                      cells: <DataCell>[
-                        const DataCell(Text('8')),
-                        const DataCell(Text('Rajas')),
-                        DataCell(Checkbox(
-                            value: checked10,
-                            onChanged: (val) {
-                              setState(() {
-                                checked10 = !checked10;
-                              });
-                            })),
-                        DataCell(Checkbox(
-                            value: checked9,
-                            onChanged: (val) {
-                              setState(() {
-                                checked9 = !checked9;
-                              });
-                            })),
-                      ],
-                    ),
-                    DataRow(
-                      cells: <DataCell>[
-                        const DataCell(Text('9')),
-                        const DataCell(Text('Siva Kumar Saxena')),
-                        DataCell(Checkbox(
-                            value: checked10,
-                            onChanged: (val) {
-                              setState(() {
-                                checked10 = !checked10;
-                              });
-                            })),
-                        DataCell(Checkbox(
-                            value: checked9,
-                            onChanged: (val) {
-                              setState(() {
-                                checked9 = !checked9;
-                              });
-                            })),
-                      ],
-                    ),
-                    DataRow(
-                      cells: <DataCell>[
-                        const DataCell(Text('10')),
-                        const DataCell(Text('Rajas')),
-                        DataCell(Checkbox(
-                            value: checked10,
-                            onChanged: (val) {
-                              setState(() {
-                                checked10 = !checked10;
-                              });
-                            })),
-                        DataCell(Checkbox(
-                            value: checked9,
-                            onChanged: (val) {
-                              setState(() {
-                                checked9 = !checked9;
-                              });
-                            })),
-                      ],
-                    ),
-                  ],
+                  
+                  rows:List.generate(studentsList.length, (index){
+                     
+                     return DataRow(cells: <DataCell>[
+                        DataCell(Text('${index+1}')),
+                          DataCell(Text(
+                            '${studentsList[index]["full_name"] }'
+                            )
+                            ),
+                         DataCell(Checkbox(
+                           value: checked1,
+                         // value: '${studentsList[index]["student_code"]}$FN',
+                           onChanged: (val) {
+                             setState(() {
+                               checked1 = !checked1;
+                             });
+                         },
+                         )
+                         ),
+                         DataCell(Checkbox(
+                           value: checked1,
+                           onChanged: (val) {
+                             setState(() {
+                               checked1 = !checked1;
+                             });
+                         },
+                         )),
+                     ]
+                     );
+                  } 
+                  ),
                 ),
               ),
             ),
