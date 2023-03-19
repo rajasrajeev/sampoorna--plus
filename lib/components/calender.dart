@@ -1,8 +1,11 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
 import 'package:student_management/constants.dart';
 import 'package:student_management/screens/single_day_attendance/single_day_attendance.dart';
 import 'package:student_management/services/utils.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:intl/intl.dart';
 
 class AttendanceListCalender extends StatefulWidget {
   const AttendanceListCalender({super.key});
@@ -61,11 +64,15 @@ class _AttendanceListCalenderState extends State<AttendanceListCalender> {
       });
 
       _selectedEvents.value = _getEventsForDay(selectedDay);
-      /* Navigator.push(
+      final DateFormat formatter = DateFormat('yyyy-MM-dd');
+      final String formatted = formatter.format(_selectedDay!);
+      Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => const SingleDayAttendanceScreen()),
-      ); */
+            builder: (context) => SingleDayAttendanceScreen(
+                  date: formatted,
+                )),
+      );
     }
   }
 

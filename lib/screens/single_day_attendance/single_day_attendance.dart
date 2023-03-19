@@ -6,7 +6,8 @@ import 'package:student_management/constants.dart';
 import 'package:student_management/screens/individual_attendance_screen/individual_attendance_screen.dart';
 
 class SingleDayAttendanceScreen extends StatefulWidget {
-  const SingleDayAttendanceScreen({super.key});
+  final String date;
+  const SingleDayAttendanceScreen({required this.date, super.key});
 
   @override
   State<SingleDayAttendanceScreen> createState() =>
@@ -16,19 +17,6 @@ class SingleDayAttendanceScreen extends StatefulWidget {
 class _SingleDayAttendanceScreenState extends State<SingleDayAttendanceScreen> {
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    // Initial Selected Value
-    String dropdownvalue = 'Class 1';
-
-    // List of items in our dropdown menu
-    var items = [
-      'Class 1',
-      'Class 2',
-      'Class 3',
-      'Class 4',
-      'Class 5',
-    ];
-    final myProducts = List<String>.generate(1000, (i) => 'Product $i');
     return Scaffold(
       appBar: AppBar(title: const Text("Attendance of Students")),
       body: SingleChildScrollView(
@@ -39,68 +27,7 @@ class _SingleDayAttendanceScreenState extends State<SingleDayAttendanceScreen> {
                 name: "Test Teacher",
                 grade: "VIIIA"),
             const SizedBox(height: 10),
-            /* Row(
-              children: <Widget>[
-                const Spacer(),
-                /* Container(
-                  padding: EdgeInsets.all(size.width * 0.03),
-                  height: 56,
-                  width: size.width * 0.60,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(30.0),
-                    border: Border.all(
-                      style: BorderStyle.solid,
-                      width: 2.0,
-                      color: primaryColor,
-                    ),
-                  ),
-                  child: DropdownButton(
-                    value: dropdownvalue,
-                    icon: const Icon(Icons.keyboard_arrow_down),
-                    isExpanded: true,
-                    alignment: Alignment.bottomCenter,
-                    dropdownColor: Colors.white,
-                    underline: const SizedBox(),
-                    elevation: 16,
-                    style: const TextStyle(color: Colors.black87),
-                    // Array list of items
-                    items: items.map((String items) {
-                      return DropdownMenuItem(
-                        value: items,
-                        child: Text(items),
-                      );
-                    }).toList(),
-                    // After selecting the desired option,it will
-                    // change button value to selected value
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        dropdownvalue = newValue!;
-                      });
-                    },
-                  ),
-                ), */
-                const SizedBox(width: 10),
-                SizedBox(
-                  width: size.width * 0.20,
-                  child: ElevatedButton(
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                      //shape: const StadiumBorder(),
-                      backgroundColor: Colors.white,
-                      padding: EdgeInsets.all(size.width * 0.03),
-                      minimumSize: const Size.fromHeight(54),
-                    ),
-                    child: const Icon(
-                      Icons.filter_list,
-                      size: 30,
-                      color: Colors.red,
-                    ),
-                  ),
-                ),
-                const Spacer(),
-              ],
-            ), */
+            Text("${widget.date}"),
             const SizedBox(height: 20),
             Row(
               children: <Widget>[
