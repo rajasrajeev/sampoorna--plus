@@ -22,33 +22,23 @@ class AttendanceScreen extends StatefulWidget {
 class _AttendanceScreenState extends State<AttendanceScreen> {
   // Initial Selected Value
   String dropdownvalue = 'Class 1';
-  
+
   // List of items in our dropdown menu
-    // List of items in our dropdown menu
+  // List of items in our dropdown menu
   List items = [];
   dynamic studentsList = [];
+  List<Map<String, dynamic>> attendanceCheckers = [];
   List permittedBatches = [];
-  
-  bool checked1 = true;
-  bool checked2 = true;
-  bool checked3 = false;
-  bool checked4 = false;
-  bool checked5 = true;
-  bool checked6 = false;
-  bool checked7 = false;
-  bool checked8 = true;
-  bool checked9 = false;
   bool checked10 = false;
-
   DateTime selectedDate = DateTime.now();
 
   @override
   void initState() {
     getData();
-
     super.initState();
   }
-    getData() async {
+
+  getData() async {
     final prefs = await SharedPreferences.getInstance();
     var details = await prefs.getString('loginData');
     dynamic data = json.decode(details!);
@@ -107,17 +97,17 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
 
     final res = await studentList(data);
     final responseData = jsonDecode(res.body);
- 
 
     if (res.statusCode == 200) {
       Navigator.of(context).pop();
       var data = parseJwtAndSave(responseData['data']);
-   debugPrint("**************************************");
+      debugPrint("**************************************");
       setState(() {
         studentsList = data['token'];
       });
-    debugPrint(studentsList.toString());
-    debugPrint("**************************************");
+      await createCheckersList(data['token']);
+      debugPrint(studentsList.toString());
+      debugPrint("**************************************");
     } else {
       Navigator.of(context).pop();
       Fluttertoast.showToast(
@@ -130,7 +120,21 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
       );
     }
   }
-  
+
+  createCheckersList(students) {
+    for (int i = 0; i < students.length; i++) {
+      // String fnKey = students[i]["student_code"].toString()+"FN";
+      // String anKey = students[i]["student_code"].toString()+"AN";
+
+      Map<String, dynamic> obj = {
+        "student_id": students[i]["student_code"],
+        "fn": true,
+        "an": true
+      };
+      attendanceCheckers.add(obj);
+    }
+  }
+
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
         context: context,
@@ -161,46 +165,46 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                 SizedBox(
                   width: size.width * 0.5,
                   child: Container(
-                      padding: EdgeInsets.all(size.width * 0.03),
-                      height: size.height * 0.07,
-                      width: size.width * 0.30,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(30.0),
-                        border: Border.all(
-                          style: BorderStyle.solid,
-                          width: 2.0,
-                          color: primaryColor,
-                        ),
-                      ),
-                      child: DropdownButton(
-                        value: dropdownvalue,
-                        icon: const Icon(Icons.keyboard_arrow_down),
-                        isExpanded: true,
-                        alignment: Alignment.bottomCenter,
-                        dropdownColor: Colors.white,
-                        underline: const SizedBox(),
-                        elevation: 16,
-                        style: const TextStyle(color: Colors.black87),
-                        // Array list of items
-                        items: items
-                            .map(
-                              (map) => DropdownMenuItem(
-                                value: map['batch_id'],
-                                child: Text(map['grade']),
-                              ),
-                            )
-                            .toList(),
-                        // After selecting the desired option,it will
-                        // change button value to selected value
-                        onChanged: (newValue) {
-                          setState(() {
-                            dropdownvalue = newValue.toString();
-                          });
-                          getStudentsData(dropdownvalue);
-                        },
+                    padding: EdgeInsets.all(size.width * 0.03),
+                    height: size.height * 0.07,
+                    width: size.width * 0.30,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(30.0),
+                      border: Border.all(
+                        style: BorderStyle.solid,
+                        width: 2.0,
+                        color: primaryColor,
                       ),
                     ),
+                    child: DropdownButton(
+                      value: dropdownvalue,
+                      icon: const Icon(Icons.keyboard_arrow_down),
+                      isExpanded: true,
+                      alignment: Alignment.bottomCenter,
+                      dropdownColor: Colors.white,
+                      underline: const SizedBox(),
+                      elevation: 16,
+                      style: const TextStyle(color: Colors.black87),
+                      // Array list of items
+                      items: items
+                          .map(
+                            (map) => DropdownMenuItem(
+                              value: map['batch_id'],
+                              child: Text(map['grade']),
+                            ),
+                          )
+                          .toList(),
+                      // After selecting the desired option,it will
+                      // change button value to selected value
+                      onChanged: (newValue) {
+                        setState(() {
+                          dropdownvalue = newValue.toString();
+                        });
+                        getStudentsData(dropdownvalue);
+                      },
+                    ),
+                  ),
                 ),
                 const Spacer(),
                 Container(
@@ -228,6 +232,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                         ),
                       ),
                       // SizedBox(width: size.width*1),
+
                       IconButton(
                         onPressed: () {
                           _selectDate(context);
@@ -248,7 +253,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
           const SizedBox(height: 20),
           Expanded(
             child: SingleChildScrollView(
-             // scrollDirection: Axis.horizontal,
+              // scrollDirection: Axis.horizontal,
               //scrollDirection: Axis.values(size),
               child: SingleChildScrollView(
                 scrollDirection: Axis.vertical,
@@ -301,37 +306,32 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                       ),
                     ),
                   ],
-                  
-                  rows:List.generate(studentsList.length, (index){
-                     
-                     return DataRow(cells: <DataCell>[
-                        DataCell(Text('${index+1}')),
-                          DataCell(Text(
-                            '${studentsList[index]["full_name"] }'
-                            )
-                            ),
-                         DataCell(Checkbox(
-                           value: checked1,
-                         // value: '${studentsList[index]["student_code"]}$FN',
-                           onChanged: (val) {
-                             setState(() {
-                               checked1 = !checked1;
-                             });
-                         },
-                         )
-                         ),
-                         DataCell(Checkbox(
-                           value: checked1,
-                           onChanged: (val) {
-                             setState(() {
-                               checked1 = !checked1;
-                             });
-                         },
-                         )),
-                     ]
-                     );
-                  } 
-                  ),
+                  rows: List.generate(studentsList.length, (index) {
+                    return DataRow(cells: <DataCell>[
+                      DataCell(Text('${index + 1}')),
+                      DataCell(Text('${studentsList[index]["full_name"]}')),
+                      DataCell(Checkbox(
+                        value: attendanceCheckers.firstWhere((item) =>
+                            item['student_id'] ==
+                            studentsList[index]["student_code"])["fn"],
+                        onChanged: (val) {
+                          //  setState(() {
+                          //    checked1 = !checked1;
+                          //  });
+                        },
+                      )),
+                      DataCell(Checkbox(
+                        value: attendanceCheckers.firstWhere((item) =>
+                            item['student_id'] ==
+                            studentsList[index]["student_code"])["an"],
+                        onChanged: (val) {
+                          //  setState(() {
+                          //    checked1 = !checked1;
+                          //  });
+                        },
+                      )),
+                    ]);
+                  }),
                 ),
               ),
             ),
