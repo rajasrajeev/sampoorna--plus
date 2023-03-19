@@ -351,7 +351,6 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                         //String obj = '${attendanceCheckers[i]["student_id"]}: [-1, $fn, $an, ${attendanceCheckers[i]["full_name"]} ]';
                          absentees.add(obj);
                      }
-
                      dynamic dataToSubmit = {
                        "\"ts\"":"\"18-03-2023\"",
                          "\"school_id\"": studentsList[0]["school_id"],
