@@ -127,6 +127,8 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
       // String anKey = students[i]["student_code"].toString()+"AN";
 
       Map<String, dynamic> obj = {
+        "school_id":students[i]["school_id"],
+        "batch_id":students[i]["batch_id"],
         "student_id": students[i]["student_code"],
         "fn": true,
         "an": true
@@ -307,27 +309,26 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                     ),
                   ],
                   rows: List.generate(studentsList.length, (index) {
+                    Map<String, dynamic> attendance = attendanceCheckers.firstWhere((item) =>
+                            item['student_id'] ==
+                            studentsList[index]["student_code"]);
                     return DataRow(cells: <DataCell>[
                       DataCell(Text('${index + 1}')),
                       DataCell(Text('${studentsList[index]["full_name"]}')),
                       DataCell(Checkbox(
-                        value: attendanceCheckers.firstWhere((item) =>
-                            item['student_id'] ==
-                            studentsList[index]["student_code"])["fn"],
-                        onChanged: (val) {
-                          //  setState(() {
-                          //    checked1 = !checked1;
-                          //  });
+                        value: attendance["fn"],
+                        onChanged: (bool? val) {
+                           setState(() {
+                             attendance["fn"] = val!;
+                           });
                         },
                       )),
                       DataCell(Checkbox(
-                        value: attendanceCheckers.firstWhere((item) =>
-                            item['student_id'] ==
-                            studentsList[index]["student_code"])["an"],
-                        onChanged: (val) {
-                          //  setState(() {
-                          //    checked1 = !checked1;
-                          //  });
+                        value: attendance["an"],
+                        onChanged: (bool? val) {
+                           setState(() {
+                             attendance["an"] = val!;
+                           });
                         },
                       )),
                     ]);
@@ -339,7 +340,11 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
           Positioned(
               bottom: 50,
               //left: 50,
-              child: SubmitButton(label: "Submit", onClick: () {}))
+              child: SubmitButton(label: "Submit", onClick: () {
+                 debugPrint("*****************attendance checker*********************");
+                debugPrint('$attendanceCheckers');
+                 debugPrint("*****************attendance checker*********************");
+              }))
         ],
       ),
       // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
