@@ -338,7 +338,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
           Positioned(
               bottom: 50,
               //left: 50,
-              child: SubmitButton(label: "Submit", onClick: () {
+              child: SubmitButton(label: "Submit", onClick: () async {
                     int listLength = attendanceCheckers.length;
                     List absentees = [];
                     int fn, an;
@@ -348,17 +348,28 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                          attendanceCheckers[i]["an"] == true ? an = 1 : an = 0;
 
                          String obj = '"${attendanceCheckers[i]["student_id"]}": [-1, $fn, $an, "${attendanceCheckers[i]["full_name"]}" ]';
-                        
+                        //String obj = '${attendanceCheckers[i]["student_id"]}: [-1, $fn, $an, ${attendanceCheckers[i]["full_name"]} ]';
                          absentees.add(obj);
                      }
 
                      dynamic dataToSubmit = {
+                       "\"ts\"":"\"18-03-2023\"",
                          "\"school_id\"": studentsList[0]["school_id"],
                         "\"batch_id\"": batchid,
                         "\"absentees\"": [{absentees.join(',')}]
                      };
-                     debugPrint("**********Data To submit***********");
-                     debugPrint("$dataToSubmit");
+                    //  dynamic dataToSubmit = {
+                    //    "ts":"18-03-2023",
+                    //     "school_id": studentsList[0]["school_id"],
+                    //     "batch_id": batchid,
+                    //     "absentees": [{absentees.join(',')}]
+                    //  };
+                    // debugPrint("**********Data To submit***********");
+                    // debugPrint("$dataToSubmit");
+                      debugPrint("**********Before Response***********");
+                     final res = await addAttendance(dataToSubmit);
+                     debugPrint("**********Response***********");
+                     //debugPrint(res.statusCode.toString());
               }
               )
               )
