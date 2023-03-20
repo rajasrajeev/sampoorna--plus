@@ -8,7 +8,10 @@ import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart';
 
 class AttendanceListCalender extends StatefulWidget {
-  const AttendanceListCalender({super.key});
+  final String batchId;
+  final String schoolId;
+  const AttendanceListCalender(
+      {required this.batchId, required this.schoolId, super.key});
 
   @override
   // ignore: library_private_types_in_public_api
@@ -40,7 +43,7 @@ class _AttendanceListCalenderState extends State<AttendanceListCalender> {
   }
 
   List<Event> _getEventsForDay(DateTime day) {
-    print("====================> $kEvents");
+    // print("====================> $kEvents");
     // Implementation example
     return kEvents[day] ?? [];
   }
@@ -65,13 +68,15 @@ class _AttendanceListCalenderState extends State<AttendanceListCalender> {
       });
 
       _selectedEvents.value = _getEventsForDay(selectedDay);
-      final DateFormat formatter = DateFormat('yyyy-MM-dd');
+      final DateFormat formatter = DateFormat('dd-MM-yyyy');
       final String formatted = formatter.format(_selectedDay!);
       Navigator.push(
         context,
         MaterialPageRoute(
             builder: (context) => SingleDayAttendanceScreen(
                   date: formatted,
+                  batchId: widget.batchId,
+                  schoolId: widget.schoolId,
                 )),
       );
     }

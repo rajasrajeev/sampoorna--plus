@@ -102,14 +102,13 @@ Future attendanceBetweenDates(date1, date2, school_id, batch_id) async {
 }
 
 //API TO POST LOGIN
-Future attendanceOnDate(date, page, school_id, batch_id) async {
+Future attendanceOnDate(date, school_id, batch_id) async {
   final prefs = await SharedPreferences.getInstance();
   var token = await prefs.getString('token');
   final response = await http
       .post(Uri.parse('$apiUrl/student_list_absentee/format/json/'), headers: {
     'Authorization': 'Bearer ${token}',
   }, body: {
-    "page": page,
     "date": date,
     "school_id": school_id,
     "batch_id": batch_id

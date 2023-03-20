@@ -23,6 +23,7 @@ class _AttendanceListState extends State<AttendanceList> {
   dynamic attendanceDates = [];
   List permittedBatches = [];
   String dropdownvalue = '';
+  String? schoolId;
 // List of items in our dropdown menu
   List items = [];
 
@@ -30,16 +31,17 @@ class _AttendanceListState extends State<AttendanceList> {
   void initState() {
     super.initState();
     getData();
-    // getDataBetweenDates();
   }
 
   getData() async {
     final prefs = await SharedPreferences.getInstance();
     var details = await prefs.getString('loginData');
+    schoolId = await prefs.getString('school_id');
     dynamic data = json.decode(details!);
     setState(() {
       permittedBatches = data['permittedBatches'];
       dropdownvalue = permittedBatches[0]['batch_id'];
+      schoolId = prefs.getString('school_id');
     });
     for (var i = 0; i < permittedBatches.length; i++) {
       setState(() {
@@ -50,13 +52,16 @@ class _AttendanceListState extends State<AttendanceList> {
         });
       });
     }
+    getDataBetweenDates();
   }
 
   getDataBetweenDates() async {
     final prefs = await SharedPreferences.getInstance();
-    var schoolId = await prefs.getString('school_id');
+    setState(() {
+      schoolId = prefs.getString('school_id');
+    });
     final DateTime now = DateTime.now();
-    final DateFormat formatter = DateFormat('yyyy-MM-dd');
+    final DateFormat formatter = DateFormat('dd-MM-yyyy');
     var date2 = formatter.format(now);
     var date1 = "${now.year}-${now.month}-01";
     getStudentsData(date1, date2, schoolId!, dropdownvalue);
@@ -93,9 +98,9 @@ class _AttendanceListState extends State<AttendanceList> {
         });
 
     final res = await attendanceBetweenDates(date1, date2, schoolId, batchId);
-    final responseData = jsonDecode(res.body);
 
     if (res.statusCode == 200) {
+      final responseData = jsonDecode(res.body);
       Navigator.of(context).pop();
       var data = parseJwtAndSave(responseData['data']);
       setState(() {
@@ -178,7 +183,10 @@ class _AttendanceListState extends State<AttendanceList> {
               ],
             ),
             const SizedBox(height: 10),
-            const AttendanceListCalender()
+            AttendanceListCalender(
+              batchId: dropdownvalue,
+              schoolId: schoolId.toString(),
+            )
           ],
         ),
       ),
