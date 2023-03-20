@@ -135,12 +135,16 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
         "full_name": students[i]["full_name"],
         //"fn": true,
         //"an": true
-        "fn": (students[i]["absent_FN"] != null)
-            ? students[i]["absent_FN"]
-            : true,
+        "fn": (students[i]["absent_FN"] != null )
+            ? (students[i]["absent_FN"] != 0)
+            ?true:false           
+            :true,
+
         "an": (students[i]["absent_AN"] != null)
-            ? students[i]["absent_AN"]
-            : false,
+          ? (students[i]["absent_AN"] != 0)
+            ?true:false     
+            : true
+            
       };
       attendanceCheckers.add(obj);
     }
