@@ -122,25 +122,21 @@ class _AttendanceListCalenderState extends State<AttendanceListCalender> {
         headerStyle: const HeaderStyle(
           titleCentered: true,
           formatButtonVisible: false,
-          // rightChevronVisible: false
         ),
         calendarStyle: const CalendarStyle(
           // Use `CalendarStyle` to customize the UI
           outsideDaysVisible: false,
           isTodayHighlighted: true,
-          tableBorder: TableBorder(
-              // top: BorderSide(color: Colors.black),
-              borderRadius: BorderRadius.all(Radius.circular(15))),
+          tableBorder:
+              TableBorder(borderRadius: BorderRadius.all(Radius.circular(15))),
           cellMargin: EdgeInsets.all(9),
           todayDecoration: BoxDecoration(
             color: secondaryColor,
             shape: BoxShape.rectangle,
-            // borderRadius: BorderRadius.circular(7)
           ),
           selectedDecoration: BoxDecoration(
             color: primaryColor,
             shape: BoxShape.rectangle,
-            // borderRadius: BorderRadius.circular(7)
           ),
         ),
         onDaySelected: _onDaySelected,

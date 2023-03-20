@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -12,6 +14,7 @@ import 'package:student_management/services/database_helper.dart';
 import '../../components/custom_dropdown.dart';
 import '../../services/api_services.dart';
 import '../../services/jwt_token_parser.dart';
+import 'package:intl/intl.dart';
 
 class AttendanceScreen extends StatefulWidget {
   const AttendanceScreen({super.key});
@@ -22,7 +25,7 @@ class AttendanceScreen extends StatefulWidget {
 
 class _AttendanceScreenState extends State<AttendanceScreen> {
   //database helper
-    DatabaseHelper _db = DatabaseHelper.instance;
+  DatabaseHelper _db = DatabaseHelper.instance;
   // Initial Selected Value
   String dropdownvalue = 'Class 1';
   dynamic batchid = "";
@@ -132,8 +135,12 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
         "full_name": students[i]["full_name"],
         //"fn": true,
         //"an": true
-        "fn":(students[i]["absent_FN"]!=null)?students[i]["absent_FN"]:true,
-        "an":(students[i]["absent_AN"]!=null)?students[i]["absent_AN"]:false,
+        "fn": (students[i]["absent_FN"] != null)
+            ? students[i]["absent_FN"]
+            : true,
+        "an": (students[i]["absent_AN"] != null)
+            ? students[i]["absent_AN"]
+            : false,
       };
       attendanceCheckers.add(obj);
     }
@@ -345,7 +352,33 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
               //left: 50,
               child: SubmitButton(
                   label: "Submit",
-                  onClick: () async { int listLength = attendanceCheckers.length;
+                  onClick: () async {
+                    showDialog(
+                        // The user CANNOT close this dialog  by pressing outsite it
+                        barrierDismissible: true,
+                        context: context,
+                        builder: (_) {
+                          return Dialog(
+                            // The background color
+                            backgroundColor: Colors.white,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 20),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: const [
+                                  // The loading indicator
+                                  CircularProgressIndicator(),
+                                  SizedBox(
+                                    height: 15,
+                                  ),
+                                  // Some text
+                                  Text('Loading...')
+                                ],
+                              ),
+                            ),
+                          );
+                        });
+                    int listLength = attendanceCheckers.length;
                     List absentees = [];
                     int fn, an;
 
@@ -364,19 +397,42 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                       absentees.add(obj);
                     }
 
-                     dynamic dataToSubmit = {
-                        "\"ts\"":"\"1679250600\"",
-                        "school_id": studentsList[0]["school_id"],
-                        "batch_id": batchid,
-                        "absentees": {absentees.join(',')}
-                     };
+                    final DateFormat formatter = DateFormat('dd-MM-yyyy');
+                    var date = formatter.format(selectedDate);
 
-                    debugPrint("**********Before Response***********");
+                    dynamic dataToSubmit = {
+                      "ts": date,
+                      "school_id": studentsList[0]["school_id"],
+                      "batch_id": batchid,
+                      "absentees": {absentees.join(',')}
+                    };
                     final res = await addAttendance(dataToSubmit);
-                    debugPrint("**********Response***********");
-                  }
-                  )
-                  )
+                    if (res.statusCode == 200) {
+                      Navigator.pop(context);
+                    } else if (res.statusCode == 202) {
+                      Navigator.pop(context);
+                      Fluttertoast.showToast(
+                        msg:
+                            "Some of previous day attendances are not marked yet. You need to do it in order to complete this date",
+                        gravity: ToastGravity.TOP,
+                        timeInSecForIosWeb: 1,
+                        backgroundColor: Colors.red,
+                        textColor: Colors.white,
+                        fontSize: 15.0,
+                      );
+                    } else {
+                      // ignore: use_build_context_synchronously
+                      Navigator.pop(context);
+                      Fluttertoast.showToast(
+                        msg: "Something went wrong!!!",
+                        gravity: ToastGravity.TOP,
+                        timeInSecForIosWeb: 1,
+                        backgroundColor: Colors.red,
+                        textColor: Colors.white,
+                        fontSize: 15.0,
+                      );
+                    }
+                  }))
         ],
       ),
       // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
