@@ -40,21 +40,22 @@ class DatabaseHelper {
   Future _onCreate(Database db, int version) async {
     await db.execute('''
       CREATE TABLE $_studentTable (
-        $studentCode INTEGER PRIMARY KEY, 
+        $studentId INTEGER PRIMARY KEY, 
         $fullName TEXT NOT NULL, 
         $adminssionNo TEXT NOT NULL, 
         $absentFN INTEGER,
         $absentAN INTEGER,
         $status INETEGER,
         $totalAbsent REAL,
-        $schoolID TEXT NOT NULL, 
+        $schoolID TEXT NOT NULL,
+        $studentCode TEXT NOT NULL,
         $batchName TEXT)''');
     }
 
   Future<int> insertStudent(Map<String, dynamic> row) async {
     Database db = await instance.database;
-    int studentCode = await db.insert(_studentTable, row);
-    return studentCode;
+    int studentId = await db.insert(_studentTable, row);
+    return studentId;
     }
     Future<List<Map<String, dynamic>>> getStudentsFromLocal() async {
     Database db = await instance.database;

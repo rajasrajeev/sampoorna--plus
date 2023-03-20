@@ -135,16 +135,17 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
         "full_name": students[i]["full_name"],
         //"fn": true,
         //"an": true
-        "fn": (students[i]["absent_FN"] != null )
+        "fn": (students[i]["absent_FN"] != null)
             ? (students[i]["absent_FN"] != 0)
-            ?true:false           
-            :true,
+                ? true
+                : false
+            : true,
 
         "an": (students[i]["absent_AN"] != null)
-          ? (students[i]["absent_AN"] != 0)
-            ?true:false     
+            ? (students[i]["absent_AN"] != 0)
+                ? true
+                : false
             : true
-            
       };
       attendanceCheckers.add(obj);
     }
@@ -390,29 +391,32 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                       attendanceCheckers[i]["fn"] == true ? fn = 1 : fn = 0;
                       attendanceCheckers[i]["an"] == true ? an = 1 : an = 0;
 
-                      String obj ='${attendanceCheckers[i]["student_id"]}:{1:$fn,2:$an,3:${attendanceCheckers[i]["full_name"]}}';
+                      Map<String, dynamic> obj = {
+                        attendanceCheckers[i]["student_id"]: {
+                          "1": fn,
+                          "2": an,
+                          "3": attendanceCheckers[i]["full_name"]
+                        }
+                      };
                       absentees.add(obj);
                     }
 
                     final DateFormat formatter = DateFormat('dd-MM-yyyy');
                     var date = formatter.format(selectedDate);
 
-                    dynamic parsedData = {
+                    dynamic dataToSubmit = {
                       "ts": date,
                       "school_id": studentsList[0]["school_id"],
                       "batch_id": batchid,
-                      "absentee": {absentees.join(',')}
+                      "absentee": absentees
                     };
-                    debugPrint("**********absentees Response***********");
-                    print(absentees[0]);
-                     debugPrint("**********parsedData Response***********");
-                      debugPrint(parsedData.toString());
-                    var jsonData = json.encode(parsedData);
-                    final res = await addAttendance(jsonData);
+                    debugPrint("**********payload absentee***********");
+            print(absentees[0]);
+              print(absentees[0].runtimeType);
+                    final res = await addAttendance(dataToSubmit);
 
                     if (res.statusCode == 200) {
                       Navigator.pop(context);
-                      
                     } else if (res.statusCode == 202) {
                       Navigator.pop(context);
                       Fluttertoast.showToast(

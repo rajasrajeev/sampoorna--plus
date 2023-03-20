@@ -122,6 +122,9 @@ Future addAttendance(payload) async {
     var token = await prefs.getString('token');
 
     // dynamic payloadString = await payload.toString();
+   debugPrint("**********payload***********");
+    print(json.encode(payload));
+       
 
     debugPrint("**********API Response***********");
     final response = await http.post(Uri.parse('$apiUrl/entry_form/format/json/'),
