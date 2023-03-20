@@ -119,18 +119,19 @@ Future attendanceOnDate(date, page, school_id, batch_id) async {
 
 //API TO POST Add Attendance
 Future addAttendance(payload) async {
-  debugPrint("**********PAyload Response***********");
-  debugPrint("${payload.runtimeType}");
+    final prefs = await SharedPreferences.getInstance();
+    var token = await prefs.getString('token');
 
-  final prefs = await SharedPreferences.getInstance();
-  var token = await prefs.getString('token');
-  debugPrint("**********API Response***********");
-  final response = await http.post(Uri.parse('$apiUrl/entry_form/format/json/'),
-      headers: {
-        'Authorization': 'Bearer $token',
-      },
-      body: payload.toString());
-  debugPrint("**********API Response***********");
-  // debugPrint("${response.body}");
-  return response;
+    dynamic payloadString = await payload.toString();
+ debugPrint("**********API payloadString***********");
+ debugPrint("$payloadString");
+    debugPrint("**********API Response***********");
+    final response = await http.post(Uri.parse('$apiUrl/entry_form/format/json/'),
+        headers: {
+            'Authorization': 'Bearer $token',
+        },
+        body: payloadString);
+    debugPrint("**********API Response***********");
+    
+    return response;
 }

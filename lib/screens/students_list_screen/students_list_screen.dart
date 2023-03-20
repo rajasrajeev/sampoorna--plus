@@ -12,6 +12,7 @@ import 'package:student_management/screens/home_screen/home_screen.dart';
 import 'package:student_management/screens/main_screen/main_screen.dart';
 import 'package:student_management/screens/students_profile_screen/students_profile_screen.dart';
 import 'package:student_management/services/api_services.dart';
+import 'package:student_management/services/database_helper.dart';
 import 'package:student_management/services/jwt_token_parser.dart';
 
 import '../../components/custom_textfield.dart';
@@ -30,6 +31,7 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
   final TextEditingController SearchController = TextEditingController();
   // List of items in our dropdown menu
   List items = [];
+  DatabaseHelper _db = DatabaseHelper.instance;
 
   @override
   void initState() {
@@ -92,7 +94,9 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
             ),
           );
         });
-
+    dynamic localstudents=await _db.getStudentsFromLocal();
+      debugPrint("**********Local Students Response***********");
+      debugPrint("$localstudents");
     final res = await studentList(data);
     final responseData = jsonDecode(res.body);
 
@@ -113,6 +117,19 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
         fontSize: 15.0,
       );
     }
+    dynamic response = await _db.insertStudent({
+        "full_name": "ADITHYA. P. G",
+        "admission_no": 7334,
+        "absent_FN": null,
+        "absent_AN": null,
+        "status": 0,
+        "total_absent": 0.5,
+        "student_code": 310367334,
+        "school_id": 5033,
+        "batch_name": null
+      });
+      debugPrint("**********Dynamic Response***********");
+      debugPrint("$response");
   }
 
   @override
@@ -160,15 +177,15 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
                       //padding: EdgeInsets.all(size.width * 0.03),
                       height: size.height * 0.085,
                       width: size.width * 0.60,
-                     // decoration: BoxDecoration(
+                      // decoration: BoxDecoration(
                       //  color: Colors.white,
-                     //   borderRadius: BorderRadius.circular(30.0),
-                     //   border: Border.all(
+                      //   borderRadius: BorderRadius.circular(30.0),
+                      //   border: Border.all(
                       //    style: BorderStyle.solid,
-                       //   width: 2.0,
+                      //   width: 2.0,
                       //    color: primaryColor,
                       //  ),
-                     // ),
+                      // ),
                       child: CustomTextField(
                         label: "Search here",
                         minLine: 1,

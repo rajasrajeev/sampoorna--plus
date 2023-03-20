@@ -7,6 +7,7 @@ import 'package:student_management/components/app_bar.dart';
 import 'package:student_management/components/sidebar.dart';
 import 'package:student_management/components/submit_button.dart';
 import 'package:student_management/constants.dart';
+import 'package:student_management/services/database_helper.dart';
 
 import '../../components/custom_dropdown.dart';
 import '../../services/api_services.dart';
@@ -349,13 +350,12 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                       attendanceCheckers[i]["fn"] == true ? fn = 1 : fn = 0;
                       attendanceCheckers[i]["an"] == true ? an = 1 : an = 0;
 
-                      String obj =
-                          '"${attendanceCheckers[i]["student_id"]}": [-1, $fn, $an, "${attendanceCheckers[i]["full_name"]}" ]';
-                      //String obj = '${attendanceCheckers[i]["student_id"]}: [-1, $fn, $an, ${attendanceCheckers[i]["full_name"]} ]';
+                      //String obj ='"${attendanceCheckers[i]["student_id"]}": [-1, $fn, $an, "${attendanceCheckers[i]["full_name"]}" ]';
+                      String obj = '${attendanceCheckers[i]["student_id"]}: [-1, $fn, $an, ${attendanceCheckers[i]["full_name"]} ]';
                       absentees.add(obj);
                     }
                     dynamic dataToSubmit = {
-                      "\"ts\"": "\"18-03-2023\"",
+                      "\"ts\"":"1679250600",
                       "\"school_id\"": studentsList[0]["school_id"],
                       "\"batch_id\"": batchid,
                       "\"absentees\"": [
