@@ -118,13 +118,13 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
       );
     }
     dynamic response = await _db.insertStudent({
+       "student_code": 310367334,
         "full_name": "ADITHYA. P. G",
         "admission_no": 7334,
         "absent_FN": null,
         "absent_AN": null,
         "status": 0,
         "total_absent": 0.5,
-        "student_code": 310367334,
         "school_id": 5033,
         "batch_name": null
       });
