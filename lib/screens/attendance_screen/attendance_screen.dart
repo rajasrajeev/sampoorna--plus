@@ -21,6 +21,8 @@ class AttendanceScreen extends StatefulWidget {
 }
 
 class _AttendanceScreenState extends State<AttendanceScreen> {
+  //database helper
+    DatabaseHelper _db = DatabaseHelper.instance;
   // Initial Selected Value
   String dropdownvalue = 'Class 1';
   dynamic batchid = "";
@@ -128,8 +130,10 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
       Map<String, dynamic> obj = {
         "student_id": students[i]["student_code"],
         "full_name": students[i]["full_name"],
-        "fn": true,
-        "an": true
+        //"fn": true,
+        //"an": true
+        "fn":(students[i]["absent_FN"]!=null)?students[i]["absent_FN"]:true,
+        "an":(students[i]["absent_AN"]!=null)?students[i]["absent_AN"]:false,
       };
       attendanceCheckers.add(obj);
     }
@@ -341,8 +345,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
               //left: 50,
               child: SubmitButton(
                   label: "Submit",
-                  onClick: () async {
-                    int listLength = attendanceCheckers.length;
+                  onClick: () async { int listLength = attendanceCheckers.length;
                     List absentees = [];
                     int fn, an;
 
@@ -350,31 +353,30 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                       attendanceCheckers[i]["fn"] == true ? fn = 1 : fn = 0;
                       attendanceCheckers[i]["an"] == true ? an = 1 : an = 0;
 
-                      //String obj ='"${attendanceCheckers[i]["student_id"]}": [-1, $fn, $an, "${attendanceCheckers[i]["full_name"]}" ]';
-                      String obj = '${attendanceCheckers[i]["student_id"]}: [-1, $fn, $an, ${attendanceCheckers[i]["full_name"]} ]';
+                      String obj = '''
+                        "${attendanceCheckers[i]["student_id"]}": 
+                            {
+                                "1":"$fn", 
+                                "2":"$an", 
+                                "3":"${attendanceCheckers[i]["full_name"]}" 
+                            }
+                      ''';
                       absentees.add(obj);
                     }
-                    dynamic dataToSubmit = {
-                      "\"ts\"":"1679250600",
-                      "\"school_id\"": studentsList[0]["school_id"],
-                      "\"batch_id\"": batchid,
-                      "\"absentees\"": [
-                        {absentees.join(',')}
-                      ]
-                    };
-                    //  dynamic dataToSubmit = {
-                    //    "ts":"18-03-2023",
-                    //     "school_id": studentsList[0]["school_id"],
-                    //     "batch_id": batchid,
-                    //     "absentees": [{absentees.join(',')}]
-                    //  };
-                    // debugPrint("**********Data To submit***********");
-                    // debugPrint("$dataToSubmit");
+
+                     dynamic dataToSubmit = {
+                        "\"ts\"":"\"1679250600\"",
+                        "school_id": studentsList[0]["school_id"],
+                        "batch_id": batchid,
+                        "absentees": {absentees.join(',')}
+                     };
+
                     debugPrint("**********Before Response***********");
                     final res = await addAttendance(dataToSubmit);
                     debugPrint("**********Response***********");
-                    //debugPrint(res.statusCode.toString());
-                  }))
+                  }
+                  )
+                  )
         ],
       ),
       // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
