@@ -19,6 +19,7 @@ class DatabaseHelper {
   static final studentCode = 'student_code';
   static final schoolID = 'school_id';
   static final batchName = 'batch_name';
+    static final batchId = 'batch_id';
 
   
   DatabaseHelper._privateConstructor();
@@ -38,17 +39,19 @@ class DatabaseHelper {
     }
 
   Future _onCreate(Database db, int version) async {
+    
     await db.execute('''
       CREATE TABLE $_studentTable (
         $studentId INTEGER PRIMARY KEY, 
         $fullName TEXT NOT NULL, 
-        $adminssionNo TEXT NOT NULL, 
+        $adminssionNo TEXT NOT NULL UNIQUE, 
         $absentFN INTEGER,
         $absentAN INTEGER,
         $status INETEGER,
         $totalAbsent REAL,
         $schoolID TEXT NOT NULL,
-        $studentCode TEXT NOT NULL,
+        $studentCode TEXT NOT NULL UNIQUE,
+        $batchId INTEGER,
         $batchName TEXT)''');
     }
 
@@ -63,5 +66,12 @@ class DatabaseHelper {
     //  return await db.query(_groupMemberTable,
         // where: '$groupForeign = ?', whereArgs: [groupId]);
     }
+Future<void> delete() async {
+       Directory direcotry = await getApplicationDocumentsDirectory();
+     String path = join(direcotry.path, _dbName);
+     await deleteDatabase(path);
+  // Database db = await instance.database;
+  //   return await db.delete(_studentTable, where: '$studentId = ?', whereArgs: [id]);
+  }
 
 }

@@ -131,8 +131,8 @@ Future addAttendance(payload) async {
         headers: {
             'Authorization': 'Bearer $token',
         },
-        body: payload);
+        body: json.encode(payload));
     debugPrint("**********API Response***********");
-    
+     debugPrint("$response");
     return response;
 }
