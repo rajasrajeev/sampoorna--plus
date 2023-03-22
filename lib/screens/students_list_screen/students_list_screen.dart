@@ -58,9 +58,63 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
       });
     }
 
-    getStudentsData(dropdownvalue);
+   //To Get students from local
+     dynamic localstudents =  _db.getStudentsFromLocal(dropdownvalue);
+     debugPrint("**********Local Students Response***********");
+     debugPrint("$localstudents");
+     //Check Data in Localdb
+     if(localstudents.length > 0){
+      setLocalStudentsData(dropdownvalue);
+     }
+     else{
+      getStudentsData(dropdownvalue);
+     }
+   
   }
 
+setLocalStudentsData(String batchId) async {
+    // final prefs = await SharedPreferences.getInstance();
+
+    // var data = {
+    //   "batch_id": batchId,
+    //   "school_id": prefs.getString('school_id'),
+    //   "user_type": prefs.getString('user_type')
+    // };
+
+    showDialog(
+        // The user CANNOT close this dialog  by pressing outsite it
+        barrierDismissible: true,
+        context: context,
+        builder: (_) {
+          return Dialog(
+            // The background color
+            backgroundColor: Colors.white,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 20),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: const [
+                  // The loading indicator
+                  CircularProgressIndicator(),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  // Some text
+                  Text('Loading...')
+                ],
+              ),
+            ),
+          );
+        });
+
+     dynamic localstudents =  _db.getStudentsFromLocal(batchId);
+     debugPrint("**********Local Students Response***********");
+     debugPrint("$localstudents");
+      setState(() {
+       studentsList = localstudents;
+      });
+  }
+  
   getStudentsData(String batchId) async {
     final prefs = await SharedPreferences.getInstance();
 
@@ -105,6 +159,8 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
       setState(() {
         studentsList = data['token'];
       });
+      //To insert Value into database
+    await syncStudentsData(batchId);
     } else {
       Navigator.of(context).pop();
       Fluttertoast.showToast(
@@ -118,11 +174,12 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
     }
   }
 
-  syncStudentsData(String batchId) async {
+syncStudentsData(String batchId) async {
+
     //To Get students from local
-    dynamic localstudents = await _db.getStudentsFromLocal(batchId);
-    debugPrint("**********Local Students Response***********");
-    debugPrint("$localstudents");
+    // dynamic localstudents = await _db.getStudentsFromLocal(batchId);
+    // debugPrint("**********Local Students Response***********");
+    // debugPrint("$localstudents");
 
     //To delete Database
     //await _db.delete();
@@ -134,17 +191,6 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
     for (int i = 0; i < studentsList.length; i++) {
       try {
         dynamic response = await _db.insertStudent({
-          // "student_code": 310367334,
-          // "full_name": "ADITHYA. P. G",
-          // "admission_no": 7334,
-          // "absent_FN": null,
-          // "absent_AN": null,
-          // "status": 0,
-          // "total_absent": 0.5,
-          // "school_id": 5033,
-          // "batch_name": null,
-          // "batch_id": dropdownvalue,
-
           "student_code": studentsList[i]['student_code'],
           "full_name":studentsList[i]['full_name'],
           "admission_no":studentsList[i]['admission_no'],
@@ -162,6 +208,24 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
         continue;
       }
     }
+  }
+  syncButtonClick(String batchId) async {
+
+    await getStudentsData(batchId);
+
+    //To Get students from local
+    // dynamic localstudents = await _db.getStudentsFromLocal(batchId);
+    // debugPrint("**********Local Students Response***********");
+    // debugPrint("$localstudents");
+
+    //To delete Database
+    //await _db.delete();
+
+    //To delete all batchID
+    // dynamic response = await _db.studentDataDelete(batchId);
+
+    //To insert Value into database
+    syncStudentsData(batchId);
   }
 
   @override
@@ -365,7 +429,7 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
         label: const Text("sync"),
         icon: const Icon(Icons.sync),
         onPressed: () {
-          syncStudentsData(dropdownvalue);
+          syncButtonClick(dropdownvalue);
           setState(() {});
         },
       ),
