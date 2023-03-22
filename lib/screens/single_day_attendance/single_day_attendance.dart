@@ -1,10 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'dart:convert';
-import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:student_management/components/banner.dart';
@@ -42,27 +39,22 @@ class _SingleDayAttendanceScreenState extends State<SingleDayAttendanceScreen> {
     setState(() {
       _loading = true;
     });
-    final prefs = await SharedPreferences.getInstance();
 
     showDialog(
-        // Thed user CANNOT close this dialog  by pressing outsite it
         barrierDismissible: true,
         context: context,
         builder: (_) {
           return Dialog(
-            // The background color
             backgroundColor: Colors.white,
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 20),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: const [
-                  // The loading indicator
                   CircularProgressIndicator(),
                   SizedBox(
                     height: 15,
                   ),
-                  // Some text
                   Text('Loading...')
                 ],
               ),
@@ -82,7 +74,6 @@ class _SingleDayAttendanceScreenState extends State<SingleDayAttendanceScreen> {
       setState(() {
         attendanceDates = data['token'];
       });
-      print(attendanceDates.length);
     } else {
       setState(() {
         _loading = false;
@@ -105,8 +96,7 @@ class _SingleDayAttendanceScreenState extends State<SingleDayAttendanceScreen> {
           width: 35,
           height: 35,
           decoration: BoxDecoration(
-              color: Color.fromARGB(255, 49, 115, 58),
-              // border: Border.all(color: Colors.black),
+              color: const Color.fromARGB(255, 49, 115, 58),
               borderRadius: BorderRadius.circular(50)),
           alignment: Alignment.center,
           child: Text(
@@ -118,9 +108,7 @@ class _SingleDayAttendanceScreenState extends State<SingleDayAttendanceScreen> {
           width: 35,
           height: 35,
           decoration: BoxDecoration(
-              color: primaryColor,
-              // border: Border.all(color: Colors.black),
-              borderRadius: BorderRadius.circular(50)),
+              color: primaryColor, borderRadius: BorderRadius.circular(50)),
           alignment: Alignment.center,
           child: Text(
             text,
@@ -150,10 +138,8 @@ class _SingleDayAttendanceScreenState extends State<SingleDayAttendanceScreen> {
                     height: MediaQuery.of(context).size.height * 0.64,
                     child: _loading == false && attendanceDates.length > 0
                         ? ListView.builder(
-                            // the number of items in the list
-                            itemCount: attendanceDates["studentList"].length,
+                            itemCount: attendanceDates.length,
                             shrinkWrap: true,
-                            // display each item of the product list
                             itemBuilder: (context, index) {
                               return GestureDetector(
                                 onTap: () {
@@ -165,8 +151,6 @@ class _SingleDayAttendanceScreenState extends State<SingleDayAttendanceScreen> {
                                   );
                                 },
                                 child: Card(
-                                  // In many cases, the key isn't mandatory
-                                  // key: ValueKey(myProducts[index]),
                                   borderOnForeground: true,
                                   margin: const EdgeInsets.symmetric(
                                       vertical: 5, horizontal: 15),
@@ -190,24 +174,19 @@ class _SingleDayAttendanceScreenState extends State<SingleDayAttendanceScreen> {
                                             height: 40,
                                             child: Center(
                                               child: Text(
-                                                  "${attendanceDates["studentList"][index]["full_name"]}"),
+                                                  "${attendanceDates[index]["full_name"]}"),
                                             ),
                                           ),
                                           const SizedBox(width: 30),
                                           forenoonOrAfternoon(
-                                              attendanceDates["studentList"]
-                                                  [index]["absent_FN"],
+                                              attendanceDates[index]
+                                                  ["absent_FN"],
                                               "FN"),
                                           const SizedBox(width: 5),
                                           forenoonOrAfternoon(
-                                              attendanceDates["studentList"]
-                                                  [index]["absent_AN"],
+                                              attendanceDates[index]
+                                                  ["absent_AN"],
                                               'AN'),
-                                          /* const SizedBox(width: 20),
-                                      const Text("IX A"),
-                                      const SizedBox(width: 20),
-                                      const Text("02/07/2022") */
-                                          // const SizedBox(width: 100),
                                         ],
                                       )),
                                 ),
