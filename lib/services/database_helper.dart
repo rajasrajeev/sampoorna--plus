@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
@@ -21,12 +22,11 @@ class DatabaseHelper {
   static final batchName = 'batch_name';
   static final batchId = 'batch_id';
 
-  
   DatabaseHelper._privateConstructor();
-    static final DatabaseHelper instance = DatabaseHelper._privateConstructor();
+  static final DatabaseHelper instance = DatabaseHelper._privateConstructor();
 
-    static Database? _database;
-    Future<Database> get database async {
+  static Database? _database;
+  Future<Database> get database async {
     if (_database != null) return _database!;
     _database = await _initiateDatabase();
     return _database!;
@@ -36,10 +36,9 @@ class DatabaseHelper {
     Directory direcotry = await getApplicationDocumentsDirectory();
     String path = join(direcotry.path, _dbName);
     return await openDatabase(path, version: _dbVersion, onCreate: _onCreate);
-    }
+  }
 
   Future _onCreate(Database db, int version) async {
-    
     await db.execute('''
       CREATE TABLE $_studentTable (
         $studentId INTEGER PRIMARY KEY, 
@@ -53,30 +52,35 @@ class DatabaseHelper {
         $studentCode TEXT NOT NULL UNIQUE,
         $batchId INTEGER,
         $batchName TEXT)''');
-    }
+  }
 
   Future<int> insertStudent(Map<String, dynamic> row) async {
     Database db = await instance.database;
     int studentId = await db.insert(_studentTable, row);
     return studentId;
-    }
-    Future<List<Map<String, dynamic>>> getStudentsFromLocal() async {
+  }
+
+  Future<List<Map<String, dynamic>>> getStudentsFromLocal(batchId) async {
+    debugPrint("***********batchId*************");
+    debugPrint("$batchId");
     Database db = await instance.database;
-    return await db.query(_studentTable);
-    //  return await db.query(_groupMemberTable,
-        // where: '$groupForeign = ?', whereArgs: [groupId]);
-    }
-Future<void> delete() async {
-       Directory direcotry = await getApplicationDocumentsDirectory();
-     String path = join(direcotry.path, _dbName);
-     await deleteDatabase(path);
-  // Database db = await instance.database;
-  //   return await db.delete(_studentTable, where: '$studentId = ?', whereArgs: [id]);
+   // return await db.query(_studentTable);
+      return await db.query(_studentTable,
+      //where: '$studentId = ?', whereArgs: [1]);
+     where: '$batchId = ?', whereArgs: [1742166]);
   }
+
+  Future<void> delete() async {
+    Directory direcotry = await getApplicationDocumentsDirectory();
+    String path = join(direcotry.path, _dbName);
+    await deleteDatabase(path);
+    // Database db = await instance.database;
+    //   return await db.delete(_studentTable, where: '$studentId = ?', whereArgs: [id]);
+  }
+
   Future<int> studentDataDelete(batchId) async {
-
-   Database db = await instance.database;
-   return await db.delete(_studentTable, where: '$batchId = ?', whereArgs: [batchId]);
+    Database db = await instance.database;
+    return await db
+        .delete(_studentTable, where: '$batchId = ?', whereArgs: [batchId]);
   }
-
 }

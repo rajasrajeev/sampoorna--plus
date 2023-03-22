@@ -120,7 +120,7 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
 
   syncStudentsData(String batchId) async {
     //To Get students from local
-    dynamic localstudents = await _db.getStudentsFromLocal();
+    dynamic localstudents = await _db.getStudentsFromLocal(batchId);
     debugPrint("**********Local Students Response***********");
     debugPrint("$localstudents");
 
