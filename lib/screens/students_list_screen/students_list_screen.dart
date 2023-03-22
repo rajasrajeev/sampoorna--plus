@@ -36,18 +36,22 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
 
   @override
   void initState() {
-    getData();
-    super.initState();
+     super.initState();
+    getPermittedBatch();
+    getStudentsList();
+   
   }
 
-  getData() async {
+  getPermittedBatch() async {
     final prefs = await SharedPreferences.getInstance();
     var details = await prefs.getString('loginData');
     dynamic data = json.decode(details!);
+
     setState(() {
       permittedBatches = data['permittedBatches'];
       dropdownvalue = permittedBatches[0]['batch_id'];
     });
+
     for (var i = 0; i < permittedBatches.length; i++) {
       setState(() {
         items.add({
@@ -57,69 +61,62 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
         });
       });
     }
-
-   //To Get students from local
-     dynamic localstudents =  _db.getStudentsFromLocal(dropdownvalue);
-     debugPrint("**********Local Students Response***********");
-     debugPrint("$localstudents");
-     //Check Data in Localdb
-     if(localstudents.length > 0){
-      setLocalStudentsData(dropdownvalue);
-     }
-     else{
-      getStudentsData(dropdownvalue);
-     }
-   
   }
 
-setLocalStudentsData(String batchId) async {
-    // final prefs = await SharedPreferences.getInstance();
-
-    // var data = {
-    //   "batch_id": batchId,
-    //   "school_id": prefs.getString('school_id'),
-    //   "user_type": prefs.getString('user_type')
-    // };
-
-    showDialog(
-        // The user CANNOT close this dialog  by pressing outsite it
-        barrierDismissible: true,
-        context: context,
-        builder: (_) {
-          return Dialog(
-            // The background color
-            backgroundColor: Colors.white,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 20),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: const [
-                  // The loading indicator
-                  CircularProgressIndicator(),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  // Some text
-                  Text('Loading...')
-                ],
-              ),
-            ),
-          );
-        });
-
-     dynamic localstudents =  _db.getStudentsFromLocal(batchId);
-     debugPrint("**********Local Students Response***********");
-     debugPrint("$localstudents");
+  getStudentsList() async {
+     debugPrint("************Local Students************");
+    // showDialog(
+    //     // The user CANNOT close this dialog  by pressing outsite it
+    //     barrierDismissible: true,
+    //     context: context,
+    //     builder: (_) {
+    //       return Dialog(
+    //         // The background color
+    //         backgroundColor: Colors.white,
+    //         child: Padding(
+    //           padding: const EdgeInsets.symmetric(vertical: 20),
+    //           child: Column(
+    //             mainAxisSize: MainAxisSize.min,
+    //             children: const [
+    //               // The loading indicator
+    //               CircularProgressIndicator(),
+    //               SizedBox(
+    //                 height: 15,
+    //               ),
+    //               // Some text
+    //               Text('Loading...')
+    //             ],
+    //           ),
+    //         ),
+    //       );
+    //     });
+  debugPrint("************Local Students************");
+    dynamic localStudents = await _db.getStudentsFromLocal(dropdownvalue);
+    debugPrint("************Local Students************");
+    int len=localStudents.length;
+    debugPrint("$len");
+          debugPrint("************ DropDown value ************");
+      debugPrint("$dropdownvalue");
+    //Check Data in Localdb
+    if (localStudents.length > 0) {
       setState(() {
-       studentsList = localstudents;
+        studentsList = localStudents;
       });
+
+    } else {
+      getStudentsListFromApi();
+    }
+          debugPrint("************Local Students List ************");
+      debugPrint(localStudents);
+      debugPrint("************ Students List************");
+      debugPrint(studentsList);
   }
-  
-  getStudentsData(String batchId) async {
+
+  getStudentsListFromApi() async {
     final prefs = await SharedPreferences.getInstance();
 
     var data = {
-      "batch_id": batchId,
+      "batch_id": dropdownvalue,
       "school_id": prefs.getString('school_id'),
       "user_type": prefs.getString('user_type')
     };
@@ -156,11 +153,13 @@ setLocalStudentsData(String batchId) async {
     if (res.statusCode == 200) {
       Navigator.of(context).pop();
       var data = parseJwtAndSave(responseData['data']);
+
       setState(() {
         studentsList = data['token'];
       });
+
       //To insert Value into database
-    await syncStudentsData(batchId);
+      await syncStudentsList();
     } else {
       Navigator.of(context).pop();
       Fluttertoast.showToast(
@@ -174,58 +173,25 @@ setLocalStudentsData(String batchId) async {
     }
   }
 
-syncStudentsData(String batchId) async {
-
-    //To Get students from local
-    // dynamic localstudents = await _db.getStudentsFromLocal(batchId);
-    // debugPrint("**********Local Students Response***********");
-    // debugPrint("$localstudents");
-
-    //To delete Database
-    //await _db.delete();
-
-    //To delete all batchID
-    // dynamic response = await _db.studentDataDelete(batchId);
-
-    //To insert Value into database
+  syncStudentsList() async {
     for (int i = 0; i < studentsList.length; i++) {
       try {
         dynamic response = await _db.insertStudent({
           "student_code": studentsList[i]['student_code'],
-          "full_name":studentsList[i]['full_name'],
-          "admission_no":studentsList[i]['admission_no'],
+          "full_name": studentsList[i]['full_name'],
+          "admission_no": studentsList[i]['admission_no'],
           "absent_FN": studentsList[i]['absent_FN'],
           "absent_AN": studentsList[i]['absent_AN'],
           "status": studentsList[i]['status'],
           "total_absent": studentsList[i]['total_absent'],
           "school_id": studentsList[i]['school_id'],
           "batch_name": studentsList[i]['batch_name'],
-          "batch_id":dropdownvalue,
+          "batch_id": dropdownvalue,
         });
-        debugPrint("**********Dynamic Response***********");
-        debugPrint("$response");
       } catch (e) {
         continue;
       }
     }
-  }
-  syncButtonClick(String batchId) async {
-
-    await getStudentsData(batchId);
-
-    //To Get students from local
-    // dynamic localstudents = await _db.getStudentsFromLocal(batchId);
-    // debugPrint("**********Local Students Response***********");
-    // debugPrint("$localstudents");
-
-    //To delete Database
-    //await _db.delete();
-
-    //To delete all batchID
-    // dynamic response = await _db.studentDataDelete(batchId);
-
-    //To insert Value into database
-    syncStudentsData(batchId);
   }
 
   @override
@@ -330,11 +296,11 @@ syncStudentsData(String batchId) async {
                             .toList(),
                         // After selecting the desired option,it will
                         // change button value to selected value
-                        onChanged: (newValue) {
+                        onChanged: (newValue) async {
                           setState(() {
                             dropdownvalue = newValue.toString();
                           });
-                          getStudentsData(dropdownvalue);
+                          await getStudentsListFromApi();
                         },
                       ),
                     ),
@@ -428,9 +394,8 @@ syncStudentsData(String batchId) async {
         backgroundColor: primaryColor,
         label: const Text("sync"),
         icon: const Icon(Icons.sync),
-        onPressed: () {
-          syncButtonClick(dropdownvalue);
-          setState(() {});
+        onPressed: () async {
+          await getStudentsListFromApi();
         },
       ),
     );
