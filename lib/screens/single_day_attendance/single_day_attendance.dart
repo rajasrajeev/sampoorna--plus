@@ -30,6 +30,7 @@ class SingleDayAttendanceScreen extends StatefulWidget {
 
 class _SingleDayAttendanceScreenState extends State<SingleDayAttendanceScreen> {
   dynamic attendanceDates = [];
+  bool _loading = false;
 
   @override
   void initState() {
@@ -38,6 +39,9 @@ class _SingleDayAttendanceScreenState extends State<SingleDayAttendanceScreen> {
   }
 
   getStudentsData(String date, String schoolId, String batchId) async {
+    setState(() {
+      _loading = true;
+    });
     final prefs = await SharedPreferences.getInstance();
 
     showDialog(
@@ -69,13 +73,20 @@ class _SingleDayAttendanceScreenState extends State<SingleDayAttendanceScreen> {
     final res = await attendanceOnDate(date, schoolId, batchId);
 
     if (res.statusCode == 200) {
+      setState(() {
+        _loading = false;
+      });
       final responseData = jsonDecode(res.body);
       Navigator.of(context).pop();
       var data = parseJwtAndSave(responseData['data']);
       setState(() {
         attendanceDates = data['token'];
       });
+      print(attendanceDates.length);
     } else {
+      setState(() {
+        _loading = false;
+      });
       Navigator.of(context).pop();
       Fluttertoast.showToast(
         msg: "Unable to Sync Students List Now",
@@ -85,6 +96,36 @@ class _SingleDayAttendanceScreenState extends State<SingleDayAttendanceScreen> {
         textColor: Colors.white,
         fontSize: 15.0,
       );
+    }
+  }
+
+  forenoonOrAfternoon(value, text) {
+    if (value == "1" || value == 1) {
+      return Container(
+          width: 35,
+          height: 35,
+          decoration: BoxDecoration(
+              color: Color.fromARGB(255, 49, 115, 58),
+              // border: Border.all(color: Colors.black),
+              borderRadius: BorderRadius.circular(50)),
+          alignment: Alignment.center,
+          child: Text(
+            text,
+            style: const TextStyle(color: Colors.white),
+          ));
+    } else {
+      return Container(
+          width: 35,
+          height: 35,
+          decoration: BoxDecoration(
+              color: primaryColor,
+              // border: Border.all(color: Colors.black),
+              borderRadius: BorderRadius.circular(50)),
+          alignment: Alignment.center,
+          child: Text(
+            text,
+            style: const TextStyle(color: Colors.white),
+          ));
     }
   }
 
@@ -100,63 +141,84 @@ class _SingleDayAttendanceScreenState extends State<SingleDayAttendanceScreen> {
                 name: "Test Teacher",
                 grade: "VIIIA"),
             const SizedBox(height: 10),
-            Text("${widget.date}"),
+            Text(widget.date),
             const SizedBox(height: 20),
             Row(
               children: <Widget>[
                 Expanded(
                   child: SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.7,
-                    child: ListView.builder(
-                        // the number of items in the list
-                        itemCount: attendanceDates.length,
-                        shrinkWrap: true,
-                        // display each item of the product list
-                        itemBuilder: (context, index) {
-                          return GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        const IndividualAttendanceScreen()),
-                              );
-                            },
-                            child: Card(
-                              // In many cases, the key isn't mandatory
-                              // key: ValueKey(myProducts[index]),
-                              borderOnForeground: true,
-                              margin: const EdgeInsets.symmetric(
-                                  vertical: 5, horizontal: 15),
-                              child: Padding(
-                                  padding: const EdgeInsets.all(10),
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                          width: 70,
-                                          height: 70,
-                                          decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(15)),
-                                          alignment: Alignment.center,
-                                          child: Image.asset(
-                                              "assets/images/profile.png")),
-                                      const SizedBox(width: 30),
-                                      /* Text(
-                                          "${attendanceDates["$index"]["full_name"]}"), */
-                                      /* const SizedBox(width: 20),
+                    height: MediaQuery.of(context).size.height * 0.64,
+                    child: _loading == false && attendanceDates.length > 0
+                        ? ListView.builder(
+                            // the number of items in the list
+                            itemCount: attendanceDates["studentList"].length,
+                            shrinkWrap: true,
+                            // display each item of the product list
+                            itemBuilder: (context, index) {
+                              return GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const IndividualAttendanceScreen()),
+                                  );
+                                },
+                                child: Card(
+                                  // In many cases, the key isn't mandatory
+                                  // key: ValueKey(myProducts[index]),
+                                  borderOnForeground: true,
+                                  margin: const EdgeInsets.symmetric(
+                                      vertical: 5, horizontal: 15),
+                                  child: Padding(
+                                      padding: const EdgeInsets.all(10),
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                              width: 70,
+                                              height: 70,
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          15)),
+                                              alignment: Alignment.center,
+                                              child: Image.asset(
+                                                  "assets/images/profile.png")),
+                                          const SizedBox(width: 30),
+                                          SizedBox(
+                                            width: 90,
+                                            height: 40,
+                                            child: Center(
+                                              child: Text(
+                                                  "${attendanceDates["studentList"][index]["full_name"]}"),
+                                            ),
+                                          ),
+                                          const SizedBox(width: 30),
+                                          forenoonOrAfternoon(
+                                              attendanceDates["studentList"]
+                                                  [index]["absent_FN"],
+                                              "FN"),
+                                          const SizedBox(width: 5),
+                                          forenoonOrAfternoon(
+                                              attendanceDates["studentList"]
+                                                  [index]["absent_AN"],
+                                              'AN'),
+                                          /* const SizedBox(width: 20),
                                       const Text("IX A"),
                                       const SizedBox(width: 20),
                                       const Text("02/07/2022") */
-                                    ],
-                                  )),
-                            ),
-                          );
-                        }),
+                                          // const SizedBox(width: 100),
+                                        ],
+                                      )),
+                                ),
+                              );
+                            })
+                        : const Center(child: Text("Loading...")),
                   ),
                 )
               ],
-            )
+            ),
+            const SizedBox(width: 100),
           ],
         ),
       ),

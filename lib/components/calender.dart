@@ -75,7 +75,7 @@ class _AttendanceListCalenderState extends State<AttendanceListCalender> {
       final DateFormat formatter = DateFormat('dd-MM-yyyy');
       final String formatted = formatter.format(_selectedDay!);
       print("=======================> ${widget.attendanceDates}");
-      /* Navigator.push(
+      Navigator.push(
         context,
         MaterialPageRoute(
             builder: (context) => SingleDayAttendanceScreen(
@@ -83,7 +83,7 @@ class _AttendanceListCalenderState extends State<AttendanceListCalender> {
                   batchId: widget.batchId,
                   schoolId: widget.schoolId,
                 )),
-      ); */
+      );
     }
   }
 
