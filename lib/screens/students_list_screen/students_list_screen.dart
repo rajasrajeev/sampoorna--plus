@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
@@ -94,9 +95,7 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
             ),
           );
         });
-    dynamic localstudents=await _db.getStudentsFromLocal();
-      debugPrint("**********Local Students Response***********");
-      debugPrint("$localstudents");
+
     final res = await studentList(data);
     final responseData = jsonDecode(res.body);
 
@@ -117,37 +116,52 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
         fontSize: 15.0,
       );
     }
+  }
+
+  syncStudentsData(String batchId) async {
+    //To Get students from local
+    dynamic localstudents = await _db.getStudentsFromLocal();
+    debugPrint("**********Local Students Response***********");
+    debugPrint("$localstudents");
+
+    //To delete Database
     //await _db.delete();
-    for (int i=0;i<studentsList.length;i++){
-      
-      dynamic response = await _db.insertStudent({
 
-      //  "student_code": 310367334,
-      //   "full_name": "ADITHYA. P. G",
-      //   "admission_no": 7334,
-      //   "absent_FN": null,
-      //   "absent_AN": null,
-      //   "status": 0,
-      //   "total_absent": 0.5,
-      //   "school_id": 5033,
-      //   "batch_name": null
+    //To delete all batchID
+    // dynamic response = await _db.studentDataDelete(batchId);
 
-        "student_code": studentsList[i]['student_code'],
-        "full_name":studentsList[i]['full_name'],
-        "admission_no":studentsList[i]['admission_no'],
-        "absent_FN": studentsList[i]['absent_FN'],
-        "absent_AN": studentsList[i]['absent_AN'],
-        "status": studentsList[i]['status'],
-        "total_absent": studentsList[i]['total_absent'],
-        "school_id": studentsList[i]['school_id'],
-        "batch_name": studentsList[i]['batch_name'],
-        "batch_id":dropdownvalue,
-      });
-       debugPrint("**********Dynamic Response***********");
-      debugPrint("$response");
+    //To insert Value into database
+    for (int i = 0; i < studentsList.length; i++) {
+      try {
+        dynamic response = await _db.insertStudent({
+          // "student_code": 310367334,
+          // "full_name": "ADITHYA. P. G",
+          // "admission_no": 7334,
+          // "absent_FN": null,
+          // "absent_AN": null,
+          // "status": 0,
+          // "total_absent": 0.5,
+          // "school_id": 5033,
+          // "batch_name": null,
+          // "batch_id": dropdownvalue,
+
+          "student_code": studentsList[i]['student_code'],
+          "full_name":studentsList[i]['full_name'],
+          "admission_no":studentsList[i]['admission_no'],
+          "absent_FN": studentsList[i]['absent_FN'],
+          "absent_AN": studentsList[i]['absent_AN'],
+          "status": studentsList[i]['status'],
+          "total_absent": studentsList[i]['total_absent'],
+          "school_id": studentsList[i]['school_id'],
+          "batch_name": studentsList[i]['batch_name'],
+          "batch_id":dropdownvalue,
+        });
+        debugPrint("**********Dynamic Response***********");
+        debugPrint("$response");
+      } catch (e) {
+        continue;
+      }
     }
-    
-     
   }
 
   @override
@@ -346,16 +360,14 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
         ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-        floatingActionButton: FloatingActionButton.extended(
+      floatingActionButton: FloatingActionButton.extended(
         backgroundColor: primaryColor,
         label: const Text("sync"),
         icon: const Icon(Icons.sync),
         onPressed: () {
-          setState(() {
-         
-          });
+          syncStudentsData(dropdownvalue);
+          setState(() {});
         },
-
       ),
     );
   }

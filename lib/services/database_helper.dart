@@ -19,7 +19,7 @@ class DatabaseHelper {
   static final studentCode = 'student_code';
   static final schoolID = 'school_id';
   static final batchName = 'batch_name';
-    static final batchId = 'batch_id';
+  static final batchId = 'batch_id';
 
   
   DatabaseHelper._privateConstructor();
@@ -72,6 +72,11 @@ Future<void> delete() async {
      await deleteDatabase(path);
   // Database db = await instance.database;
   //   return await db.delete(_studentTable, where: '$studentId = ?', whereArgs: [id]);
+  }
+  Future<int> studentDataDelete(batchId) async {
+
+   Database db = await instance.database;
+   return await db.delete(_studentTable, where: '$batchId = ?', whereArgs: [batchId]);
   }
 
 }
