@@ -184,9 +184,9 @@ class _AttendanceListState extends State<AttendanceList> {
             ),
             const SizedBox(height: 10),
             AttendanceListCalender(
-              batchId: dropdownvalue,
-              schoolId: schoolId.toString(),
-            )
+                batchId: dropdownvalue,
+                schoolId: schoolId.toString(),
+                attendanceDates: attendanceDates!)
           ],
         ),
       ),
