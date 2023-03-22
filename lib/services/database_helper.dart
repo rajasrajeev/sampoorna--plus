@@ -50,7 +50,7 @@ class DatabaseHelper {
         $totalAbsent REAL,
         $schoolID TEXT NOT NULL,
         $studentCode TEXT NOT NULL UNIQUE,
-        $batchId INTEGER,
+        $batchId TEXT NOT NULL,
         $batchName TEXT)''');
   }
 
@@ -63,6 +63,7 @@ class DatabaseHelper {
   Future<List<Map<String, dynamic>>> getStudentsFromLocal(batchId) async {
     debugPrint("***********batchId*************");
     debugPrint("$batchId");
+    print(batchId.runtimeType);
     Database db = await instance.database;
    // return await db.query(_studentTable);
       return await db.query(_studentTable,
