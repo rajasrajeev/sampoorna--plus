@@ -1,15 +1,12 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'dart:convert';
-import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:student_management/components/banner.dart';
 import 'package:student_management/constants.dart';
-import 'package:student_management/screens/home_screen/home_screen.dart';
 import 'package:student_management/screens/main_screen/main_screen.dart';
 import 'package:student_management/screens/students_profile_screen/students_profile_screen.dart';
 import 'package:student_management/services/api_services.dart';
@@ -36,10 +33,9 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
 
   @override
   void initState() {
-     super.initState();
+    super.initState();
     getPermittedBatch();
     getStudentsList();
-   
   }
 
   getPermittedBatch() async {
@@ -51,6 +47,8 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
       permittedBatches = data['permittedBatches'];
       dropdownvalue = permittedBatches[0]['batch_id'];
     });
+    // debugPrint("************Permitted Batches dropdownvalue ************");
+    // debugPrint(dropdownvalue);
 
     for (var i = 0; i < permittedBatches.length; i++) {
       setState(() {
@@ -64,7 +62,6 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
   }
 
   getStudentsList() async {
-     debugPrint("************Local Students************");
     // showDialog(
     //     // The user CANNOT close this dialog  by pressing outsite it
     //     barrierDismissible: true,
@@ -90,26 +87,27 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
     //         ),
     //       );
     //     });
-  debugPrint("************Local Students************");
+
     dynamic localStudents = await _db.getStudentsFromLocal(dropdownvalue);
-    debugPrint("************Local Students************");
-    int len=localStudents.length;
+    debugPrint("************Local Students length************");
+    int len = localStudents.length;
     debugPrint("$len");
-          debugPrint("************ DropDown value ************");
-      debugPrint("$dropdownvalue");
+    debugPrint("************getStudentsList DropDown value ************");
+    debugPrint(dropdownvalue);
     //Check Data in Localdb
     if (localStudents.length > 0) {
       setState(() {
         studentsList = localStudents;
       });
-
+      debugPrint("************LOCAL DB ************");
+      debugPrint("************Local Students List ************");
+      debugPrint("$localStudents");
+      debugPrint("************ Students List************");
+      debugPrint("$studentsList");
     } else {
+      debugPrint("************API CALLL************");
       getStudentsListFromApi();
     }
-          debugPrint("************Local Students List ************");
-      debugPrint(localStudents);
-      debugPrint("************ Students List************");
-      debugPrint(studentsList);
   }
 
   getStudentsListFromApi() async {
@@ -300,7 +298,7 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
                           setState(() {
                             dropdownvalue = newValue.toString();
                           });
-                          await getStudentsListFromApi();
+                          await getStudentsList();
                         },
                       ),
                     ),

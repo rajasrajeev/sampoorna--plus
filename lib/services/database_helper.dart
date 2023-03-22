@@ -5,7 +5,7 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 
 class DatabaseHelper {
-  static const _dbName = "sampoorna_local_db.db";
+  static const _dbName = "sampoornass_local_db.db";
   static const _dbVersion = 1;
 
   //Student table
@@ -61,9 +61,9 @@ class DatabaseHelper {
   }
 
   Future<List<Map<String, dynamic>>> getStudentsFromLocal(dropdownBatchId) async {
-    debugPrint("***********batchId*************");
-    debugPrint("$dropdownBatchId");
-    print(dropdownBatchId.runtimeType);
+    // debugPrint("***********Database helper batchId*************");
+    // debugPrint("$dropdownBatchId");
+    // print(dropdownBatchId.runtimeType);
     Database db = await instance.database;
    // return await db.query(_studentTable);
       return await db.query(_studentTable,
