@@ -62,31 +62,31 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
   }
 
   getStudentsList() async {
-    // showDialog(
-    //     // The user CANNOT close this dialog  by pressing outsite it
-    //     barrierDismissible: true,
-    //     context: context,
-    //     builder: (_) {
-    //       return Dialog(
-    //         // The background color
-    //         backgroundColor: Colors.white,
-    //         child: Padding(
-    //           padding: const EdgeInsets.symmetric(vertical: 20),
-    //           child: Column(
-    //             mainAxisSize: MainAxisSize.min,
-    //             children: const [
-    //               // The loading indicator
-    //               CircularProgressIndicator(),
-    //               SizedBox(
-    //                 height: 15,
-    //               ),
-    //               // Some text
-    //               Text('Loading...')
-    //             ],
-    //           ),
-    //         ),
-    //       );
-    //     });
+    showDialog(
+        // The user CANNOT close this dialog  by pressing outsite it
+        barrierDismissible: true,
+        context: context,
+        builder: (_) {
+          return Dialog(
+            // The background color
+            backgroundColor: Colors.white,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 20),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: const [
+                  // The loading indicator
+                  CircularProgressIndicator(),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  // Some text
+                  Text('Loading...')
+                ],
+              ),
+            ),
+          );
+        });
 
     dynamic localStudents = await _db.getStudentsFromLocal(dropdownvalue);
     debugPrint("************Local Students length************");
