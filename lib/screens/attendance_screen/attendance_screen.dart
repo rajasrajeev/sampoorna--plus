@@ -140,13 +140,13 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
         //"fn": true,
         //"an": true
         "fn": (students[i]["absent_FN"] != null)
-            ? (students[i]["absent_FN"] != 0)
+            ? (students[i]["absent_FN"] != '0')
                 ? true
                 : false
             : true,
 
         "an": (students[i]["absent_AN"] != null)
-            ? (students[i]["absent_AN"] != 0)
+            ? (students[i]["absent_AN"] != '0')
                 ? true
                 : false
             : true
