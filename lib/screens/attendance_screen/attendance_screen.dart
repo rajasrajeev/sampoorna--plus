@@ -151,6 +151,45 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
     }
   }
 
+  syncStudentsList() async {
+
+    dynamic localStudents =await _db.getStudentsFromLocal(dropdownvalue);
+    debugPrint("************Local Students length************");
+    int len = localStudents.length;
+    debugPrint("$len");
+    debugPrint("************getStudentsList DropDown value ************");
+    debugPrint(dropdownvalue);
+    //Check Data in Localdb
+    if (localStudents.length>0) {
+      setState(() {
+        attendanceCheckers = localStudents;
+      });
+      }
+    else{
+
+      for (int i = 0; i < attendanceCheckers.length; i++) {
+      try {
+        await _db.insertStudent({
+          "student_code": attendanceCheckers[i]['student_code'],
+          "full_name": attendanceCheckers[i]['full_name'],
+          "admission_no": attendanceCheckers[i]['admission_no'],
+          "absent_FN": attendanceCheckers[i]['absent_FN'],
+          "absent_AN": attendanceCheckers[i]['absent_AN'],
+          "status": attendanceCheckers[i]['status'],
+          "total_absent": attendanceCheckers[i]['total_absent'],
+          "school_id": attendanceCheckers[i]['school_id'],
+          "batch_name": attendanceCheckers[i]['batch_name'],
+          "batch_id": dropdownvalue,
+        });
+      } catch (e) {
+        continue;
+      }
+    }
+
+    }
+    
+  }
+
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
         context: context,
@@ -411,8 +450,8 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                       "absentee": absentees
                     };
                     debugPrint("**********payload absentee***********");
-            print(absentees[0]);
-              print(absentees[0].runtimeType);
+                    print(absentees[0]);
+                    print(absentees[0].runtimeType);
                     final res = await addAttendance(dataToSubmit);
 
                     if (res.statusCode == 200) {
