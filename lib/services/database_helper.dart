@@ -63,19 +63,14 @@ class DatabaseHelper {
   Future<List<Map<String, dynamic>>> getStudentsFromLocal(
       dropdownBatchId) async {
     Database db = await instance.database;
-    // return await db.query(_studentTable);
     return await db.query(_studentTable,
-        //where: '$studentId = ?', whereArgs: [1]);
-        where: '$batchId LIKE ?',
-        whereArgs: ['%$dropdownBatchId%']);
+        where: '$batchId LIKE ?', whereArgs: ['%$dropdownBatchId%']);
   }
 
   Future<List<Map<String, dynamic>>> getStudentSearch(
       searchText, dropdownBatchId) async {
     Database db = await instance.database;
-    // return await db.query(_studentTable);
     return await db.query(_studentTable,
-        //where: '$studentId = ?', whereArgs: [1]);
         where: '$batchId LIKE ? AND $fullName LIKE ?',
         whereArgs: ['%$dropdownBatchId%', '%$searchText%']);
   }
@@ -84,8 +79,6 @@ class DatabaseHelper {
     Directory direcotry = await getApplicationDocumentsDirectory();
     String path = join(direcotry.path, _dbName);
     await deleteDatabase(path);
-    // Database db = await instance.database;
-    //   return await db.delete(_studentTable, where: '$studentId = ?', whereArgs: [id]);
   }
 
   Future<int> studentDataDelete(batchId) async {

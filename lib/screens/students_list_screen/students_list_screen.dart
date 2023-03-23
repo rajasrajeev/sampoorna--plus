@@ -35,7 +35,6 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
   void initState() {
     super.initState();
     getPermittedBatch();
-    getStudentsList();
   }
 
   getPermittedBatch() async {
@@ -57,6 +56,7 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
         });
       });
     }
+    getStudentsList();
   }
 
   getStudentsList() async {
@@ -65,12 +65,8 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
       setState(() {
         studentsList = localStudents;
       });
-      debugPrint("************LOCAL DB ************");
-      debugPrint("************Local Students List ************");
-      debugPrint("$localStudents");
     } else {
       getStudentsListFromApi();
-       debugPrint("************API CAll ************");
     }
   }
 

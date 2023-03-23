@@ -36,6 +36,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
   List<Map<String, dynamic>> attendanceCheckers = [];
   List permittedBatches = [];
   bool checked10 = false;
+  bool checked1 = false;
   DateTime selectedDate = DateTime.now();
 
   @override
@@ -73,9 +74,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
       "school_id": prefs.getString('school_id'),
       "user_type": prefs.getString('user_type')
     };
-    debugPrint("**************Batch id************************");
-    debugPrint("$data");
-    // ignore: use_build_context_synchronously
+
     showDialog(
         // The user CANNOT close this dialog  by pressing outsite it
         barrierDismissible: true,
@@ -101,21 +100,19 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
             ),
           );
         });
-  final DateFormat formatter = DateFormat('dd-MM-yyyy');
-  var date = formatter.format(selectedDate);
-    final res = await attendanceOnDate(date,data['school_id'],data['batch_id']);
+    final DateFormat formatter = DateFormat('dd-MM-yyyy');
+    var date = formatter.format(selectedDate);
+    final res =
+        await attendanceOnDate(date, data['school_id'], data['batch_id']);
     final responseData = jsonDecode(res.body);
 
     if (res.statusCode == 200) {
       Navigator.of(context).pop();
       var data = parseJwtAndSave(responseData['data']);
-      debugPrint("**************************************");
       setState(() {
         studentsList = data['token'];
       });
       await createCheckersList(data['token']);
-      debugPrint(studentsList.toString());
-      debugPrint("**************************************");
     } else {
       Navigator.of(context).pop();
       Fluttertoast.showToast(
@@ -130,10 +127,9 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
   }
 
   createCheckersList(students) {
+    attendanceCheckers = [];
     debugPrint("*****Checker List*********");
     for (int i = 0; i < students.length; i++) {
-      var forenoon=students[i]["absent_FN"];
-      debugPrint("$forenoon");
       Map<String, dynamic> obj = {
         "student_id": students[i]["student_code"],
         "full_name": students[i]["full_name"],
@@ -153,48 +149,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
       };
       attendanceCheckers.add(obj);
     }
-     debugPrint("*****attendanceCheckers List*********");
-      debugPrint("$attendanceCheckers");
   }
-
-  // syncStudentsList() async {
-
-  //   dynamic localStudents =await _db.getStudentsFromLocal(dropdownvalue);
-  //   debugPrint("************Local Students length************");
-  //   int len = localStudents.length;
-  //   debugPrint("$len");
-  //   debugPrint("************getStudentsList DropDown value ************");
-  //   debugPrint(dropdownvalue);
-  //   //Check Data in Localdb
-  //   if (localStudents.length>0) {
-  //     setState(() {
-  //       attendanceCheckers = localStudents;
-  //     });
-  //     }
-  //   else{
-
-  //     for (int i = 0; i < attendanceCheckers.length; i++) {
-  //     try {
-  //       await _db.insertStudent({
-  //         "student_code": attendanceCheckers[i]['student_code'],
-  //         "full_name": attendanceCheckers[i]['full_name'],
-  //         "admission_no": attendanceCheckers[i]['admission_no'],
-  //         "absent_FN": attendanceCheckers[i]['absent_FN'],
-  //         "absent_AN": attendanceCheckers[i]['absent_AN'],
-  //         "status": attendanceCheckers[i]['status'],
-  //         "total_absent": attendanceCheckers[i]['total_absent'],
-  //         "school_id": attendanceCheckers[i]['school_id'],
-  //         "batch_name": attendanceCheckers[i]['batch_name'],
-  //         "batch_id": dropdownvalue,
-  //       });
-  //     } catch (e) {
-  //       continue;
-  //     }
-  //   }
-
-  //   }
-    
-  // }
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -315,8 +270,6 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
           const SizedBox(height: 20),
           Expanded(
             child: SingleChildScrollView(
-              // scrollDirection: Axis.horizontal,
-              //scrollDirection: Axis.values(size),
               child: SingleChildScrollView(
                 scrollDirection: Axis.vertical,
                 child: DataTable(
@@ -337,10 +290,15 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                       label: Row(
                         children: [
                           Checkbox(
-                              value: checked10,
+                              value: checked1,
                               onChanged: (val) {
+                                for (var i = 0; i < studentsList.length; i++) {
+                                  setState(() {
+                                    attendanceCheckers[i]['fn'] = !checked1;
+                                  });
+                                }
                                 setState(() {
-                                  checked10 = !checked10;
+                                  checked1 = !checked1;
                                 });
                               }),
                           const Text(
@@ -356,6 +314,11 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                           Checkbox(
                               value: checked10,
                               onChanged: (val) {
+                                for (var i = 0; i < studentsList.length; i++) {
+                                  setState(() {
+                                    attendanceCheckers[i]['an'] = !checked10;
+                                  });
+                                }
                                 setState(() {
                                   checked10 = !checked10;
                                 });
@@ -456,20 +419,18 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                       "batch_id": batchid,
                       "absentee": absentees
                     };
-                    debugPrint("**********payload absentee***********");
-                    print(absentees[0]);
-                    print(absentees[0].runtimeType);
+
                     final res = await addAttendance(dataToSubmit);
 
                     if (res.statusCode == 200) {
                       Navigator.pop(context);
                     } else if (res.statusCode == 202) {
+                      final responseData = jsonDecode(res.body);
                       Navigator.pop(context);
                       Fluttertoast.showToast(
-                        msg:
-                            "Some of previous day attendances are not marked yet. You need to do it in order to complete this date",
+                        msg: responseData["message"],
                         gravity: ToastGravity.TOP,
-                        timeInSecForIosWeb: 1,
+                        timeInSecForIosWeb: 10,
                         backgroundColor: Colors.red,
                         textColor: Colors.white,
                         fontSize: 15.0,
