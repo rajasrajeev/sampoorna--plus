@@ -101,8 +101,9 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
             ),
           );
         });
-
-    final res = await studentList(data);
+  final DateFormat formatter = DateFormat('dd-MM-yyyy');
+  var date = formatter.format(selectedDate);
+    final res = await attendanceOnDate(date,data['school_id'],data['batch_id']);
     final responseData = jsonDecode(res.body);
 
     if (res.statusCode == 200) {
@@ -129,7 +130,10 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
   }
 
   createCheckersList(students) {
+    debugPrint("*****Checker List*********");
     for (int i = 0; i < students.length; i++) {
+      var forenoon=students[i]["absent_FN"];
+      debugPrint("$forenoon");
       Map<String, dynamic> obj = {
         "student_id": students[i]["student_code"],
         "full_name": students[i]["full_name"],
@@ -149,46 +153,48 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
       };
       attendanceCheckers.add(obj);
     }
+     debugPrint("*****attendanceCheckers List*********");
+      debugPrint("$attendanceCheckers");
   }
 
-  syncStudentsList() async {
+  // syncStudentsList() async {
 
-    dynamic localStudents =await _db.getStudentsFromLocal(dropdownvalue);
-    debugPrint("************Local Students length************");
-    int len = localStudents.length;
-    debugPrint("$len");
-    debugPrint("************getStudentsList DropDown value ************");
-    debugPrint(dropdownvalue);
-    //Check Data in Localdb
-    if (localStudents.length>0) {
-      setState(() {
-        attendanceCheckers = localStudents;
-      });
-      }
-    else{
+  //   dynamic localStudents =await _db.getStudentsFromLocal(dropdownvalue);
+  //   debugPrint("************Local Students length************");
+  //   int len = localStudents.length;
+  //   debugPrint("$len");
+  //   debugPrint("************getStudentsList DropDown value ************");
+  //   debugPrint(dropdownvalue);
+  //   //Check Data in Localdb
+  //   if (localStudents.length>0) {
+  //     setState(() {
+  //       attendanceCheckers = localStudents;
+  //     });
+  //     }
+  //   else{
 
-      for (int i = 0; i < attendanceCheckers.length; i++) {
-      try {
-        await _db.insertStudent({
-          "student_code": attendanceCheckers[i]['student_code'],
-          "full_name": attendanceCheckers[i]['full_name'],
-          "admission_no": attendanceCheckers[i]['admission_no'],
-          "absent_FN": attendanceCheckers[i]['absent_FN'],
-          "absent_AN": attendanceCheckers[i]['absent_AN'],
-          "status": attendanceCheckers[i]['status'],
-          "total_absent": attendanceCheckers[i]['total_absent'],
-          "school_id": attendanceCheckers[i]['school_id'],
-          "batch_name": attendanceCheckers[i]['batch_name'],
-          "batch_id": dropdownvalue,
-        });
-      } catch (e) {
-        continue;
-      }
-    }
+  //     for (int i = 0; i < attendanceCheckers.length; i++) {
+  //     try {
+  //       await _db.insertStudent({
+  //         "student_code": attendanceCheckers[i]['student_code'],
+  //         "full_name": attendanceCheckers[i]['full_name'],
+  //         "admission_no": attendanceCheckers[i]['admission_no'],
+  //         "absent_FN": attendanceCheckers[i]['absent_FN'],
+  //         "absent_AN": attendanceCheckers[i]['absent_AN'],
+  //         "status": attendanceCheckers[i]['status'],
+  //         "total_absent": attendanceCheckers[i]['total_absent'],
+  //         "school_id": attendanceCheckers[i]['school_id'],
+  //         "batch_name": attendanceCheckers[i]['batch_name'],
+  //         "batch_id": dropdownvalue,
+  //       });
+  //     } catch (e) {
+  //       continue;
+  //     }
+  //   }
 
-    }
+  //   }
     
-  }
+  // }
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -200,6 +206,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
       setState(() {
         selectedDate = picked;
       });
+      getStudentsData(dropdownvalue);
     }
   }
 

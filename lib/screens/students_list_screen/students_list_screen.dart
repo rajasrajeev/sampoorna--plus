@@ -65,8 +65,12 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
       setState(() {
         studentsList = localStudents;
       });
+      debugPrint("************LOCAL DB ************");
+      debugPrint("************Local Students List ************");
+      debugPrint("$localStudents");
     } else {
       getStudentsListFromApi();
+       debugPrint("************API CAll ************");
     }
   }
 

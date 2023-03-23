@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:student_management/constants.dart';
 import 'package:http/http.dart' as http;
 import 'package:student_management/services/jwt_token_parser.dart';
@@ -97,6 +98,12 @@ Future attendanceBetweenDates(date1, date2, school_id, batch_id) async {
 
 //API TO POST LOGIN
 Future attendanceOnDate(date, school_id, batch_id) async {
+    debugPrint("**************date************************");
+    debugPrint(date);
+        debugPrint("**************school_id************************");
+    debugPrint(school_id);
+        debugPrint("**************batch_id************************");
+    debugPrint(batch_id);
   final prefs = await SharedPreferences.getInstance();
   var token = await prefs.getString('token');
   final response = await http
@@ -107,7 +114,10 @@ Future attendanceOnDate(date, school_id, batch_id) async {
     "school_id": school_id,
     "batch_id": batch_id
   });
+    debugPrint("**************attendanceOnDate Response************************");
+    debugPrint("$response");
   return response;
+  
 }
 
 //API TO POST Add Attendance
