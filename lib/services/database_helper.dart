@@ -5,7 +5,7 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 
 class DatabaseHelper {
-  static const _dbName = "sampoornass_local_db.db";
+  static const _dbName = "sampoorna_local_db.db";
   static const _dbVersion = 1;
 
   //Student table
