@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:async';
 import 'dart:io';
 import 'package:permission_handler/permission_handler.dart';
@@ -15,62 +17,56 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  
-  String  token="";
-  bool isLogedIn=true;
+  String token = "";
+
   @override
   void initState() {
-     permission();
-
-    Timer(
-      const Duration(seconds: 4),
-      () => Navigator.pushReplacement(
-        context,
-        isLogedIn?
-        MaterialPageRoute(
-          builder: (context) => const MainScreen(),
-        ):
-         MaterialPageRoute(
-          builder: (context) => const LoginScreen(),
-        ),
-      ),
-    );
+    permission();
 
     super.initState();
   }
 
-
   getUserLoggin() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
-     token ="${prefs.getString('token')}";
+      token = "${prefs.getString('token')}";
     });
-    if(token!="null"){
-      isLogedIn=true;
-    }
-    else{
-      isLogedIn=false;
+    if (token != "null") {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const MainScreen(),
+        ),
+      );
+    } else {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const LoginScreen(),
+        ),
+      );
     }
   }
 
   permission() async {
     if (await Permission.storage.request().isGranted) {
-          getUserLoggin();
-    } else {
-      isLogedIn=false;
+      getUserLoggin();
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       body: UpgradeAlert(
         upgrader: Upgrader(
-          durationUntilAlertAgain:const Duration(days: 1),
-          dialogStyle:Platform.isIOS? UpgradeDialogStyle.cupertino:UpgradeDialogStyle.material,
+          durationUntilAlertAgain: const Duration(days: 1),
+          dialogStyle: Platform.isIOS
+              ? UpgradeDialogStyle.cupertino
+              : UpgradeDialogStyle.material,
           canDismissDialog: true,
-          shouldPopScope: ()=>true,
-         ),
+          shouldPopScope: () => true,
+        ),
         child: Column(
           children: <Widget>[
             const Spacer(),
