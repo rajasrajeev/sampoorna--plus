@@ -47,8 +47,6 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
       permittedBatches = data['permittedBatches'];
       dropdownvalue = permittedBatches[0]['batch_id'];
     });
-    // debugPrint("************Permitted Batches dropdownvalue ************");
-    // debugPrint(dropdownvalue);
 
     for (var i = 0; i < permittedBatches.length; i++) {
       setState(() {
@@ -62,25 +60,12 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
   }
 
   getStudentsList() async {
-
-    dynamic localStudents =await _db.getStudentsFromLocal(dropdownvalue);
-    debugPrint("************Local Students length************");
-    int len = localStudents.length;
-    debugPrint("$len");
-    debugPrint("************getStudentsList DropDown value ************");
-    debugPrint(dropdownvalue);
-    //Check Data in Localdb
-    if (localStudents.length>0) {
+    dynamic localStudents = await _db.getStudentsFromLocal(dropdownvalue);
+    if (localStudents.length > 0) {
       setState(() {
         studentsList = localStudents;
       });
-      debugPrint("************LOCAL DB ************");
-      debugPrint("************Local Students List ************");
-      debugPrint("$localStudents");
-      debugPrint("************ Students List************");
-      debugPrint("$studentsList");
     } else {
-      debugPrint("************API CALLL************");
       getStudentsListFromApi();
     }
   }
@@ -93,7 +78,7 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
       "school_id": prefs.getString('school_id'),
       "user_type": prefs.getString('user_type')
     };
-    
+
     //Function To Display Showdialog
     showDialogDisplay();
 
@@ -124,7 +109,6 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
   }
 
   syncStudentsList() async {
-
     for (int i = 0; i < studentsList.length; i++) {
       try {
         await _db.insertStudent({
@@ -144,8 +128,9 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
       }
     }
   }
-showDialogDisplay(){
-          showDialog(
+
+  showDialogDisplay() {
+    showDialog(
         // The user CANNOT close this dialog  by pressing outsite it
         barrierDismissible: true,
         context: context,
@@ -170,7 +155,8 @@ showDialogDisplay(){
             ),
           );
         });
-}
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
