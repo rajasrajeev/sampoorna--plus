@@ -62,15 +62,22 @@ class DatabaseHelper {
 
   Future<List<Map<String, dynamic>>> getStudentsFromLocal(
       dropdownBatchId) async {
-    // debugPrint("***********Database helper batchId*************");
-    // debugPrint("$dropdownBatchId");
-    // print(dropdownBatchId.runtimeType);
     Database db = await instance.database;
     // return await db.query(_studentTable);
     return await db.query(_studentTable,
         //where: '$studentId = ?', whereArgs: [1]);
         where: '$batchId LIKE ?',
         whereArgs: ['%$dropdownBatchId%']);
+  }
+
+  Future<List<Map<String, dynamic>>> getStudentSearch(
+      searchText, dropdownBatchId) async {
+    Database db = await instance.database;
+    // return await db.query(_studentTable);
+    return await db.query(_studentTable,
+        //where: '$studentId = ?', whereArgs: [1]);
+        where: '$batchId LIKE ? AND $fullName LIKE ?',
+        whereArgs: ['%$dropdownBatchId%', '%$searchText%']);
   }
 
   Future<void> delete() async {

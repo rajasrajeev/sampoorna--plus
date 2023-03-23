@@ -26,7 +26,7 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
   dynamic studentsList = [];
   List permittedBatches = [];
   String dropdownvalue = '';
-  final TextEditingController SearchController = TextEditingController();
+  final TextEditingController searchController = TextEditingController();
   // List of items in our dropdown menu
   List items = [];
   DatabaseHelper _db = DatabaseHelper.instance;
@@ -216,12 +216,23 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
                         minLine: 1,
                         maxLine: 1,
                         enabled: true,
-                        controller: SearchController,
+                        controller: searchController,
                         validator: (value) {
                           if (value == null || value.length < 1) {
                             return "please enter username";
                           }
                           return null;
+                        },
+                        onChanged: (value) async {
+                          dynamic localStudents =
+                              await _db.getStudentSearch(value, dropdownvalue);
+                          if (localStudents.length > 0) {
+                            setState(() {
+                              studentsList = localStudents;
+                            });
+                          } else {
+                            getStudentsList();
+                          }
                         },
                       ),
                     ),

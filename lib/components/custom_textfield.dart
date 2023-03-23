@@ -1,3 +1,5 @@
+// ignore_for_file: void_checks
+
 import 'package:flutter/material.dart';
 import 'package:student_management/constants.dart';
 
@@ -8,16 +10,18 @@ class CustomTextField extends StatelessWidget {
   final Function? validator;
   final bool? enabled;
   final TextEditingController? controller;
+  final Function? onChanged;
 
-  const CustomTextField({
-    Key? key,
-    this.minLine,
-    this.maxLine,
-    this.validator,
-    this.label,
-    this.controller,
-    this.enabled,
-  }) : super(key: key);
+  const CustomTextField(
+      {Key? key,
+      this.minLine,
+      this.maxLine,
+      this.validator,
+      this.label,
+      this.controller,
+      this.enabled,
+      this.onChanged})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -66,6 +70,9 @@ class CustomTextField extends StatelessWidget {
         ),
         validator: (value) {
           return validator!(value);
+        },
+        onChanged: (value) {
+          return onChanged!(value);
         },
       ),
     );
