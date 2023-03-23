@@ -62,40 +62,15 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
   }
 
   getStudentsList() async {
-    showDialog(
-        // The user CANNOT close this dialog  by pressing outsite it
-        barrierDismissible: true,
-        context: context,
-        builder: (_) {
-          return Dialog(
-            // The background color
-            backgroundColor: Colors.white,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 20),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: const [
-                  // The loading indicator
-                  CircularProgressIndicator(),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  // Some text
-                  Text('Loading...')
-                ],
-              ),
-            ),
-          );
-        });
 
-    dynamic localStudents = await _db.getStudentsFromLocal(dropdownvalue);
+    dynamic localStudents =await _db.getStudentsFromLocal(dropdownvalue);
     debugPrint("************Local Students length************");
     int len = localStudents.length;
     debugPrint("$len");
     debugPrint("************getStudentsList DropDown value ************");
     debugPrint(dropdownvalue);
     //Check Data in Localdb
-    if (localStudents.length > 0) {
+    if (localStudents.length>0) {
       setState(() {
         studentsList = localStudents;
       });
@@ -118,32 +93,9 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
       "school_id": prefs.getString('school_id'),
       "user_type": prefs.getString('user_type')
     };
-
-    showDialog(
-        // The user CANNOT close this dialog  by pressing outsite it
-        barrierDismissible: true,
-        context: context,
-        builder: (_) {
-          return Dialog(
-            // The background color
-            backgroundColor: Colors.white,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 20),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: const [
-                  // The loading indicator
-                  CircularProgressIndicator(),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  // Some text
-                  Text('Loading...')
-                ],
-              ),
-            ),
-          );
-        });
+    
+    //Function To Display Showdialog
+    showDialogDisplay();
 
     final res = await studentList(data);
     final responseData = jsonDecode(res.body);
@@ -172,9 +124,10 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
   }
 
   syncStudentsList() async {
+
     for (int i = 0; i < studentsList.length; i++) {
       try {
-        dynamic response = await _db.insertStudent({
+        await _db.insertStudent({
           "student_code": studentsList[i]['student_code'],
           "full_name": studentsList[i]['full_name'],
           "admission_no": studentsList[i]['admission_no'],
@@ -191,7 +144,33 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
       }
     }
   }
-
+showDialogDisplay(){
+          showDialog(
+        // The user CANNOT close this dialog  by pressing outsite it
+        barrierDismissible: true,
+        context: context,
+        builder: (_) {
+          return Dialog(
+            // The background color
+            backgroundColor: Colors.white,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 20),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: const [
+                  // The loading indicator
+                  CircularProgressIndicator(),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  // Some text
+                  Text('Loading...')
+                ],
+              ),
+            ),
+          );
+        });
+}
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
