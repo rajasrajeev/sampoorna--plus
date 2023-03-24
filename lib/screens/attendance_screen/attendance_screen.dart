@@ -271,6 +271,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
           Expanded(
             child: SingleChildScrollView(
               child: DataTable(
+                columnSpacing: 30.0,
                 columns: <DataColumn>[
                   const DataColumn(
                     label: Text(
