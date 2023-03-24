@@ -88,7 +88,7 @@ class _CommonBannerState extends State<CommonBanner> {
                         ),
                       ),
                       SizedBox(
-                        width: size.width * 0.3,
+                        width: size.width * 0.4,
                         height: size.height * 0.05,
                         child: ListView.builder(
                             itemCount: permittedBatches.length,

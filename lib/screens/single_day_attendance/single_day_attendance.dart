@@ -32,7 +32,9 @@ class _SingleDayAttendanceScreenState extends State<SingleDayAttendanceScreen> {
   @override
   void initState() {
     super.initState();
-    getStudentsData(widget.date, widget.schoolId, widget.batchId);
+    Future.delayed(Duration.zero, () {
+      getStudentsData(widget.date, widget.schoolId, widget.batchId);
+    });
   }
 
   getStudentsData(String date, String schoolId, String batchId) async {
@@ -91,7 +93,7 @@ class _SingleDayAttendanceScreenState extends State<SingleDayAttendanceScreen> {
   }
 
   forenoonOrAfternoon(value, text) {
-    if (value == "1" || value == 1) {
+    if (value == 0 || value == "0" || value == null) {
       return Container(
           width: 35,
           height: 35,
