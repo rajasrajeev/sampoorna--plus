@@ -21,7 +21,7 @@ class ProfileDetails extends StatelessWidget {
             width: size.width * 0.40,
             child: Text(title,
                 style: const TextStyle(
-                  fontSize: 18,
+                  fontSize: 16,
                   color: Colors.black87,
                   fontWeight: FontWeight.bold,
                 )),
@@ -31,9 +31,9 @@ class ProfileDetails extends StatelessWidget {
             width: size.width * 0.40,
             child: Text(value,
                 style: const TextStyle(
-                  fontSize: 18,
+                  fontSize: 16,
                   color: Colors.black45,
-                  fontWeight: FontWeight.w800,
+                  fontWeight: FontWeight.w500,
                 )),
           ),
           const Spacer(),

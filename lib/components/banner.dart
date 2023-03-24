@@ -68,7 +68,7 @@ class _CommonBannerState extends State<CommonBanner> {
                     borderRadius: BorderRadius.circular(100.0),
                     child: Image.asset(
                       widget.imageUrl,
-                      fit: BoxFit.cover,
+                      fit: BoxFit.contain,
                       height: 75,
                       width: 75,
                     ),

@@ -96,7 +96,7 @@ class _TeachersProfileScreenState extends State<TeachersProfileScreen> {
       body: Column(
         children: <Widget>[
           ProfileHeader(
-              imageUrl: "assets/images/profile.png",
+              imageUrl: "assets/images/teacher.png",
               name:
                   "${teachersProfile['first_name']} ${teachersProfile['last_name']}",
               grade: grade),

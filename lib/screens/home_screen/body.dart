@@ -63,7 +63,7 @@ class _BodyState extends State<Body> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             CommonBanner(
-                imageUrl: "assets/images/profile.png",
+                imageUrl: "assets/images/teacher.png",
                 name: userName,
                 grade: grade),
             const SizedBox(height: 10),
