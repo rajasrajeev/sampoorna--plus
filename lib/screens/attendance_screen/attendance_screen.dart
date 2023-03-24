@@ -420,6 +420,14 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
 
                     if (res.statusCode == 200) {
                       Navigator.pop(context);
+                      Fluttertoast.showToast(
+                        msg: "Attendance Submitted Succesfully",
+                        gravity: ToastGravity.TOP,
+                        timeInSecForIosWeb: 10,
+                        backgroundColor: Colors.green,
+                        textColor: Colors.white,
+                        fontSize: 15.0,
+                      );
                     } else if (res.statusCode == 202) {
                       final responseData = jsonDecode(res.body);
                       Navigator.pop(context);

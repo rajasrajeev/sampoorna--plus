@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:student_management/constants.dart';
 
 class ProfileHeader extends StatefulWidget {
   final String imageUrl;
@@ -26,19 +27,17 @@ class _ProfileHeaderState extends State<ProfileHeader> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Container(
-                width: 130,
-                height: 130,
-                decoration:
-                    BoxDecoration(borderRadius: BorderRadius.circular(15)),
+                width: size.width*0.25,
+                height: size.height*0.15,
                 alignment: Alignment.center,
                 child:
                     ClipRRect(
                     borderRadius: BorderRadius.circular(100.0),
                     child: Image.asset(
                       widget.imageUrl,
-                      fit: BoxFit.cover,
-                      height:size.height*0.25,
-                      width:size.width*0.25,
+                      fit: BoxFit.fill,
+                      height:size.height*0.3,
+                      width:size.width*0.3,
                     ),
                   ),
                 // Image.asset(widget.imageUrl)

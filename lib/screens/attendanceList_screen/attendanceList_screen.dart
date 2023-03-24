@@ -132,7 +132,7 @@ class _AttendanceListState extends State<AttendanceList> {
         child: Column(
           children: <Widget>[
             const CommonBanner(
-                imageUrl: "assets/images/profile.png",
+                imageUrl: "assets/images/teacher.png",
                 name: "Test Teacher",
                 grade: "VIIIA"),
             const SizedBox(height: 10),
@@ -141,7 +141,7 @@ class _AttendanceListState extends State<AttendanceList> {
                 const Spacer(),
                 Container(
                   padding: EdgeInsets.all(size.width * 0.03),
-                  height: 40,
+                  height:size.height * 0.065,
                   width: size.width * 0.60,
                   decoration: BoxDecoration(
                     color: Colors.white,
