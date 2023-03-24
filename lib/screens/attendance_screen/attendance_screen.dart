@@ -270,101 +270,97 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
           const SizedBox(height: 20),
           Expanded(
             child: SingleChildScrollView(
-              child: SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                child: DataTable(
-                  columns: <DataColumn>[
-                    const DataColumn(
-                      label: Text(
-                        'Id',
-                        style: TextStyle(fontStyle: FontStyle.italic),
-                      ),
+              child: DataTable(
+                columns: <DataColumn>[
+                  const DataColumn(
+                    label: Text(
+                      'Id',
+                      style: TextStyle(fontStyle: FontStyle.italic),
                     ),
-                    const DataColumn(
-                      label: Text(
-                        'Name',
-                        style: TextStyle(fontStyle: FontStyle.italic),
-                      ),
+                  ),
+                  const DataColumn(
+                    label: Text(
+                      'Name',
+                      style: TextStyle(fontStyle: FontStyle.italic),
                     ),
-                    DataColumn(
-                      label: Row(
-                        children: [
-                          Checkbox(
-                              value: checked1,
-                              onChanged: (val) {
-                                for (var i = 0; i < studentsList.length; i++) {
-                                  setState(() {
-                                    attendanceCheckers[i]['fn'] = !checked1;
-                                  });
-                                }
+                  ),
+                  DataColumn(
+                    label: Row(
+                      children: [
+                        Checkbox(
+                            value: checked1,
+                            onChanged: (val) {
+                              for (var i = 0; i < studentsList.length; i++) {
                                 setState(() {
-                                  checked1 = !checked1;
+                                  attendanceCheckers[i]['fn'] = !checked1;
                                 });
-                              }),
-                          const Text(
-                            'FN',
-                            style: TextStyle(fontStyle: FontStyle.italic),
-                          ),
-                        ],
-                      ),
+                              }
+                              setState(() {
+                                checked1 = !checked1;
+                              });
+                            }),
+                        const Text(
+                          'FN',
+                          style: TextStyle(fontStyle: FontStyle.italic),
+                        ),
+                      ],
                     ),
-                    DataColumn(
-                      label: Row(
-                        children: [
-                          Checkbox(
-                              value: checked10,
-                              onChanged: (val) {
-                                for (var i = 0; i < studentsList.length; i++) {
-                                  setState(() {
-                                    attendanceCheckers[i]['an'] = !checked10;
-                                  });
-                                }
+                  ),
+                  DataColumn(
+                    label: Row(
+                      children: [
+                        Checkbox(
+                            value: checked10,
+                            onChanged: (val) {
+                              for (var i = 0; i < studentsList.length; i++) {
                                 setState(() {
-                                  checked10 = !checked10;
+                                  attendanceCheckers[i]['an'] = !checked10;
                                 });
-                              }),
-                          const Text(
-                            'AN',
-                            style: TextStyle(fontStyle: FontStyle.italic),
-                          ),
-                        ],
-                      ),
+                              }
+                              setState(() {
+                                checked10 = !checked10;
+                              });
+                            }),
+                        const Text(
+                          'AN',
+                          style: TextStyle(fontStyle: FontStyle.italic),
+                        ),
+                      ],
                     ),
-                  ],
-                  rows: List.generate(studentsList.length, (index) {
-                    Map<String, dynamic> attendance =
-                        attendanceCheckers.firstWhere((item) =>
-                            item['student_id'] ==
-                            studentsList[index]["student_code"]);
-                    return DataRow(cells: <DataCell>[
-                      DataCell(Text('${index + 1}')),
-                      DataCell(Text('${studentsList[index]["full_name"]}')),
-                      DataCell(Checkbox(
-                        value: attendance["fn"],
-                        onChanged: (bool? val) {
-                          setState(() {
-                            attendance["fn"] = val!;
-                          });
-                        },
-                      )),
-                      DataCell(Checkbox(
-                        value: attendance["an"],
-                        onChanged: (bool? val) {
-                          setState(() {
-                            attendance["an"] = val!;
-                          });
-                        },
-                      )),
-                    ]);
-                  }),
-                ),
+                  ),
+                ],
+                rows: List.generate(studentsList.length, (index) {
+                  Map<String, dynamic> attendance =
+                      attendanceCheckers.firstWhere((item) =>
+                          item['student_id'] ==
+                          studentsList[index]["student_code"]);
+                  return DataRow(cells: <DataCell>[
+                    DataCell(Text('${index + 1}')),
+                    DataCell(Text('${studentsList[index]["full_name"]}')),
+                    DataCell(Checkbox(
+                      value: attendance["fn"],
+                      onChanged: (bool? val) {
+                        setState(() {
+                          attendance["fn"] = val!;
+                        });
+                      },
+                    )),
+                    DataCell(Checkbox(
+                      value: attendance["an"],
+                      onChanged: (bool? val) {
+                        setState(() {
+                          attendance["an"] = val!;
+                        });
+                      },
+                    )),
+                  ]);
+                }),
               ),
             ),
           ),
-          Positioned(
-              bottom: 50,
-              //left: 50,
-              child: SubmitButton(
+          Column(
+            children: [
+              SubmitButton(
                   label: "Submit",
                   onClick: () async {
                     showDialog(
@@ -447,7 +443,9 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                         fontSize: 15.0,
                       );
                     }
-                  }))
+                  }),
+            ],
+          )
         ],
       ),
       // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,

@@ -115,24 +115,24 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
       ),
       body: Column(
         children: <Widget>[
-          const ProfileHeader(
-              imageUrl: "assets/images/profile.png",
-              name: "Student 1",
-              grade: "VIII A"),
+           ProfileHeader(
+              imageUrl:(studentDetail['personal_details']['gender']=="Male")? "assets/images/boy.jpg": "assets/images/girl.jpg",
+              name: studentDetail['personal_details']['full_name'],
+              grade: studentDetail['current_details']['class']+studentDetail['current_details']['division']),
           Center(
             child: Column(
               children: <Widget>[
                 ProfileDetails(
-                    title: "Full Name",
+                    title: "FULL NAME",
                     value: studentDetail['personal_details']['full_name']),
                 ProfileDetails(
-                    title: "Admission No",
+                    title: "ADMISSION NO",
                     value: studentDetail['personal_details']['admission_no']),
                 ProfileDetails(
-                    title: "Gender",
+                    title: "GENDER",
                     value: studentDetail['personal_details']['gender']),
                 ProfileDetails(
-                    title: "School Name",
+                    title: "SCHOOL NAME",
                     value: studentDetail['personal_details']['school_name']),
               ],
             ),
