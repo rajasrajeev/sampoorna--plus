@@ -24,6 +24,8 @@ class _AttendanceListState extends State<AttendanceList> {
   List permittedBatches = [];
   String dropdownvalue = '';
   String? schoolId;
+  String grade = "";
+  String userName = "";
 // List of items in our dropdown menu
   List items = [];
 
@@ -38,6 +40,10 @@ class _AttendanceListState extends State<AttendanceList> {
     var details = await prefs.getString('loginData');
     schoolId = await prefs.getString('school_id');
     dynamic data = json.decode(details!);
+        setState(() {
+      userName ="${prefs.getString('first_name')} ${prefs.getString('last_name')}";
+      grade = "${prefs.getString('class')} ${prefs.getString('name')}";
+    });
     setState(() {
       permittedBatches = data['permittedBatches'];
       dropdownvalue = permittedBatches[0]['batch_id'];
@@ -46,8 +52,7 @@ class _AttendanceListState extends State<AttendanceList> {
     for (var i = 0; i < permittedBatches.length; i++) {
       setState(() {
         items.add({
-          "grade":
-              '${permittedBatches[i]['class']} ${permittedBatches[i]['name']}',
+          "grade":'${permittedBatches[i]['class']} ${permittedBatches[i]['name']}',
           "batch_id": '${permittedBatches[i]['batch_id']}'
         });
       });
@@ -131,10 +136,10 @@ class _AttendanceListState extends State<AttendanceList> {
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            const CommonBanner(
+             CommonBanner(
                 imageUrl: "assets/images/teacher.png",
-                name: "Test Teacher",
-                grade: "VIIIA"),
+                name: userName,
+                grade: grade),
             const SizedBox(height: 10),
             Row(
               children: <Widget>[

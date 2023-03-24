@@ -179,54 +179,51 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
             padding: const EdgeInsets.all(8.0),
             child: Row(
               children: <Widget>[
-                SizedBox(
-                  width: size.width * 0.5,
-                  child: Container(
-                    padding: EdgeInsets.all(size.width * 0.03),
-                    height: size.height * 0.07,
-                    width: size.width * 0.30,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(30.0),
-                      border: Border.all(
-                        style: BorderStyle.solid,
-                        width: 2.0,
-                        color: primaryColor,
-                      ),
+                Container(
+                  padding: EdgeInsets.all(size.width * 0.03),
+                  height: size.height * 0.08,
+                  width: size.width * 0.40,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(30.0),
+                    border: Border.all(
+                      style: BorderStyle.solid,
+                      width: 2.0,
+                      color: primaryColor,
                     ),
-                    child: DropdownButton(
-                      value: dropdownvalue,
-                      icon: const Icon(Icons.keyboard_arrow_down),
-                      isExpanded: true,
-                      alignment: Alignment.bottomCenter,
-                      dropdownColor: Colors.white,
-                      underline: const SizedBox(),
-                      elevation: 16,
-                      style: const TextStyle(color: Colors.black87),
-                      // Array list of items
-                      items: items
-                          .map(
-                            (map) => DropdownMenuItem(
-                              value: map['batch_id'],
-                              child: Text(map['grade']),
-                            ),
-                          )
-                          .toList(),
-                      // After selecting the desired option,it will
-                      // change button value to selected value
-                      onChanged: (newValue) {
-                        setState(() {
-                          dropdownvalue = newValue.toString();
-                        });
-                        getStudentsData(dropdownvalue);
-                      },
-                    ),
+                  ),
+                  child: DropdownButton(
+                    value: dropdownvalue,
+                    icon: const Icon(Icons.keyboard_arrow_down),
+                    isExpanded: true,
+                    alignment: Alignment.bottomCenter,
+                    dropdownColor: Colors.white,
+                    underline: const SizedBox(),
+                    elevation: 16,
+                    style: const TextStyle(color: Colors.black87),
+                    // Array list of items
+                    items: items
+                        .map(
+                          (map) => DropdownMenuItem(
+                            value: map['batch_id'],
+                            child: Text(map['grade']),
+                          ),
+                        )
+                        .toList(),
+                    // After selecting the desired option,it will
+                    // change button value to selected value
+                    onChanged: (newValue) {
+                      setState(() {
+                        dropdownvalue = newValue.toString();
+                      });
+                      getStudentsData(dropdownvalue);
+                    },
                   ),
                 ),
                 const Spacer(),
                 Container(
-                  //padding: EdgeInsets.all(size.width * 0.02),
-                  height: 60,
+                  padding: EdgeInsets.all(size.width * 0.014),
+                  height: size.height * 0.08,
                   width: size.width * 0.40,
                   decoration: BoxDecoration(
                     borderRadius: const BorderRadius.all(Radius.circular(30)),
@@ -237,31 +234,33 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                       color: primaryColor,
                     ),
                   ),
-                  child: Row(
-                    children: <Widget>[
-                      const Spacer(),
-                      Text(
-                        selectedDate.toString().substring(0, 10),
-                        style: const TextStyle(
-                          color: primaryColor,
-                          fontSize: 20,
-                          fontWeight: FontWeight.normal,
+                  child: Center(
+                    child: Row(
+                      children: <Widget>[
+                        const Spacer(),
+                        Text(
+                          selectedDate.toString().substring(0, 10),
+                          style: const TextStyle(
+                            color: primaryColor,
+                            fontSize: 16,
+                            fontWeight: FontWeight.normal,
+                          ),
                         ),
-                      ),
-                      // SizedBox(width: size.width*1),
-
-                      IconButton(
-                        onPressed: () {
-                          _selectDate(context);
-                        },
-                        icon: const Icon(
-                          Icons.date_range,
-                          size: 30,
-                          color: primaryColor,
+                        // SizedBox(width: size.width*1),
+                                  
+                        IconButton(
+                          onPressed: () {
+                            _selectDate(context);
+                          },
+                          icon: const Icon(
+                            Icons.date_range,
+                            size: 20,
+                            color: primaryColor,
+                          ),
                         ),
-                      ),
-                      // const Spacer(),
-                    ],
+                        // const Spacer(),
+                      ],
+                    ),
                   ),
                 ),
               ],
@@ -271,7 +270,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
           Expanded(
             child: SingleChildScrollView(
               child: DataTable(
-                columnSpacing: 30.0,
+                columnSpacing: size.width*0.1,
                 columns: <DataColumn>[
                   const DataColumn(
                     label: Text(

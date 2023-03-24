@@ -26,6 +26,8 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
   dynamic studentsList = [];
   List permittedBatches = [];
   String dropdownvalue = '';
+  String grade = "";
+  String userName = "";
   final TextEditingController searchController = TextEditingController();
   // List of items in our dropdown menu
   List items = [];
@@ -41,7 +43,10 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
     final prefs = await SharedPreferences.getInstance();
     var details = await prefs.getString('loginData');
     dynamic data = json.decode(details!);
-
+    setState(() {
+      userName ="${prefs.getString('first_name')} ${prefs.getString('last_name')}";
+      grade = "${prefs.getString('class')} ${prefs.getString('name')}";
+    });
     setState(() {
       permittedBatches = data['permittedBatches'];
       dropdownvalue = permittedBatches[0]['batch_id'];
@@ -190,10 +195,10 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
           SingleChildScrollView(
             child: Column(
               children: <Widget>[
-                const CommonBanner(
+                 CommonBanner(
                     imageUrl: "assets/images/teacher.png",
-                    name: "Test Teacher",
-                    grade: "VIIIA"),
+                    name: userName,
+                    grade: grade),
                 const SizedBox(height: 10),
                 Row(
                   children: <Widget>[
