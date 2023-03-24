@@ -191,7 +191,7 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
             child: Column(
               children: <Widget>[
                 const CommonBanner(
-                    imageUrl: "assets/images/profile.png",
+                    imageUrl: "assets/images/teacher.png",
                     name: "Test Teacher",
                     grade: "VIIIA"),
                 const SizedBox(height: 10),

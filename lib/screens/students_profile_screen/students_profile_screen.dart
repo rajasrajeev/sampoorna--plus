@@ -116,7 +116,7 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
       body: Column(
         children: <Widget>[
            ProfileHeader(
-              imageUrl:(studentDetail['personal_details']['gender']=="Male")? "assets/images/boy.jpg": "assets/images/girl.jpg",
+              imageUrl:(studentDetail['personal_details']['gender']=="Male")? "assets/images/boy.png": "assets/images/girl.png",
               name: studentDetail['personal_details']['full_name'],
               grade: studentDetail['current_details']['class']+studentDetail['current_details']['division']),
           Center(
