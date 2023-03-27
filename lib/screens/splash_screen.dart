@@ -21,9 +21,8 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   void initState() {
-    permission();
-
     super.initState();
+    permission();
   }
 
   getUserLoggin() async {
@@ -50,11 +49,15 @@ class _SplashScreenState extends State<SplashScreen> {
 
   permission() async {
     if (await Permission.storage.request().isGranted) {
-      getUserLoggin();
-    }
-    else{
-      getUserLoggin();
-      
+      Timer(
+      const Duration(seconds: 2),
+      () =>getUserLoggin(),
+      );
+    } else {
+      Timer(
+      const Duration(seconds: 2),
+      () =>getUserLoggin(),
+      );
     }
   }
 
