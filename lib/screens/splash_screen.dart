@@ -52,6 +52,10 @@ class _SplashScreenState extends State<SplashScreen> {
     if (await Permission.storage.request().isGranted) {
       getUserLoggin();
     }
+    else{
+      getUserLoggin();
+      
+    }
   }
 
   @override
