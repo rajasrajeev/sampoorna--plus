@@ -129,7 +129,9 @@ class _SingleDayAttendanceScreenState extends State<SingleDayAttendanceScreen> {
             const CommonBanner(
                 imageUrl: "assets/images/profile.png",
                 name: "Test Teacher",
-                grade: "VIIIA"),
+                grade: "VIIIA",
+                showDiv: false,
+                ),
             const SizedBox(height: 10),
             Text(widget.date),
             const SizedBox(height: 20),

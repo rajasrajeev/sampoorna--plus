@@ -10,12 +10,15 @@ class CommonBanner extends StatefulWidget {
   final String imageUrl;
   final String name;
   final String grade;
+  final bool showDiv;
 
   const CommonBanner(
       {super.key,
       required this.imageUrl,
       required this.name,
-      required this.grade});
+      required this.grade,
+      required this.showDiv
+      });
 
   @override
   State<CommonBanner> createState() => _CommonBannerState();
@@ -87,6 +90,7 @@ class _CommonBannerState extends State<CommonBanner> {
                           fontWeight: FontWeight.w700,
                         ),
                       ),
+                      widget.showDiv !=false ?
                       SizedBox(
                         width: size.width * 0.4,
                         height: size.height * 0.05,
@@ -96,7 +100,7 @@ class _CommonBannerState extends State<CommonBanner> {
                             shrinkWrap: true,
                             itemBuilder: (context, index) {
                               return Container(
-                                width: size.width * 0.1,
+                                width: size.width * 0.2,
                                 // height: size.height*0.02,
                                 margin: const EdgeInsets.all(8),
                                 padding: const EdgeInsets.all(0.1),
@@ -116,7 +120,7 @@ class _CommonBannerState extends State<CommonBanner> {
                                 ),
                               );
                             }),
-                      )
+                      ):const SizedBox(),
                     ],
                   ),
                   const Spacer(),

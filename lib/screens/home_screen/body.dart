@@ -65,7 +65,9 @@ class _BodyState extends State<Body> {
             CommonBanner(
                 imageUrl: "assets/images/teacher.png",
                 name: userName,
-                grade: grade),
+                grade: grade,
+                showDiv: true,
+                ),
             const SizedBox(height: 10),
             Padding(
               padding: const EdgeInsets.all(8.0),

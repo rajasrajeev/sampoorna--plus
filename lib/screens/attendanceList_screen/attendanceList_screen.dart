@@ -139,7 +139,9 @@ class _AttendanceListState extends State<AttendanceList> {
              CommonBanner(
                 imageUrl: "assets/images/teacher.png",
                 name: userName,
-                grade: grade),
+                grade: grade,
+                showDiv: false,
+                ),
             const SizedBox(height: 10),
             Row(
               children: <Widget>[
