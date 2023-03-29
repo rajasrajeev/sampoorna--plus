@@ -121,88 +121,91 @@ class _SingleDayAttendanceScreenState extends State<SingleDayAttendanceScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text("Attendance of Students")),
-      body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            const CommonBanner(
-                imageUrl: "assets/images/profile.png",
-                name: "Test Teacher",
-                grade: "VIIIA",
-                showDiv: false,
-                ),
-            const SizedBox(height: 10),
-            Text(widget.date),
-            const SizedBox(height: 20),
-            Row(
-              children: <Widget>[
-                Expanded(
-                  child: SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.64,
-                    child: _loading == false && attendanceDates.length > 0
-                        ? ListView.builder(
-                            itemCount: attendanceDates.length,
-                            shrinkWrap: true,
-                            itemBuilder: (context, index) {
-                              return GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const IndividualAttendanceScreen()),
-                                  );
-                                },
-                                child: Card(
-                                  borderOnForeground: true,
-                                  margin: const EdgeInsets.symmetric(
-                                      vertical: 5, horizontal: 15),
-                                  child: Padding(
-                                      padding: const EdgeInsets.all(10),
-                                      child: Row(
-                                        children: [
-                                          Container(
-                                              width: 70,
-                                              height: 70,
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          15)),
-                                              alignment: Alignment.center,
-                                              child: Image.asset(
-                                                  "assets/images/profile.png")),
-                                          const SizedBox(width: 30),
-                                          SizedBox(
-                                            width: 90,
-                                            height: 40,
-                                            child: Center(
-                                              child: Text(
-                                                  "${attendanceDates[index]["full_name"]}"),
-                                            ),
-                                          ),
-                                          const SizedBox(width: 30),
-                                          forenoonOrAfternoon(
-                                              attendanceDates[index]
-                                                  ["absent_FN"],
-                                              "FN"),
-                                          const SizedBox(width: 5),
-                                          forenoonOrAfternoon(
-                                              attendanceDates[index]
-                                                  ["absent_AN"],
-                                              'AN'),
-                                        ],
-                                      )),
-                                ),
-                              );
-                            })
-                        : const Center(child: Text("Loading...")),
+    return SafeArea(
+        top: true,
+      child: Scaffold(
+        appBar: AppBar(title: const Text("Attendance of Students")),
+        body: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              const CommonBanner(
+                  imageUrl: "assets/images/profile.png",
+                  name: "Test Teacher",
+                  grade: "VIIIA",
+                  showDiv: false,
                   ),
-                )
-              ],
-            ),
-            const SizedBox(width: 100),
-          ],
+              const SizedBox(height: 10),
+              Text(widget.date),
+              const SizedBox(height: 20),
+              Row(
+                children: <Widget>[
+                  Expanded(
+                    child: SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.64,
+                      child: _loading == false && attendanceDates.length > 0
+                          ? ListView.builder(
+                              itemCount: attendanceDates.length,
+                              shrinkWrap: true,
+                              itemBuilder: (context, index) {
+                                return GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const IndividualAttendanceScreen()),
+                                    );
+                                  },
+                                  child: Card(
+                                    borderOnForeground: true,
+                                    margin: const EdgeInsets.symmetric(
+                                        vertical: 5, horizontal: 15),
+                                    child: Padding(
+                                        padding: const EdgeInsets.all(10),
+                                        child: Row(
+                                          children: [
+                                            Container(
+                                                width: 70,
+                                                height: 70,
+                                                decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            15)),
+                                                alignment: Alignment.center,
+                                                child: Image.asset(
+                                                    "assets/images/profile.png")),
+                                            const SizedBox(width: 30),
+                                            SizedBox(
+                                              width: 90,
+                                              height: 40,
+                                              child: Center(
+                                                child: Text(
+                                                    "${attendanceDates[index]["full_name"]}"),
+                                              ),
+                                            ),
+                                            const SizedBox(width: 30),
+                                            forenoonOrAfternoon(
+                                                attendanceDates[index]
+                                                    ["absent_FN"],
+                                                "FN"),
+                                            const SizedBox(width: 5),
+                                            forenoonOrAfternoon(
+                                                attendanceDates[index]
+                                                    ["absent_AN"],
+                                                'AN'),
+                                          ],
+                                        )),
+                                  ),
+                                );
+                              })
+                          : const Center(child: Text("Loading...")),
+                    ),
+                  )
+                ],
+              ),
+              const SizedBox(width: 100),
+            ],
+          ),
         ),
       ),
     );

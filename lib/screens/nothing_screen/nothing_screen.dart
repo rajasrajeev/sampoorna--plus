@@ -15,11 +15,14 @@ class _NothingState extends State<Nothing> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     // ignore: prefer_const_constructors
-    return Scaffold(
-      key: key,
-      appBar:AppBar(),
-      body: const Center(child: Text("Under Maintenance")),
-      backgroundColor: Colors.white,
+    return SafeArea(
+        top: true,
+      child: Scaffold(
+        key: key,
+        appBar:AppBar(),
+        body: const Center(child: Text("Under Maintenance")),
+        backgroundColor: Colors.white,
+      ),
     );
   }
 }

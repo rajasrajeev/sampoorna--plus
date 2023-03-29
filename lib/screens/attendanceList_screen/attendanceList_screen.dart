@@ -128,73 +128,76 @@ class _AttendanceListState extends State<AttendanceList> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Attendance List"),
-        elevation: 0,
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-             CommonBanner(
-                imageUrl: "assets/images/teacher.png",
-                name: userName,
-                grade: grade,
-                showDiv: false,
-                ),
-            const SizedBox(height: 10),
-            Row(
-              children: <Widget>[
-                const Spacer(),
-                Container(
-                  padding: EdgeInsets.all(size.width * 0.03),
-                  height:size.height * 0.065,
-                  width: size.width * 0.60,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(30.0),
-                    border: Border.all(
-                      style: BorderStyle.solid,
-                      width: 2.0,
-                      color: primaryColor,
+    return SafeArea(
+        top: true,
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text("Attendance List"),
+          elevation: 0,
+        ),
+        body: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+               CommonBanner(
+                  imageUrl: "assets/images/teacher.png",
+                  name: userName,
+                  grade: grade,
+                  showDiv: false,
+                  ),
+              const SizedBox(height: 10),
+              Row(
+                children: <Widget>[
+                  const Spacer(),
+                  Container(
+                    padding: EdgeInsets.all(size.width * 0.03),
+                    height:size.height * 0.065,
+                    width: size.width * 0.60,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(30.0),
+                      border: Border.all(
+                        style: BorderStyle.solid,
+                        width: 2.0,
+                        color: primaryColor,
+                      ),
+                    ),
+                    child: DropdownButton(
+                      value: dropdownvalue,
+                      icon: const Icon(Icons.keyboard_arrow_down),
+                      isExpanded: true,
+                      alignment: Alignment.bottomCenter,
+                      dropdownColor: Colors.white,
+                      underline: const SizedBox(),
+                      elevation: 16,
+                      style: const TextStyle(color: Colors.black87),
+                      // Array list of items
+                      items: items
+                          .map(
+                            (map) => DropdownMenuItem(
+                              value: map['batch_id'],
+                              child: Text(map['grade']),
+                            ),
+                          )
+                          .toList(),
+                      // After selecting the desired option,it will
+                      // change button value to selected value
+                      onChanged: (newValue) {
+                        setState(() {
+                          dropdownvalue = newValue.toString();
+                        });
+                      },
                     ),
                   ),
-                  child: DropdownButton(
-                    value: dropdownvalue,
-                    icon: const Icon(Icons.keyboard_arrow_down),
-                    isExpanded: true,
-                    alignment: Alignment.bottomCenter,
-                    dropdownColor: Colors.white,
-                    underline: const SizedBox(),
-                    elevation: 16,
-                    style: const TextStyle(color: Colors.black87),
-                    // Array list of items
-                    items: items
-                        .map(
-                          (map) => DropdownMenuItem(
-                            value: map['batch_id'],
-                            child: Text(map['grade']),
-                          ),
-                        )
-                        .toList(),
-                    // After selecting the desired option,it will
-                    // change button value to selected value
-                    onChanged: (newValue) {
-                      setState(() {
-                        dropdownvalue = newValue.toString();
-                      });
-                    },
-                  ),
-                ),
-                const Spacer()
-              ],
-            ),
-            const SizedBox(height: 10),
-            AttendanceListCalender(
-                batchId: dropdownvalue,
-                schoolId: schoolId.toString(),
-                attendanceDates: attendanceDates!)
-          ],
+                  const Spacer()
+                ],
+              ),
+              const SizedBox(height: 10),
+              AttendanceListCalender(
+                  batchId: dropdownvalue,
+                  schoolId: schoolId.toString(),
+                  attendanceDates: attendanceDates!)
+            ],
+          ),
         ),
       ),
     );

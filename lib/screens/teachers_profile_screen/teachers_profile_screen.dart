@@ -90,35 +90,38 @@ class _TeachersProfileScreenState extends State<TeachersProfileScreen> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     // ignore: prefer_const_constructors
-    return Scaffold(
-      key: key,
-      appBar: AppBar(title: const Text("Teacher's Profile")),
-      body: Column(
-        children: <Widget>[
-          ProfileHeader(
-              imageUrl: "assets/images/teacher.png",
-              name:
-                  "${teachersProfile['first_name']} ${teachersProfile['last_name']}",
-              grade: grade),
-          Center(
-            child: Column(
-              children: <Widget>[
-                ProfileDetails(
-                    title: "First Name",
-                    value: "${teachersProfile['first_name']}"),
-                ProfileDetails(
-                    title: "Last Name",
-                    value: "${teachersProfile['last_name']}"),
-                ProfileDetails(
-                    title: "Email", value: "${teachersProfile['email']}"),
-                ProfileDetails(title: "School ID", value: school_id),
-              ],
+    return SafeArea(
+        top: true,
+      child: Scaffold(
+        key: key,
+        appBar: AppBar(title: const Text("Teacher's Profile")),
+        body: Column(
+          children: <Widget>[
+            ProfileHeader(
+                imageUrl: "assets/images/teacher.png",
+                name:
+                    "${teachersProfile['first_name']} ${teachersProfile['last_name']}",
+                grade: grade),
+            Center(
+              child: Column(
+                children: <Widget>[
+                  ProfileDetails(
+                      title: "First Name",
+                      value: "${teachersProfile['first_name']}"),
+                  ProfileDetails(
+                      title: "Last Name",
+                      value: "${teachersProfile['last_name']}"),
+                  ProfileDetails(
+                      title: "Email", value: "${teachersProfile['email']}"),
+                  ProfileDetails(title: "School ID", value: school_id),
+                ],
+              ),
             ),
-          ),
-          Center()
-        ],
+            Center()
+          ],
+        ),
+        backgroundColor: Colors.white,
       ),
-      backgroundColor: Colors.white,
     );
   }
 }

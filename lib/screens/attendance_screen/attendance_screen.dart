@@ -181,305 +181,308 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
-    return Scaffold(
-      appBar: AppBar(title: const Text("Add Attendance")),
-      backgroundColor: Colors.white,
-      body: Column(
-        children: <Widget>[
-          SizedBox(height: size.height * 0.05),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              children: <Widget>[
-                Container(
-                  padding: EdgeInsets.all(size.width * 0.03),
-                  height: size.height * 0.07,
-                  width: size.width * 0.40,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(30.0),
-                    border: Border.all(
-                      style: BorderStyle.solid,
-                      width: 2.0,
-                      color: primaryColor,
+    return SafeArea(
+      top: true,
+      child: Scaffold(
+        appBar: AppBar(title: const Text("Add Attendance")),
+        backgroundColor: Colors.white,
+        body: Column(
+          children: <Widget>[
+            SizedBox(height: size.height * 0.05),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                children: <Widget>[
+                  Container(
+                    padding: EdgeInsets.all(size.width * 0.03),
+                    height: size.height * 0.07,
+                    width: size.width * 0.40,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(30.0),
+                      border: Border.all(
+                        style: BorderStyle.solid,
+                        width: 2.0,
+                        color: primaryColor,
+                      ),
+                    ),
+                    child: DropdownButton(
+                      value: dropdownvalue,
+                      icon: const Icon(Icons.keyboard_arrow_down),
+                      isExpanded: true,
+                      alignment: Alignment.bottomCenter,
+                      dropdownColor: Colors.white,
+                      underline: const SizedBox(),
+                      elevation: 16,
+                      style: const TextStyle(color: Colors.black87),
+                      // Array list of items
+                      items: items
+                          .map(
+                            (map) => DropdownMenuItem(
+                              value: map['batch_id'],
+                              child: Text(map['grade']),
+                            ),
+                          )
+                          .toList(),
+                      // After selecting the desired option,it will
+                      // change button value to selected value
+                      onChanged: (newValue) {
+                        setState(() {
+                          dropdownvalue = newValue.toString();
+                        });
+                        getStudentsData(dropdownvalue);
+                      },
                     ),
                   ),
-                  child: DropdownButton(
-                    value: dropdownvalue,
-                    icon: const Icon(Icons.keyboard_arrow_down),
-                    isExpanded: true,
-                    alignment: Alignment.bottomCenter,
-                    dropdownColor: Colors.white,
-                    underline: const SizedBox(),
-                    elevation: 16,
-                    style: const TextStyle(color: Colors.black87),
-                    // Array list of items
-                    items: items
-                        .map(
-                          (map) => DropdownMenuItem(
-                            value: map['batch_id'],
-                            child: Text(map['grade']),
+                  const Spacer(),
+                  Container(
+                    padding: EdgeInsets.all(size.width * 0.014),
+                    height: size.height * 0.07,
+                    width: size.width * 0.40,
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.all(Radius.circular(30)),
+                      color: Colors.white10,
+                      border: Border.all(
+                        width: 2.0,
+                        // assign the color to the border color
+                        color: primaryColor,
+                      ),
+                    ),
+                    child: Center(
+                      child: Row(
+                        children: <Widget>[
+                          const Spacer(),
+                          Text(
+                            selectedDate.toString().substring(0, 10),
+                            style: const TextStyle(
+                              color: primaryColor,
+                              fontSize: 16,
+                              fontWeight: FontWeight.normal,
+                            ),
                           ),
-                        )
-                        .toList(),
-                    // After selecting the desired option,it will
-                    // change button value to selected value
-                    onChanged: (newValue) {
-                      setState(() {
-                        dropdownvalue = newValue.toString();
-                      });
-                      getStudentsData(dropdownvalue);
-                    },
-                  ),
-                ),
-                const Spacer(),
-                Container(
-                  padding: EdgeInsets.all(size.width * 0.014),
-                  height: size.height * 0.07,
-                  width: size.width * 0.40,
-                  decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.all(Radius.circular(30)),
-                    color: Colors.white10,
-                    border: Border.all(
-                      width: 2.0,
-                      // assign the color to the border color
-                      color: primaryColor,
-                    ),
-                  ),
-                  child: Center(
-                    child: Row(
-                      children: <Widget>[
-                        const Spacer(),
-                        Text(
-                          selectedDate.toString().substring(0, 10),
-                          style: const TextStyle(
-                            color: primaryColor,
-                            fontSize: 16,
-                            fontWeight: FontWeight.normal,
+                          // SizedBox(width: size.width*1),
+    
+                          IconButton(
+                            onPressed: () {
+                              _selectDate(context);
+                            },
+                            icon: const Icon(
+                              Icons.date_range,
+                              size: 20,
+                              color: primaryColor,
+                            ),
                           ),
-                        ),
-                        // SizedBox(width: size.width*1),
-
-                        IconButton(
-                          onPressed: () {
-                            _selectDate(context);
-                          },
-                          icon: const Icon(
-                            Icons.date_range,
-                            size: 20,
-                            color: primaryColor,
-                          ),
-                        ),
-                        // const Spacer(),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 20),
-          Expanded(
-            child: SingleChildScrollView(
-              child: DataTable(
-                columnSpacing: size.width * 0.1,
-                columns: <DataColumn>[
-                  const DataColumn(
-                    label: Text(
-                      'Id',
-                      style: TextStyle(fontStyle: FontStyle.italic),
-                    ),
-                  ),
-                  const DataColumn(
-                    label: Text(
-                      'Name',
-                      style: TextStyle(fontStyle: FontStyle.italic),
-                    ),
-                  ),
-                  DataColumn(
-                    label: Row(
-                      children: [
-                        Checkbox(
-                            value: checked1,
-                            onChanged: (val) {
-                              for (var i = 0; i < studentsList.length; i++) {
-                                setState(() {
-                                  attendanceCheckers[i]['fn'] = !checked1;
-                                });
-                              }
-                              setState(() {
-                                checked1 = !checked1;
-                              });
-                            }),
-                        const Text(
-                          'FN',
-                          style: TextStyle(fontStyle: FontStyle.italic),
-                        ),
-                      ],
-                    ),
-                  ),
-                  DataColumn(
-                    label: Row(
-                      children: [
-                        Checkbox(
-                            value: checked10,
-                            onChanged: (val) {
-                              for (var i = 0; i < studentsList.length; i++) {
-                                setState(() {
-                                  attendanceCheckers[i]['an'] = !checked10;
-                                });
-                              }
-                              setState(() {
-                                checked10 = !checked10;
-                              });
-                            }),
-                        const Text(
-                          'AN',
-                          style: TextStyle(fontStyle: FontStyle.italic),
-                        ),
-                      ],
+                          // const Spacer(),
+                        ],
+                      ),
                     ),
                   ),
                 ],
-                rows: List.generate(studentsList.length, (index) {
-                  Map<String, dynamic> attendance =
-                      attendanceCheckers.firstWhere((item) =>
-                          item['student_id'] ==
-                          studentsList[index]["student_code"]);
-                  return DataRow(cells: <DataCell>[
-                    DataCell(Text('${index + 1}')),
-                    DataCell(Text('${studentsList[index]["full_name"]}')),
-                    DataCell(Checkbox(
-                      value: attendance["fn"],
-                      onChanged: (bool? val) {
-                        setState(() {
-                          attendance["fn"] = val!;
-                        });
-                      },
-                    )),
-                    DataCell(Checkbox(
-                      value: attendance["an"],
-                      onChanged: (bool? val) {
-                        setState(() {
-                          attendance["an"] = val!;
-                        });
-                      },
-                    )),
-                  ]);
-                }),
               ),
             ),
-          ),
-          Column(
-            children: [
-              SubmitButton(
-                  label: "Submit",
-                  onClick: () async {
-                    showDialog(
-                        // The user CANNOT close this dialog  by pressing outsite it
-                        barrierDismissible: true,
-                        context: context,
-                        builder: (_) {
-                          return Dialog(
-                            // The background color
-                            backgroundColor: Colors.white,
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 20),
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: const [
-                                  // The loading indicator
-                                  CircularProgressIndicator(),
-                                  SizedBox(
-                                    height: 15,
-                                  ),
-                                  // Some text
-                                  Text('Loading...')
-                                ],
-                              ),
-                            ),
-                          );
-                        });
-                    int listLength = attendanceCheckers.length;
-                    List absentees = [];
-                    int fn, an;
-
-                    for (int i = 0; i < listLength; i++) {
-                      attendanceCheckers[i]["fn"] == true ? fn = 1 : fn = 0;
-                      attendanceCheckers[i]["an"] == true ? an = 1 : an = 0;
-
-                      Map<String, dynamic> obj = {
-                        attendanceCheckers[i]["student_id"]: {
-                          "1": fn,
-                          "2": an,
-                          "3": attendanceCheckers[i]["full_name"]
-                        }
-                      };
-                      absentees.add(obj);
-                    }
-
-                    final DateFormat formatter = DateFormat('dd-MM-yyyy');
-                    var date = formatter.format(selectedDate);
-
-                    dynamic dataToSubmit = {
-                      "ts": date,
-                      "school_id": studentsList[0]["school_id"],
-                      "batch_id": batchid,
-                      "absentee": absentees
-                    };
-
-                    final res = await addAttendance(dataToSubmit);
-
-                    if (res.statusCode == 200) {
-                      Navigator.pop(context);
-                      Fluttertoast.showToast(
-                        msg: "Attendance Submitted Succesfully",
-                        gravity: ToastGravity.TOP,
-                        timeInSecForIosWeb: 10,
-                        backgroundColor: Colors.green,
-                        textColor: Colors.white,
-                        fontSize: 15.0,
-                      );
-                    } else if (res.statusCode == 202) {
-                      final responseData = jsonDecode(res.body);
-                      Navigator.pop(context);
-                      Fluttertoast.showToast(
-                        msg: responseData["message"],
-                        gravity: ToastGravity.TOP,
-                        timeInSecForIosWeb: 10,
-                        backgroundColor: Colors.red,
-                        textColor: Colors.white,
-                        fontSize: 15.0,
-                      );
-                    } else {
-                      // ignore: use_build_context_synchronously
-                      Navigator.pop(context);
-                      Fluttertoast.showToast(
-                        msg: "Something went wrong!!!",
-                        gravity: ToastGravity.TOP,
-                        timeInSecForIosWeb: 1,
-                        backgroundColor: Colors.red,
-                        textColor: Colors.white,
-                        fontSize: 15.0,
-                      );
-                    }
+            const SizedBox(height: 20),
+            Expanded(
+              child: SingleChildScrollView(
+                child: DataTable(
+                  columnSpacing: size.width * 0.1,
+                  columns: <DataColumn>[
+                    const DataColumn(
+                      label: Text(
+                        'Id',
+                        style: TextStyle(fontStyle: FontStyle.italic),
+                      ),
+                    ),
+                    const DataColumn(
+                      label: Text(
+                        'Name',
+                        style: TextStyle(fontStyle: FontStyle.italic),
+                      ),
+                    ),
+                    DataColumn(
+                      label: Row(
+                        children: [
+                          Checkbox(
+                              value: checked1,
+                              onChanged: (val) {
+                                for (var i = 0; i < studentsList.length; i++) {
+                                  setState(() {
+                                    attendanceCheckers[i]['fn'] = !checked1;
+                                  });
+                                }
+                                setState(() {
+                                  checked1 = !checked1;
+                                });
+                              }),
+                          const Text(
+                            'FN',
+                            style: TextStyle(fontStyle: FontStyle.italic),
+                          ),
+                        ],
+                      ),
+                    ),
+                    DataColumn(
+                      label: Row(
+                        children: [
+                          Checkbox(
+                              value: checked10,
+                              onChanged: (val) {
+                                for (var i = 0; i < studentsList.length; i++) {
+                                  setState(() {
+                                    attendanceCheckers[i]['an'] = !checked10;
+                                  });
+                                }
+                                setState(() {
+                                  checked10 = !checked10;
+                                });
+                              }),
+                          const Text(
+                            'AN',
+                            style: TextStyle(fontStyle: FontStyle.italic),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                  rows: List.generate(studentsList.length, (index) {
+                    Map<String, dynamic> attendance =
+                        attendanceCheckers.firstWhere((item) =>
+                            item['student_id'] ==
+                            studentsList[index]["student_code"]);
+                    return DataRow(cells: <DataCell>[
+                      DataCell(Text('${index + 1}')),
+                      DataCell(Text('${studentsList[index]["full_name"]}')),
+                      DataCell(Checkbox(
+                        value: attendance["fn"],
+                        onChanged: (bool? val) {
+                          setState(() {
+                            attendance["fn"] = val!;
+                          });
+                        },
+                      )),
+                      DataCell(Checkbox(
+                        value: attendance["an"],
+                        onChanged: (bool? val) {
+                          setState(() {
+                            attendance["an"] = val!;
+                          });
+                        },
+                      )),
+                    ]);
                   }),
-            ],
-          )
-        ],
+                ),
+              ),
+            ),
+            Column(
+              children: [
+                SubmitButton(
+                    label: "Submit",
+                    onClick: () async {
+                      showDialog(
+                          // The user CANNOT close this dialog  by pressing outsite it
+                          barrierDismissible: true,
+                          context: context,
+                          builder: (_) {
+                            return Dialog(
+                              // The background color
+                              backgroundColor: Colors.white,
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 20),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: const [
+                                    // The loading indicator
+                                    CircularProgressIndicator(),
+                                    SizedBox(
+                                      height: 15,
+                                    ),
+                                    // Some text
+                                    Text('Loading...')
+                                  ],
+                                ),
+                              ),
+                            );
+                          });
+                      int listLength = attendanceCheckers.length;
+                      List absentees = [];
+                      int fn, an;
+    
+                      for (int i = 0; i < listLength; i++) {
+                        attendanceCheckers[i]["fn"] == true ? fn = 1 : fn = 0;
+                        attendanceCheckers[i]["an"] == true ? an = 1 : an = 0;
+    
+                        Map<String, dynamic> obj = {
+                          attendanceCheckers[i]["student_id"]: {
+                            "1": fn,
+                            "2": an,
+                            "3": attendanceCheckers[i]["full_name"]
+                          }
+                        };
+                        absentees.add(obj);
+                      }
+    
+                      final DateFormat formatter = DateFormat('dd-MM-yyyy');
+                      var date = formatter.format(selectedDate);
+    
+                      dynamic dataToSubmit = {
+                        "ts": date,
+                        "school_id": studentsList[0]["school_id"],
+                        "batch_id": batchid,
+                        "absentee": absentees
+                      };
+    
+                      final res = await addAttendance(dataToSubmit);
+    
+                      if (res.statusCode == 200) {
+                        Navigator.pop(context);
+                        Fluttertoast.showToast(
+                          msg: "Attendance Submitted Succesfully",
+                          gravity: ToastGravity.TOP,
+                          timeInSecForIosWeb: 10,
+                          backgroundColor: Colors.green,
+                          textColor: Colors.white,
+                          fontSize: 15.0,
+                        );
+                      } else if (res.statusCode == 202) {
+                        final responseData = jsonDecode(res.body);
+                        Navigator.pop(context);
+                        Fluttertoast.showToast(
+                          msg: responseData["message"],
+                          gravity: ToastGravity.TOP,
+                          timeInSecForIosWeb: 10,
+                          backgroundColor: Colors.red,
+                          textColor: Colors.white,
+                          fontSize: 15.0,
+                        );
+                      } else {
+                        // ignore: use_build_context_synchronously
+                        Navigator.pop(context);
+                        Fluttertoast.showToast(
+                          msg: "Something went wrong!!!",
+                          gravity: ToastGravity.TOP,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Colors.red,
+                          textColor: Colors.white,
+                          fontSize: 15.0,
+                        );
+                      }
+                    }),
+              ],
+            )
+          ],
+        ),
+        // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        //   floatingActionButton: FloatingActionButton.extended(
+        //   backgroundColor: primaryColor,
+        //   label: const Text('Submit'),
+        //   icon: const Icon(Icons.check_circle),
+        //   onPressed: () {
+        //     setState(() {
+        //      // i++;
+        //     });
+        //   },
+    
+        // ),
       ),
-      // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      //   floatingActionButton: FloatingActionButton.extended(
-      //   backgroundColor: primaryColor,
-      //   label: const Text('Submit'),
-      //   icon: const Icon(Icons.check_circle),
-      //   onPressed: () {
-      //     setState(() {
-      //      // i++;
-      //     });
-      //   },
-
-      // ),
     );
   }
 }

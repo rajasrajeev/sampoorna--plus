@@ -114,17 +114,20 @@ class _MainScreenState extends State<MainScreen> {
 
     return WillPopScope(
       onWillPop: () => kickOut(),
-      child: Scaffold(
-        appBar: PreferredSize(
-          preferredSize: Size.fromHeight(size.height * 0.060),
-          child: AppBar(
-            elevation: 0,
+      child: SafeArea(
+        top: true,
+        child: Scaffold(
+          appBar: PreferredSize(
+            preferredSize: Size.fromHeight(size.height * 0.060),
+            child: AppBar(
+              elevation: 0,
+            ),
           ),
+          drawer: const SideBar(),
+          extendBody: true,
+         // bottomNavigationBar: bottomBar,
+          body: screens[currentIndex],
         ),
-        drawer: const SideBar(),
-        extendBody: true,
-       // bottomNavigationBar: bottomBar,
-        body: screens[currentIndex],
       ),
     );
   }
