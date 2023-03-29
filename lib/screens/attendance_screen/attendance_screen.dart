@@ -65,7 +65,6 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
 
     getStudentsData(dropdownvalue);
   }
-
   getStudentsData(String batchId) async {
     final prefs = await SharedPreferences.getInstance();
     batchid = batchId;
