@@ -6,6 +6,8 @@ import 'package:student_management/components/bezier_clipper.dart';
 import 'package:student_management/constants.dart';
 import 'package:student_management/models/teachers.dart';
 
+import '../screens/attendance_screen/attendance_screen.dart';
+
 class CommonBanner extends StatefulWidget {
   final String imageUrl;
   final String name;
@@ -17,8 +19,7 @@ class CommonBanner extends StatefulWidget {
       required this.imageUrl,
       required this.name,
       required this.grade,
-      required this.showDiv
-      });
+      required this.showDiv});
 
   @override
   State<CommonBanner> createState() => _CommonBannerState();
@@ -90,37 +91,52 @@ class _CommonBannerState extends State<CommonBanner> {
                           fontWeight: FontWeight.w700,
                         ),
                       ),
-                      widget.showDiv !=false ?
-                      SizedBox(
-                        width: size.width * 0.4,
-                        height: size.height * 0.05,
-                        child: ListView.builder(
-                            itemCount: permittedBatches.length,
-                            scrollDirection: Axis.horizontal,
-                            shrinkWrap: true,
-                            itemBuilder: (context, index) {
-                              return Container(
-                                width: size.width * 0.2,
-                                // height: size.height*0.02,
-                                margin: const EdgeInsets.all(8),
-                                padding: const EdgeInsets.all(0.1),
-                                decoration: BoxDecoration(
-                                    border: Border.all(
-                                        color:
-                                            Color.fromARGB(255, 255, 255, 255)),
-                                    borderRadius: BorderRadius.circular(10)),
-                                child: Text(
-                                  "${permittedBatches[index]['class']} ${permittedBatches[index]['name']}",
-                                  textAlign: TextAlign.center,
-                                  style: const TextStyle(
-                                    fontSize: 17,
-                                    color: Color.fromARGB(221, 255, 255, 255),
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                ),
-                              );
-                            }),
-                      ):const SizedBox(),
+                      widget.showDiv != false
+                          ? SizedBox(
+                              width: size.width * 0.4,
+                              height: size.height * 0.05,
+                              child: ListView.builder(
+                                  itemCount: permittedBatches.length,
+                                  scrollDirection: Axis.horizontal,
+                                  shrinkWrap: true,
+                                  itemBuilder: (context, index) {
+                                    return Container(
+                                      width: size.width * 0.2,
+                                      // height: size.height*0.02,
+                                      margin: const EdgeInsets.all(8),
+                                      padding: const EdgeInsets.all(0.1),
+                                      decoration: BoxDecoration(
+                                          border: Border.all(
+                                              color: Color.fromARGB(
+                                                  255, 255, 255, 255)),
+                                          borderRadius:
+                                              BorderRadius.circular(10)),
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    AttendanceScreen(
+                                                      grade:"${permittedBatches[index]['class']} ${permittedBatches[index]['name']}",
+                                                    )),
+                                          );
+                                        },
+                                        child: Text(
+                                          "${permittedBatches[index]['class']} ${permittedBatches[index]['name']}",
+                                          textAlign: TextAlign.center,
+                                          style: const TextStyle(
+                                            fontSize: 17,
+                                            color: Color.fromARGB(
+                                                221, 255, 255, 255),
+                                            fontWeight: FontWeight.w700,
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  }),
+                            )
+                          : const SizedBox(),
                     ],
                   ),
                   const Spacer(),

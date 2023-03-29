@@ -97,7 +97,7 @@ class _BodyState extends State<Body> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const AttendanceScreen()),
+                                builder: (context) => const AttendanceScreen( grade:'null',)),
                           );
                         },
                       ),

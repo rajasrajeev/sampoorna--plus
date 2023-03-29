@@ -17,7 +17,11 @@ import '../../services/jwt_token_parser.dart';
 import 'package:intl/intl.dart';
 
 class AttendanceScreen extends StatefulWidget {
-  const AttendanceScreen({super.key});
+  final String grade;
+  const AttendanceScreen({
+    super.key,
+    required this.grade,
+  });
 
   @override
   State<AttendanceScreen> createState() => _AttendanceScreenState();
@@ -51,7 +55,15 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
     dynamic data = json.decode(details!);
     setState(() {
       permittedBatches = data['permittedBatches'];
-      dropdownvalue = permittedBatches[0]['batch_id'];
+      if (widget.grade != "null") {
+        for (var i = 0; i < permittedBatches.length; i++) {
+          if(widget.grade =='${permittedBatches[i]['class']} ${permittedBatches[i]['name']}'){
+          dropdownvalue = permittedBatches[i]['batch_id'];
+          }       
+        }
+      } else {
+        dropdownvalue = permittedBatches[0]['batch_id'];
+      }
     });
     for (var i = 0; i < permittedBatches.length; i++) {
       setState(() {
@@ -65,6 +77,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
 
     getStudentsData(dropdownvalue);
   }
+
   getStudentsData(String batchId) async {
     final prefs = await SharedPreferences.getInstance();
     batchid = batchId;
@@ -246,7 +259,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                           ),
                         ),
                         // SizedBox(width: size.width*1),
-                                  
+
                         IconButton(
                           onPressed: () {
                             _selectDate(context);
@@ -269,7 +282,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
           Expanded(
             child: SingleChildScrollView(
               child: DataTable(
-                columnSpacing: size.width*0.1,
+                columnSpacing: size.width * 0.1,
                 columns: <DataColumn>[
                   const DataColumn(
                     label: Text(
