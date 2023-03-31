@@ -28,7 +28,8 @@ class SingleDayAttendanceScreen extends StatefulWidget {
 class _SingleDayAttendanceScreenState extends State<SingleDayAttendanceScreen> {
   dynamic attendanceDates = [];
   bool _loading = false;
-
+  String grade = "";
+  String userName = "";
   @override
   void initState() {
     super.initState();
@@ -38,8 +39,11 @@ class _SingleDayAttendanceScreenState extends State<SingleDayAttendanceScreen> {
   }
 
   getStudentsData(String date, String schoolId, String batchId) async {
+    final prefs = await SharedPreferences.getInstance();
     setState(() {
       _loading = true;
+      userName ="${prefs.getString('first_name')} ${prefs.getString('last_name')}";
+      grade = "${prefs.getString('class')} ${prefs.getString('name')}";
     });
 
     showDialog(
@@ -122,18 +126,21 @@ class _SingleDayAttendanceScreenState extends State<SingleDayAttendanceScreen> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-        top: true,
+      top: true,
       child: Scaffold(
-        appBar: AppBar(title: const Text("Attendance of Students")),
+        appBar: AppBar(
+          title: const Text("Attendance of Students"),
+          elevation: 0,
+        ),
         body: SingleChildScrollView(
           child: Column(
             children: <Widget>[
-              const CommonBanner(
-                  imageUrl: "assets/images/profile.png",
-                  name: "Test Teacher",
-                  grade: "VIIIA",
-                  showDiv: false,
-                  ),
+               CommonBanner(
+                imageUrl: "assets/images/profile.png",
+                name:userName,
+                grade: grade,
+                showDiv: false,
+              ),
               const SizedBox(height: 10),
               Text(widget.date),
               const SizedBox(height: 20),
