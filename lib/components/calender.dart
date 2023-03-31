@@ -131,9 +131,11 @@ class _AttendanceListCalenderState extends State<AttendanceListCalender> {
               date.weekday == DateTime.thursday ||
               date.weekday == DateTime.friday;
         },
-        headerStyle: const HeaderStyle(
+        headerStyle: HeaderStyle(
           titleCentered: true,
           formatButtonVisible: false,
+          rightChevronVisible: _focusedDay.month != DateTime.now().month,
+          /* headerPadding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 00) */
         ),
         calendarStyle: const CalendarStyle(
           // Use `CalendarStyle` to customize the UI
@@ -162,6 +164,7 @@ class _AttendanceListCalenderState extends State<AttendanceListCalender> {
         },
         onPageChanged: (focusedDay) {
           print("===========> ===========> $focusedDay");
+          _focusedDay = focusedDay;
           /* final DateFormat formatter = DateFormat('yyyy-MM-dd');
           final String formatted = formatter.format(focusedDay);
           int lastday = DateTime(focusedDay.year, focusedDay.month + 1, 0).day;
