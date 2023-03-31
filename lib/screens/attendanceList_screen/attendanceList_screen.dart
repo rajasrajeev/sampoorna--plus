@@ -218,11 +218,19 @@ class _AttendanceListState extends State<AttendanceList> {
                 schoolId: schoolId.toString(),
                 attendanceDates: attendanceDates!,
                 onPageChanged: (date) {
-                  print(date);
-                  final DateFormat formatter = DateFormat('yyyy-MM-dd');
-                  final String formatted = formatter.format(date);
-                  int lastday = DateTime(date.year, date.month + 1, 0).day;
-                  print("$formatted - ${date.year}-${date.month}-${lastday}");
+                  if (date.month == DateTime.now().month) {
+                    getDataBetweenDates();
+                  } else {
+                    final DateFormat formatter = DateFormat('yyyy-MM-dd');
+                    final String formatted = formatter.format(date);
+                    int lastDay = DateTime(date.year, date.month + 1, 0).day;
+                    getStudentsData(
+                        formatted,
+                        "${date.year}-${date.month}-$lastDay",
+                        schoolId!,
+                        dropdownvalue);
+                  }
+
                   // _focusedDay = date;
                 },
               )
