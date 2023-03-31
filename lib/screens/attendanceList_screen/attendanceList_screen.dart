@@ -29,6 +29,8 @@ class _AttendanceListState extends State<AttendanceList> {
   String userName = "";
 // List of items in our dropdown menu
   List items = [];
+  String date1 = "";
+  String date2 = "";
 
   @override
   void initState() {
@@ -70,8 +72,10 @@ class _AttendanceListState extends State<AttendanceList> {
     });
     final DateTime now = DateTime.now();
     final DateFormat formatter = DateFormat('dd-MM-yyyy');
-    var date2 = formatter.format(now);
-    var date1 = "${now.year}-${now.month}-01";
+    setState(() {
+      date2 = formatter.format(now);
+      date1 = "${now.year}-${now.month}-01";
+    });
     getStudentsData(date1, date2, schoolId!, dropdownvalue);
   }
 
@@ -205,7 +209,7 @@ class _AttendanceListState extends State<AttendanceList> {
                         setState(() {
                           dropdownvalue = newValue.toString();
                         });
-                        getDataBetweenDates();
+                        getStudentsData(date1, date2, schoolId!, dropdownvalue);
                       },
                     ),
                   ),
@@ -222,13 +226,13 @@ class _AttendanceListState extends State<AttendanceList> {
                     getDataBetweenDates();
                   } else {
                     final DateFormat formatter = DateFormat('yyyy-MM-dd');
-                    final String formatted = formatter.format(date);
+
                     int lastDay = DateTime(date.year, date.month + 1, 0).day;
-                    getStudentsData(
-                        formatted,
-                        "${date.year}-${date.month}-$lastDay",
-                        schoolId!,
-                        dropdownvalue);
+                    setState(() {
+                      date1 = formatter.format(date);
+                      date2 = "${date.year}-${date.month}-$lastDay";
+                    });
+                    getStudentsData(date1, date2, schoolId!, dropdownvalue);
                   }
 
                   // _focusedDay = date;
