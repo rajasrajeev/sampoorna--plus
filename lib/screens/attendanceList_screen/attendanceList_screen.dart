@@ -205,6 +205,7 @@ class _AttendanceListState extends State<AttendanceList> {
                         setState(() {
                           dropdownvalue = newValue.toString();
                         });
+                        getDataBetweenDates();
                       },
                     ),
                   ),

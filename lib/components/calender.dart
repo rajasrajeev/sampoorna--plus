@@ -11,6 +11,7 @@ class AttendanceListCalender extends StatefulWidget {
   final String batchId;
   final String schoolId;
   final dynamic attendanceDates;
+  final onPageChanged();
   const AttendanceListCalender(
       {required this.batchId,
       required this.attendanceDates,
@@ -158,12 +159,13 @@ class _AttendanceListCalenderState extends State<AttendanceListCalender> {
           }
         },
         onPageChanged: (focusedDay) {
-          final DateFormat formatter = DateFormat('yyyy-MM-dd');
-          final String formatted = formatter.format(focusedDay);
-          int lastday = DateTime(focusedDay.year, focusedDay.month + 1, 0).day;
-          print(
-              "$formatted - ${focusedDay.year}-${focusedDay.month}-${lastday}");
-          _focusedDay = focusedDay;
+          // final DateFormat formatter = DateFormat('yyyy-MM-dd');
+          // final String formatted = formatter.format(focusedDay);
+          // int lastday = DateTime(focusedDay.year, focusedDay.month + 1, 0).day;
+          // print(
+          //     "$formatted - ${focusedDay.year}-${focusedDay.month}-${lastday}");
+          // _focusedDay = focusedDay;
+          return widget.onPageChanged(focusedDay);
         },
         calendarBuilders: CalendarBuilders(
           selectedBuilder: (context, date, events) => Container(
