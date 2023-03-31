@@ -11,6 +11,7 @@ import 'package:student_management/components/calender.dart';
 import 'package:student_management/constants.dart';
 import 'package:student_management/services/api_services.dart';
 import 'package:student_management/services/jwt_token_parser.dart';
+import 'package:student_management/services/utils.dart';
 
 class AttendanceList extends StatefulWidget {
   const AttendanceList({super.key});
@@ -40,8 +41,9 @@ class _AttendanceListState extends State<AttendanceList> {
     var details = await prefs.getString('loginData');
     schoolId = await prefs.getString('school_id');
     dynamic data = json.decode(details!);
-        setState(() {
-      userName ="${prefs.getString('first_name')} ${prefs.getString('last_name')}";
+    setState(() {
+      userName =
+          "${prefs.getString('first_name')} ${prefs.getString('last_name')}";
       grade = "${prefs.getString('class')} ${prefs.getString('name')}";
     });
     setState(() {
@@ -52,7 +54,8 @@ class _AttendanceListState extends State<AttendanceList> {
     for (var i = 0; i < permittedBatches.length; i++) {
       setState(() {
         items.add({
-          "grade":'${permittedBatches[i]['class']} ${permittedBatches[i]['name']}',
+          "grade":
+              '${permittedBatches[i]['class']} ${permittedBatches[i]['name']}',
           "batch_id": '${permittedBatches[i]['batch_id']}'
         });
       });
@@ -111,6 +114,7 @@ class _AttendanceListState extends State<AttendanceList> {
       setState(() {
         attendanceDates = data['token'];
       });
+      formatDates(data['token']);
     } else {
       Navigator.of(context).pop();
       Fluttertoast.showToast(
@@ -124,12 +128,28 @@ class _AttendanceListState extends State<AttendanceList> {
     }
   }
 
+  formatDates(List dates) async {
+    for (var i = 0; i < dates.length; i++) {
+      var currentDate = DateTime.parse(dates[i]['date']);
+      final kEventSource = {
+        // for (var item in List.generate(50, (index) => index))
+        if (dates[i]['total_absentees'] != 'Holiday')
+          DateTime.utc(currentDate.year, currentDate.month, currentDate.day):
+              List.generate(
+                  int.parse(dates[i]['total_absentees']),
+                  (index) => Event(
+                      'Event ${dates[i]['total_absentees']} | ${index + 1}'))
+      };
+      kEvents.addAll(kEventSource);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
     return SafeArea(
-        top: true,
+      top: true,
       child: Scaffold(
         appBar: AppBar(
           title: const Text("Attendance List"),
@@ -138,19 +158,19 @@ class _AttendanceListState extends State<AttendanceList> {
         body: SingleChildScrollView(
           child: Column(
             children: <Widget>[
-               CommonBanner(
-                  imageUrl: "assets/images/teacher.png",
-                  name: userName,
-                  grade: grade,
-                  showDiv: false,
-                  ),
+              CommonBanner(
+                imageUrl: "assets/images/teacher.png",
+                name: userName,
+                grade: grade,
+                showDiv: false,
+              ),
               const SizedBox(height: 10),
               Row(
                 children: <Widget>[
                   const Spacer(),
                   Container(
                     padding: EdgeInsets.all(size.width * 0.03),
-                    height:size.height * 0.065,
+                    height: size.height * 0.065,
                     width: size.width * 0.60,
                     decoration: BoxDecoration(
                       color: Colors.white,

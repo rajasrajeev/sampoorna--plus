@@ -47,7 +47,6 @@ class _AttendanceListCalenderState extends State<AttendanceListCalender> {
   }
 
   List<Event> _getEventsForDay(DateTime day) {
-    // print("====================> $kEvents");
     // Implementation example
     return kEvents[day] ?? [];
   }
