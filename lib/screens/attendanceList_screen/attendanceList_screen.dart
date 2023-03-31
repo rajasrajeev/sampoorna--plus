@@ -214,9 +214,18 @@ class _AttendanceListState extends State<AttendanceList> {
               ),
               const SizedBox(height: 10),
               AttendanceListCalender(
-                  batchId: dropdownvalue,
-                  schoolId: schoolId.toString(),
-                  attendanceDates: attendanceDates!)
+                batchId: dropdownvalue,
+                schoolId: schoolId.toString(),
+                attendanceDates: attendanceDates!,
+                onPageChanged: (date) {
+                  print(date);
+                  final DateFormat formatter = DateFormat('yyyy-MM-dd');
+                  final String formatted = formatter.format(date);
+                  int lastday = DateTime(date.year, date.month + 1, 0).day;
+                  print("$formatted - ${date.year}-${date.month}-${lastday}");
+                  // _focusedDay = date;
+                },
+              )
             ],
           ),
         ),

@@ -11,11 +11,13 @@ class AttendanceListCalender extends StatefulWidget {
   final String batchId;
   final String schoolId;
   final dynamic attendanceDates;
-  final onPageChanged();
+  final Function(DateTime date) onPageChanged;
+
   const AttendanceListCalender(
       {required this.batchId,
       required this.attendanceDates,
       required this.schoolId,
+      required this.onPageChanged,
       super.key});
 
   @override
