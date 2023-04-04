@@ -189,12 +189,18 @@ class _AttendanceListCalenderState extends State<AttendanceListCalender> {
                   width: 20,
                   height: 20,
                   alignment: Alignment.center,
-                  decoration: const BoxDecoration(
+                  decoration:  BoxDecoration(
                       color: Color.fromARGB(112, 92, 92, 92),
-                      borderRadius: BorderRadius.all(Radius.circular(10))),
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      border: Border.all(
+                        style: BorderStyle.solid,
+                        width: 1.0,
+                        color: secondaryColor,
+                      ),
+                      ),
                   child: Text(
                     '${events.length}',
-                    style: const TextStyle(color: Colors.white),
+                    style: const TextStyle(color: Colors.white,fontSize: 10),
                   ),
                 )
               : null,
@@ -203,7 +209,7 @@ class _AttendanceListCalenderState extends State<AttendanceListCalender> {
               alignment: Alignment.center,
               decoration: BoxDecoration(
                   color: secondaryColor,
-                  borderRadius: BorderRadius.circular(10.0)),
+                  borderRadius: BorderRadius.circular(10.0),),
               child: Text(
                 date.day.toString(),
                 style: const TextStyle(color: Colors.white),
