@@ -49,6 +49,12 @@ dependencies:
   sqflite: ^2.2.6
 
 dev_dependencies:
+  flutter_launcher_icons: "^0.9.2"
+
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/images/sampoorna.png"
   flutter_test:
     sdk: flutter
 
