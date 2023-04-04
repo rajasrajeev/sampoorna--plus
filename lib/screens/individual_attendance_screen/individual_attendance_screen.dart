@@ -28,7 +28,7 @@ class _IndividualAttendanceScreenState
           // ignore: prefer_const_literals_to_create_immutables
           children: <Widget>[
             const ProfileHeader(
-                imageUrl: "assets/images/profile.png",
+                imageUrl: "assets/images/studentProfile.png",
                 name: "Student 1",
                 grade: "VIII A"),
             /* Center(

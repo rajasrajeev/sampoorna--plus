@@ -26,6 +26,7 @@ class SingleDayAttendanceScreen extends StatefulWidget {
 }
 
 class _SingleDayAttendanceScreenState extends State<SingleDayAttendanceScreen> {
+  int absentCount = 0;
   dynamic attendanceDates = [];
   bool _loading = false;
   String grade = "";
@@ -42,7 +43,8 @@ class _SingleDayAttendanceScreenState extends State<SingleDayAttendanceScreen> {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
       _loading = true;
-      userName ="${prefs.getString('first_name')} ${prefs.getString('last_name')}";
+      userName =
+          "${prefs.getString('first_name')} ${prefs.getString('last_name')}";
       grade = "${prefs.getString('class')} ${prefs.getString('name')}";
     });
 
@@ -80,6 +82,16 @@ class _SingleDayAttendanceScreenState extends State<SingleDayAttendanceScreen> {
       setState(() {
         attendanceDates = data['token'];
       });
+      debugPrint("********attendanceDates***********");
+      debugPrint('$attendanceDates');
+      for (var i = 0; i < attendanceDates.length; i++) {
+        if (attendanceDates[i]["absent_FN"] == 1 ||
+            attendanceDates[i]["absent_FN"] == "1" ||
+            attendanceDates[i]["absent_AN"] == 1 ||
+            attendanceDates[i]["absent_AN"] == "1") {
+          absentCount++;
+        }
+      }
     } else {
       setState(() {
         _loading = false;
@@ -135,20 +147,52 @@ class _SingleDayAttendanceScreenState extends State<SingleDayAttendanceScreen> {
         body: SingleChildScrollView(
           child: Column(
             children: <Widget>[
-               CommonBanner(
-                imageUrl: "assets/images/profile.png",
-                name:userName,
-                grade: grade,
-                showDiv: false,
+              //  CommonBanner(
+              //   imageUrl: "assets/images/profile.png",
+              //   name:userName,
+              //   grade: grade,
+              //   showDiv: false,
+              // ),
+              //const SizedBox(height: 10),
+              Container(
+                decoration: BoxDecoration(color: primaryColor),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 30),
+                      Row(
+                        children: [
+                          Text("Date :" + widget.date,
+                              style: const TextStyle(
+                                fontSize: 16,
+                                color: Colors.white70,
+                                fontWeight: FontWeight.bold,
+                              )),
+                          const Spacer(),
+                          Text(
+                              "Total Absent :" +
+                                  absentCount.toString() +
+                                  "/" +
+                                  attendanceDates.length.toString(),
+                              style: const TextStyle(
+                                fontSize: 16,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              )),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
               ),
-              const SizedBox(height: 10),
-              Text(widget.date),
+
               const SizedBox(height: 20),
               Row(
                 children: <Widget>[
                   Expanded(
                     child: SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.64,
+                      height: MediaQuery.of(context).size.height * 0.78,
                       child: _loading == false && attendanceDates.length > 0
                           ? ListView.builder(
                               itemCount: attendanceDates.length,
@@ -180,7 +224,7 @@ class _SingleDayAttendanceScreenState extends State<SingleDayAttendanceScreen> {
                                                             15)),
                                                 alignment: Alignment.center,
                                                 child: Image.asset(
-                                                    "assets/images/profile.png")),
+                                                    "assets/images/studentProfile.png")),
                                             const SizedBox(width: 30),
                                             SizedBox(
                                               width: 90,
@@ -210,7 +254,7 @@ class _SingleDayAttendanceScreenState extends State<SingleDayAttendanceScreen> {
                   )
                 ],
               ),
-              const SizedBox(width: 100),
+              //const SizedBox(width: 100),
             ],
           ),
         ),

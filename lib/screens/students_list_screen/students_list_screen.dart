@@ -335,7 +335,7 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
                                                                 15)),
                                                     alignment: Alignment.center,
                                                     child: Image.asset(
-                                                        "assets/images/profile.png")),
+                                                        "assets/images/studentProfile.png")),
                                                 const SizedBox(width: 30),
                                                 Column(
                                                   crossAxisAlignment:
