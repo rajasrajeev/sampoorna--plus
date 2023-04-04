@@ -140,7 +140,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
 
   createCheckersList(students) {
     attendanceCheckers = [];
-    debugPrint("*****Checker List*********");
+    //debugPrint("*****Checker List*********");
     for (int i = 0; i < students.length; i++) {
       Map<String, dynamic> obj = {
         "student_id": students[i]["student_code"],
@@ -151,13 +151,13 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
             ? (students[i]["absent_FN"] != '1')
                 ? true
                 : false
-            : true,
+            : false,//When null checkbox is not ticked for fn
 
         "an": (students[i]["absent_AN"] != null)
             ? (students[i]["absent_AN"] != '1')
                 ? true
                 : false
-            : true
+            : false //When null checkbox is not ticked for an
       };
       attendanceCheckers.add(obj);
     }
