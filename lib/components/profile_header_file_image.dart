@@ -1,22 +1,24 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:student_management/constants.dart';
 
-class ProfileHeader extends StatefulWidget {
-  final String imageUrl;
+class ProfileHeaderImageFile extends StatefulWidget {
+  final File imageUrl;
   final String name;
   final String grade;
 
-  const ProfileHeader(
+  const ProfileHeaderImageFile(
       {super.key,
       required this.imageUrl,
       required this.name,
       required this.grade});
 
   @override
-  State<ProfileHeader> createState() => _ProfileHeaderState();
+  State<ProfileHeaderImageFile> createState() => _ProfileHeaderImageFileState();
 }
 
-class _ProfileHeaderState extends State<ProfileHeader> {
+class _ProfileHeaderImageFileState extends State<ProfileHeaderImageFile> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -33,7 +35,7 @@ class _ProfileHeaderState extends State<ProfileHeader> {
                 child:
                     ClipRRect(
                     borderRadius: BorderRadius.circular(100.0),
-                    child: Image.asset(
+                    child: Image.file(
                       widget.imageUrl,
                       fit: BoxFit.fill,
                       height:size.height*0.4,
@@ -44,7 +46,6 @@ class _ProfileHeaderState extends State<ProfileHeader> {
                 ),
                 SizedBox(height:10),
             Text(widget.name),
-            
             Text(widget.grade)
           ],
         ));

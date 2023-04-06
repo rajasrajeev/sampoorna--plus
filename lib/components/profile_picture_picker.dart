@@ -6,6 +6,12 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class ProfilePicturePicker extends StatefulWidget {
+  final ImageSource source;
+ // final ImageSource gallery;
+  const ProfilePicturePicker(
+      {super.key,
+      required this.source,
+      });
   @override
   _ProfilePicturePickerState createState() => _ProfilePicturePickerState();
 }

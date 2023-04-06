@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:student_management/components/app_bar.dart';
 
-import '../../components/my_profile_pic.dart';
+import '../../components/profile_picture_picker.dart';
 
 class Nothing extends StatefulWidget {
   const Nothing({super.key});
@@ -25,7 +25,7 @@ class _NothingState extends State<Nothing> {
         body: Column(
           children: [
             const Center(child: Text("Under Maintenance")),
-            ProfilePicturePicker(),
+            //ProfilePicturePicker(),
           ],
         ),
         backgroundColor: Colors.white,
