@@ -5,6 +5,7 @@ import 'package:student_management/components/custom_loader.dart';
 import 'package:student_management/components/forms/password_field.dart';
 import 'package:student_management/components/forms/text_field.dart';
 import 'package:student_management/components/submit_button.dart';
+import 'package:student_management/screens/otp_screen/otp_screen.dart';
 import 'package:student_management/services/api_services.dart';
 
 import '../main_screen/main_screen.dart';
@@ -18,6 +19,7 @@ class Body extends StatefulWidget {
 
 class _BodyState extends State<Body> {
   final formKey = GlobalKey<FormState>();
+  final TextEditingController phoneController = TextEditingController();
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController dropDownController = TextEditingController();
@@ -25,7 +27,7 @@ class _BodyState extends State<Body> {
   List roles = [
     {"id": "TEACHER", "name": "TEACHER"},
     {"id": "HM", "name": "HM"},
-    {"id": "STUDENTS", "name": "STUDENTS"}
+    {"id": "PARENT", "name": "PARENT"}
   ];
   @override
   void initState() {
@@ -63,7 +65,7 @@ class _BodyState extends State<Body> {
                     role = value;
                   });
                 },
-                  validator: (value) {
+                validator: (value) {
                   if (value == null || value.length < 1) {
                     return "please select your role";
                   }
@@ -71,106 +73,210 @@ class _BodyState extends State<Body> {
                 },
               ),
               const SizedBox(height: 15),
-              CustomTextField(
-                label: "Username",
-                minLine: 1,
-                maxLine: 1,
-                enabled: true,
-                controller: usernameController,
-                validator: (value) {
-                  if (value == null || value.length < 1) {
-                    return "please enter username";
-                  }
-                  return null;
-                },
-              ),
-              PasswordField(
-                label: "Password",
-                minLine: 1,
-                maxLine: 1,
-                enabled: true,
-                controller: passwordController,
-                validator: (value) {
-                  if (value == null || value.length < 1) {
-                    return "please enter password";
-                  }
-                  return null;
-                },
-              ),
-              SubmitButton(
-                label: "Login",
-                onClick: () async {
-                  // material page route
-                  if (formKey.currentState!.validate()) {
-                    var data = {
-                      "username": usernameController.text,
-                      "password": passwordController.text,
-                      "usert_type": role,
-                    };
-                    // ignore: use_build_context_synchronously
-                    showDialog(
-                        // The user CANNOT close this dialog  by pressing outsite it
-                        barrierDismissible: true,
-                        context: context,
-                        builder: (_) {
-                          return Dialog(
-                            // The background color
-                            backgroundColor: Colors.white,
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 20),
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: const [
-                                  // The loading indicator
-                                  CircularProgressIndicator(),
-                                  SizedBox(
-                                    height: 15,
-                                  ),
-                                  // Some text
-                                  Text('Loading...')
-                                ],
-                              ),
-                            ),
-                          );
-                        });
-                    //debugPrint("*****Response Status code*******");
-                    final res = await postLogin(data);
-                    //debugPrint("*****Response Status code*******");
-                   // debugPrint(res.statusCode.toString());
-
-                    if (res.statusCode == 200) {
-                      //await Future.delayed(const Duration(seconds: 3));
-                      // ignore: use_build_context_synchronously
-                      Navigator.of(context).pop();
-                      // ignore: use_build_context_synchronously
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const MainScreen(),
+              role == "PARENT"
+                  ? Column(
+                      children: [
+                        CustomTextField(
+                          label: "Mobile Number",
+                          minLine: 1,
+                          maxLine: 1,
+                          enabled: true,
+                          controller: phoneController,
+                          validator: (value) {
+                            if (value == null || value.length < 9) {
+                              return "Enter Registered Mobile";
+                            }
+                            return null;
+                          },
                         ),
-                      );
-                    } else {
-                      // ignore: use_build_context_synchronously
-                      Navigator.of(context).pop();
-                      Fluttertoast.showToast(
-                        msg:
-                            "Username or password is incorrect. Please try again later!!!",
-                        gravity: ToastGravity.TOP,
-                        timeInSecForIosWeb: 1,
-                        backgroundColor: Colors.red,
-                        textColor: Colors.white,
-                        fontSize: 15.0,
-                      );
-                    }
-                  }
-                  /* Navigator.push(
+                        SubmitButton(
+                          label: "Submit",
+                          onClick: () async {
+                            // material page route
+                            if (formKey.currentState!.validate()) {
+                              var data = {
+                                "username": phoneController.text,
+                                "usert_type": role,
+                              };
+                              // ignore: use_build_context_synchronously
+                              showDialog(
+                                  // The user CANNOT close this dialog  by pressing outsite it
+                                  barrierDismissible: true,
+                                  context: context,
+                                  builder: (_) {
+                                    return Dialog(
+                                      // The background color
+                                      backgroundColor: Colors.white,
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 20),
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: const [
+                                            // The loading indicator
+                                            CircularProgressIndicator(),
+                                            SizedBox(
+                                              height: 15,
+                                            ),
+                                            // Some text
+                                            Text('Loading...')
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  });
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      OtpScreen(userName: phoneController.text),
+                                ),
+                              );
+                              //debugPrint("*****Response Status code*******");
+                              // final res = await postLogin(data);
+                              //debugPrint("*****Response Status code*******");
+                              // debugPrint(res.statusCode.toString());
+
+                              // if (res.statusCode == 200) {
+                              //   //await Future.delayed(const Duration(seconds: 3));
+                              //   // ignore: use_build_context_synchronously
+                              //   Navigator.of(context).pop();
+                              //   // ignore: use_build_context_synchronously
+                              //   Navigator.pushReplacement(
+                              //     context,
+                              //     MaterialPageRoute(
+                              //       builder: (context) => const MainScreen(),
+                              //     ),
+                              //   );
+                              // } else {
+                              //   // ignore: use_build_context_synchronously
+                              //   Navigator.of(context).pop();
+                              //   Fluttertoast.showToast(
+                              //     msg:
+                              //         "Username or password is incorrect. Please try again later!!!",
+                              //     gravity: ToastGravity.TOP,
+                              //     timeInSecForIosWeb: 1,
+                              //     backgroundColor: Colors.red,
+                              //     textColor: Colors.white,
+                              //     fontSize: 15.0,
+                              //   );
+                              // }
+                            }
+                            /* Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => const MainScreen(),
                     ),
                   ); */
-                },
-              ),
+                          },
+                        )
+                      ],
+                    )
+                  : Column(
+                      children: [
+                        CustomTextField(
+                          label: "Username",
+                          minLine: 1,
+                          maxLine: 1,
+                          enabled: true,
+                          controller: usernameController,
+                          validator: (value) {
+                            if (value == null || value.length < 1) {
+                              return "please enter username";
+                            }
+                            return null;
+                          },
+                        ),
+                        PasswordField(
+                          label: "Password",
+                          minLine: 1,
+                          maxLine: 1,
+                          enabled: true,
+                          controller: passwordController,
+                          validator: (value) {
+                            if (value == null || value.length < 1) {
+                              return "please enter password";
+                            }
+                            return null;
+                          },
+                        ),
+                        SubmitButton(
+                          label: "Login",
+                          onClick: () async {
+                            // material page route
+                            if (formKey.currentState!.validate()) {
+                              var data = {
+                                "username": usernameController.text,
+                                "password": passwordController.text,
+                                "usert_type": role,
+                              };
+                              // ignore: use_build_context_synchronously
+                              showDialog(
+                                  // The user CANNOT close this dialog  by pressing outsite it
+                                  barrierDismissible: true,
+                                  context: context,
+                                  builder: (_) {
+                                    return Dialog(
+                                      // The background color
+                                      backgroundColor: Colors.white,
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 20),
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: const [
+                                            // The loading indicator
+                                            CircularProgressIndicator(),
+                                            SizedBox(
+                                              height: 15,
+                                            ),
+                                            // Some text
+                                            Text('Loading...')
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  });
+                              //debugPrint("*****Response Status code*******");
+                              final res = await postLogin(data);
+                              //debugPrint("*****Response Status code*******");
+                              // debugPrint(res.statusCode.toString());
+
+                              if (res.statusCode == 200) {
+                                //await Future.delayed(const Duration(seconds: 3));
+                                // ignore: use_build_context_synchronously
+                                Navigator.of(context).pop();
+                                // ignore: use_build_context_synchronously
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const MainScreen(),
+                                  ),
+                                );
+                              } else {
+                                // ignore: use_build_context_synchronously
+                                Navigator.of(context).pop();
+                                Fluttertoast.showToast(
+                                  msg:
+                                      "Username or password is incorrect. Please try again later!!!",
+                                  gravity: ToastGravity.TOP,
+                                  timeInSecForIosWeb: 1,
+                                  backgroundColor: Colors.red,
+                                  textColor: Colors.white,
+                                  fontSize: 15.0,
+                                );
+                              }
+                            }
+                            /* Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const MainScreen(),
+                    ),
+                  ); */
+                          },
+                        ),
+                      ],
+                    ),
             ],
           ),
         ),
