@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:student_management/components/tile.dart';
 import 'package:student_management/screens/attendanceList_screen/attendanceList_screen.dart';
 import 'package:student_management/screens/attendance_screen/attendance_screen.dart';
+import 'package:student_management/screens/message/chat_detail.dart';
 import 'package:student_management/screens/nothing_screen/nothing_screen.dart';
 import 'package:student_management/screens/teachers_profile_screen/teachers_profile_screen.dart';
 import 'package:student_management/screens/students_list_screen/students_list_screen.dart';
@@ -10,6 +11,8 @@ import 'package:student_management/components/banner.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:student_management/services/helper.dart';
+
+import '../message/chat_select.dart';
 
 class Body extends StatefulWidget {
   const Body({super.key});
@@ -173,13 +176,13 @@ class _BodyState extends State<Body> {
                     ),
                     SizedBox(width: size.width * 0.029),
                     Tile(
-                      label: "Configure",
+                      label: "Broadcast Messages",
                       image: "assets/images/config.png",
                       onClick: () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const Nothing()),
+                              builder: (context) => const ChatSelect()),
                         );
                       },
                     ),
