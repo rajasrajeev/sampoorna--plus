@@ -8,7 +8,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:student_management/components/app_bar.dart';
 import 'package:student_management/components/profile_details.dart';
 import 'package:student_management/components/profile_header.dart';
 import 'package:student_management/constants.dart';
@@ -17,8 +16,6 @@ import 'package:student_management/services/api_services.dart';
 import 'package:student_management/services/jwt_token_parser.dart';
 
 import '../../components/profile_header_file_image.dart';
-import '../../components/profile_picture_picker.dart';
-import '../../constants.dart';
 
 class StudentsProfileScreen extends StatefulWidget {
   final String? studentCode;
@@ -117,13 +114,16 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
     setState(() {
       _inProcess = false;
     });
-    print(error);
+    // print(error);
   }
 
   void _handleLostFiles(List<XFile> files) {
-    for (XFile file in files) {
-      print(file.path);
-    }
+    // for (XFile file in files) {
+    //   print(file.path);
+    // }
+    setState(() {
+      _inProcess = false;
+    });
   }
 
   Future<void> getLostData() async {
@@ -154,7 +154,7 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
     try {
       CroppedFile? cropped = await ImageCropper().cropImage(
         sourcePath: image.path,
-        aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
+        aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
         compressQuality: 100,
         maxWidth: 700,
         maxHeight: 700,
@@ -232,7 +232,7 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
                         clipper: CurveImage(),
                         child: Container(
                           width: size.width,
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                               color: Color.fromARGB(214, 242, 242, 242)),
                           child: (_selectedFile == null)
                               ? ProfileHeader(
@@ -243,14 +243,18 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
                                       : "assets/images/girl.png",
                                   name: studentDetail['personal_details']
                                       ['full_name'],
-                                  grade: studentDetail['current_details']['class'] +
-                                      studentDetail['current_details']['division'])
+                                  grade: studentDetail['current_details']
+                                          ['class'] +
+                                      studentDetail['current_details']
+                                          ['division'])
                               : ProfileHeaderImageFile(
                                   imageUrl: _selectedFile!,
                                   name: studentDetail['personal_details']
                                       ['full_name'],
-                                  grade: studentDetail['current_details']['class'] +
-                                      studentDetail['current_details']['division']),
+                                  grade: studentDetail['current_details']
+                                          ['class'] +
+                                      studentDetail['current_details']
+                                          ['division']),
                         ),
                       ),
                       Positioned(
@@ -272,7 +276,8 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
                       children: <Widget>[
                         ProfileDetails(
                             title: "Full Name",
-                            value: studentDetail['personal_details']['full_name']),
+                            value: studentDetail['personal_details']
+                                ['full_name']),
                         ProfileDetails(
                             title: "Admission No",
                             value: studentDetail['personal_details']
@@ -294,7 +299,8 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
                                 ['nationality']),
                         ProfileDetails(
                             title: ("Hostelite"), //.toUpperCase(),
-                            value: studentDetail['personal_details']['hostelite']),
+                            value: studentDetail['personal_details']
+                                ['hostelite']),
                         SizedBox(height: size.height * 0.05),
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.end,
@@ -370,14 +376,16 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
                             value: studentDetail['current_details']['class']),
                         ProfileDetails(
                             title: ("Division"), //.toUpperCase(),
-                            value: studentDetail['current_details']['division']),
+                            value: studentDetail['current_details']
+                                ['division']),
                         ProfileDetails(
                             title: ("Physically Challenged"), //.toUpperCase(),
                             value: studentDetail['current_details']
                                 ['physical_challenge']),
                         ProfileDetails(
                             title: ("Medium Name"), //.toUpperCase(),
-                            value: studentDetail['current_details']['medium_name']),
+                            value: studentDetail['current_details']
+                                ['medium_name']),
                         ProfileDetails(
                             title: ("First Language "), //.toUpperCase(),
                             value: studentDetail['current_details']
@@ -397,7 +405,8 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
                                 ['additional_language']),
                         ProfileDetails(
                             title: ("Midday Meal"), //.toUpperCase(),
-                            value: studentDetail['current_details']['middaymeal']),
+                            value: studentDetail['current_details']
+                                ['middaymeal']),
                         SizedBox(height: size.height * 0.05),
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.end,
@@ -449,7 +458,8 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
                                 ['mother_tongue']),
                         ProfileDetails(
                             title: ("Homeless"), //.toUpperCase(),
-                            value: studentDetail['additional_details']['homeless']),
+                            value: studentDetail['additional_details']
+                                ['homeless']),
                         ProfileDetails(
                             title: ("Habitation"), //.toUpperCase(),
                             value: studentDetail['additional_details']
@@ -460,7 +470,8 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
                                 ['uniform_sets']),
                         ProfileDetails(
                             title: ("free texts").toUpperCase(),
-                            value: studentDetail['additional_details']['free_texts']
+                            value: studentDetail['additional_details']
+                                    ['free_texts']
                                 .toString()),
                         ProfileDetails(
                             title: ("Transport"), //.toUpperCase(),
@@ -468,7 +479,8 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
                                 ['transport']),
                         ProfileDetails(
                             title: ("Escort"), //.toUpperCase(),
-                            value: studentDetail['additional_details']['escort']),
+                            value: studentDetail['additional_details']
+                                ['escort']),
                         ProfileDetails(
                             title: ("Hostel Facility"), //.toUpperCase(),
                             value: studentDetail['additional_details']
@@ -497,45 +509,42 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
                       ],
                     ),
                   ),
-                  Center()
+                  const Center()
                 ],
               ),
             ),
-            (_inProcess)?
-            Container(
-              height:MediaQuery.of(context).size.height*0.95,
-              child: Center(
-                child: CircularProgressIndicator(color: primaryColor),
-              ),
-            ):
-            Container()
+            (_inProcess)
+                ? Container(
+                    height: MediaQuery.of(context).size.height * 0.95,
+                    child: const Center(
+                      child: CircularProgressIndicator(color: primaryColor),
+                    ),
+                  )
+                : Container()
           ],
-
         ),
         backgroundColor: Colors.white,
       ),
     );
   }
 
-  Widget bottosmheet(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+  Widget bottosmheet(BuildContext context1) {
+    Size size = MediaQuery.of(context1).size;
     return Stack(
       children: [
-        
-        (_inProcess)?
-            Container(
-              height:MediaQuery.of(context).size.height*0.15,
-              child: Center(
-                child: CircularProgressIndicator(color: primaryColor),
-              ),
-            ):
-            Container(
+        // if (_inProcess) SizedBox(
+        //       height:MediaQuery.of(context).size.height*0.15,
+        //       child: const Center(
+        //         child: CircularProgressIndicator(color: primaryColor),
+        //       ),
+        //     ) else
+        SizedBox(
           height: size.height * 0.15,
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
               children: [
-                Text("Choose Profile Picture"),
+                const Text("Choose Profile Picture"),
                 Center(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -545,13 +554,14 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
                         child: ElevatedButton.icon(
                           onPressed: () {
                             getImage(ImageSource.gallery);
+                            Navigator.of(context1).pop();
                           },
-                          icon: Icon(
+                          icon: const Icon(
                             // <-- Icon
                             Icons.image,
                             size: 24.0,
                           ),
-                          label: Text('Gallery'), // <-- Text
+                          label: const Text('Gallery'), // <-- Text
                         ),
                       ),
                       //const Spacer(),
@@ -560,13 +570,14 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
                         child: ElevatedButton.icon(
                           onPressed: () {
                             getImage(ImageSource.camera);
+                            Navigator.of(context1).pop();
                           },
-                          icon: Icon(
+                          icon: const Icon(
                             // <-- Icon
                             Icons.camera_alt,
                             size: 24.0,
                           ),
-                          label: Text('Camera'), // <-- Text
+                          label: const Text('Camera'), // <-- Text
                         ),
                       ),
                     ],
@@ -576,7 +587,6 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
             ),
           ),
         ),
-           
       ],
     );
   }

@@ -1,8 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:student_management/screens/message/chat_detail.dart';
@@ -14,7 +12,6 @@ import '../../services/api_services.dart';
 import '../../services/database_helper.dart';
 import '../../services/jwt_token_parser.dart';
 import '../main_screen/main_screen.dart';
-import '../students_profile_screen/students_profile_screen.dart';
 
 class ChatSelect extends StatefulWidget {
   const ChatSelect({super.key});

@@ -4,7 +4,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:student_management/components/banner.dart';
 import 'package:student_management/constants.dart';
 import 'package:student_management/screens/individual_attendance_screen/individual_attendance_screen.dart';
 import 'package:student_management/services/api_services.dart';
