@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:student_management/constants.dart';
 
-class chatDetail extends StatefulWidget {
+class ChatDetail extends StatefulWidget {
   final String? studentCode;
-  const chatDetail({required this.studentCode, super.key});
+  const ChatDetail({required this.studentCode, super.key});
 
   @override
-  State<chatDetail> createState() => _chatDetailState();
+  State<ChatDetail> createState() => _ChatDetailState();
 }
 
 //Model class for Chat
@@ -16,7 +16,7 @@ class ChatMessage {
   ChatMessage({required this.messageContent, required this.messageType});
 }
 
-class _chatDetailState extends State<chatDetail> {
+class _ChatDetailState extends State<ChatDetail> {
   List<ChatMessage> messages = [
     ChatMessage(messageContent: "Hello,", messageType: "receiver"),
     ChatMessage(messageContent: "Have you recieved Marklist?", messageType: "receiver"),

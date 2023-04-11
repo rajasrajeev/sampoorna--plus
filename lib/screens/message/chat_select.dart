@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:student_management/screens/message/chat_detail.dart';
 
 import '../../components/banner.dart';
 import '../../components/custom_textfield.dart';
@@ -12,6 +11,7 @@ import '../../services/api_services.dart';
 import '../../services/database_helper.dart';
 import '../../services/jwt_token_parser.dart';
 import '../main_screen/main_screen.dart';
+import 'chat_detail.dart';
 
 class ChatSelect extends StatefulWidget {
   const ChatSelect({super.key});
@@ -122,7 +122,7 @@ class _ChatSelectState extends State<ChatSelect> {
               //                 index]
               //             ['student_code']
               //         .toString())
-              chatDetail(
+              ChatDetail(
                   studentCode: studentsClassList)
                   ),
     );
@@ -309,7 +309,7 @@ class _ChatSelectState extends State<ChatSelect> {
                                                   //                 index]
                                                   //             ['student_code']
                                                   //         .toString())
-                                                  chatDetail(
+                                                  ChatDetail(
                                                       studentCode: studentsList[
                                                                   index]
                                                               ['student_code']

@@ -5,13 +5,10 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:student_management/components/app_bar.dart';
-import 'package:student_management/components/sidebar.dart';
 import 'package:student_management/components/submit_button.dart';
 import 'package:student_management/constants.dart';
 import 'package:student_management/services/database_helper.dart';
 
-import '../../components/custom_dropdown.dart';
 import '../../services/api_services.dart';
 import '../../services/jwt_token_parser.dart';
 import 'package:intl/intl.dart';
