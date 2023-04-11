@@ -36,26 +36,26 @@ class _ChatDetailState extends State<ChatDetail> {
         backgroundColor: Colors.white,
         flexibleSpace: SafeArea(
           child: Container(
-            padding: EdgeInsets.only(right: 16),
+            padding: const EdgeInsets.only(right: 16),
             child: Row(
               children: <Widget>[
                 IconButton(
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.arrow_back,
                     color: primaryColor,
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 2,
                 ),
-                CircleAvatar(
+                const CircleAvatar(
                   backgroundImage: AssetImage("assets/images/boy.png"),
                   maxRadius: 20,
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 12,
                 ),
                 Expanded(
@@ -65,10 +65,10 @@ class _ChatDetailState extends State<ChatDetail> {
                     children: <Widget>[
                       Text(
                         widget.studentCode.toString(),
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontSize: 16, fontWeight: FontWeight.w600),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 6,
                       ),
                       Text(
@@ -89,12 +89,12 @@ class _ChatDetailState extends State<ChatDetail> {
           ListView.builder(
             itemCount: messages.length,
             shrinkWrap: true,
-            padding: EdgeInsets.only(top: 10, bottom: 10),
-            physics: NeverScrollableScrollPhysics(),
+            padding: const EdgeInsets.only(top: 10, bottom: 10),
+            physics: const NeverScrollableScrollPhysics(),
             itemBuilder: (context, index) {
               return Container(
                   padding:
-                      EdgeInsets.only(left: 14, right: 14, top: 10, bottom: 10),
+                      const EdgeInsets.only(left: 14, right: 14, top: 10, bottom: 10),
                   child: Align(
                       alignment: (messages[index].messageType == "receiver"
                           ? Alignment.topLeft
@@ -106,13 +106,13 @@ class _ChatDetailState extends State<ChatDetail> {
                               ? Colors.grey.shade200
                               : primaryColor),
                         ),
-                        padding: EdgeInsets.only(
+                        padding: const EdgeInsets.only(
                             left: 16, right: 16, top: 10, bottom: 10),
                         child: Text(messages[index].messageContent,
                         style: TextStyle(
                           color: (messages[index].messageType == "receiver"
-                              ? Color.fromARGB(255, 0, 0, 0)
-                              : Color.fromARGB(255, 255, 255, 255)
+                              ? const Color.fromARGB(255, 0, 0, 0)
+                              : const Color.fromARGB(255, 255, 255, 255)
                               ),
                         ),
                         ),
@@ -122,7 +122,7 @@ class _ChatDetailState extends State<ChatDetail> {
           Align(
             alignment: Alignment.bottomLeft,
             child: Container(
-              padding: EdgeInsets.only(left: 10, bottom: 10, top: 10),
+              padding: const EdgeInsets.only(left: 10, bottom: 10, top: 10),
               height: 60,
               width: double.infinity,
               color: Colors.white,
@@ -141,10 +141,10 @@ class _ChatDetailState extends State<ChatDetail> {
                   //     child: Icon(Icons.add, color: Colors.white, size: 20, ),
                   //   ),
                   // ),
-                  SizedBox(
+                  const SizedBox(
                     width: 15,
                   ),
-                  Expanded(
+                  const Expanded(
                     child: TextField(
                       decoration: InputDecoration(
                           hintText: "Write message...",
@@ -152,18 +152,18 @@ class _ChatDetailState extends State<ChatDetail> {
                           border: InputBorder.none),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 15,
                   ),
                   FloatingActionButton(
                     onPressed: () {},
-                    child: Icon(
+                    backgroundColor: primaryColor,
+                    elevation: 0,
+                    child: const Icon(
                       Icons.send,
                       color: Colors.white,
                       size: 18,
                     ),
-                    backgroundColor: primaryColor,
-                    elevation: 0,
                   ),
                 ],
               ),

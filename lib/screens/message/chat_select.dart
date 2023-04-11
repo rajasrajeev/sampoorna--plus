@@ -382,7 +382,7 @@ class _ChatSelectState extends State<ChatSelect> {
         floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
         floatingActionButton: FloatingActionButton.extended(
           backgroundColor: primaryColor,
-          label: const Text("Broadcast Meassage"),
+          label: const Text("Broadcast Message"),
           icon: const Icon(Icons.sync),
           onPressed: () async {
             await sendBroadcastMessages(dropdownvalue);
