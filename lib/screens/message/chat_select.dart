@@ -112,7 +112,14 @@ class _ChatSelectState extends State<ChatSelect> {
     }
   }
 
-  sendBroadcastMessages( String studentsClassList) {
+  sendBroadcastMessages(String studentsClassList) {
+    var selectedGrade;
+    items
+        .map((map) => [
+              if (studentsClassList == map['batch_id'])
+                {selectedGrade = map['grade']}
+            ])
+        .toList();
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -123,8 +130,9 @@ class _ChatSelectState extends State<ChatSelect> {
               //             ['student_code']
               //         .toString())
               ChatDetail(
-                  studentCode: studentsClassList)
-                  ),
+                  studentName: selectedGrade,
+                  studentCode: studentsClassList //Class List from dropdown
+                  )),
     );
   }
 
@@ -310,24 +318,26 @@ class _ChatSelectState extends State<ChatSelect> {
                                                   //             ['student_code']
                                                   //         .toString())
                                                   ChatDetail(
-                                                      studentCode: studentsList[
-                                                                  index]
-                                                              ['student_code']
-                                                          .toString(),
-                                                          studentName: studentsList[
-                                                                  index]
-                                                              ['full_name'],
-                                                          )
-                                                          ),
+                                                    studentCode:
+                                                        studentsList[index]
+                                                                ['student_code']
+                                                            .toString(),
+                                                    studentName:
+                                                        studentsList[index]
+                                                            ['full_name'],
+                                                  )),
                                         );
                                       },
                                       onLongPress: () {
                                         // handle long press here
                                         setState(() {
                                           isSelected = !isSelected;
-                                         ///  studentsList[index]['student_code'] = !studentsList[index]['student_code'];
+
+                                          ///  studentsList[index]['student_code'] = !studentsList[index]['student_code'];
                                         });
-                                        print( studentsList[index]['student_code'].toString());
+                                        print(studentsList[index]
+                                                ['student_code']
+                                            .toString());
                                       },
                                       child: Card(
                                         // In many cases, the key isn't mandatory
