@@ -14,8 +14,9 @@ Future postLogin(data) async {
     Uri.parse('$apiUrl/authenticateUser/format/json'),
     body: data,
   );
-  // print("${response.body}");
-
+   print("${response.body}");
+    debugPrint("*****Response Status code in API *******");
+print("${response.statusCode}");
   if (response.statusCode == 200) {
     final token = jsonDecode(response.body);
     await prefs.setString('token', token['token']);
@@ -24,7 +25,11 @@ Future postLogin(data) async {
     //await prefs.setString('isLoggedIn',"true");
 
     var tokenData = parseJwtAndSave(token['token']);
-
+    debugPrint("*****token data token *******");
+  print("${ tokenData}");
+    debugPrint("*****token data lastname code*******");
+  print("${ tokenData['token']['first_name']}");
+    print("${ tokenData['token']['last_name']}");
     await prefs.setString('school_id', tokenData['token']['school_id']);
     await prefs.setString('first_name', tokenData['token']['first_name']);
     await prefs.setString('last_name', tokenData['token']['last_name']);

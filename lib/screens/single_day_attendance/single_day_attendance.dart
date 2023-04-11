@@ -108,29 +108,44 @@ class _SingleDayAttendanceScreenState extends State<SingleDayAttendanceScreen> {
   }
 
   forenoonOrAfternoon(value, text) {
-    if (value == 0 || value == "0" || value == null) {
+    if (value != null) {
+      if (value == 0 || value == "0" ) {
+        return Container(
+            width: 35,
+            height: 35,
+            decoration: BoxDecoration(
+                color: const Color.fromARGB(255, 49, 115, 58),
+                borderRadius: BorderRadius.circular(50)),
+            alignment: Alignment.center,
+            child: Text(
+              text,
+              style: const TextStyle(color: Colors.white),
+            ));
+      } else {
+        return Container(
+            width: 35,
+            height: 35,
+            decoration: BoxDecoration(
+                color: primaryColor, borderRadius: BorderRadius.circular(50)),
+            alignment: Alignment.center,
+            child: Text(
+              text,
+              style: const TextStyle(color: Colors.white),
+            ));
+      }
+    }
+    else{
       return Container(
-          width: 35,
-          height: 35,
-          decoration: BoxDecoration(
-              color: const Color.fromARGB(255, 49, 115, 58),
-              borderRadius: BorderRadius.circular(50)),
-          alignment: Alignment.center,
-          child: Text(
-            text,
-            style: const TextStyle(color: Colors.white),
-          ));
-    } else {
-      return Container(
-          width: 35,
-          height: 35,
-          decoration: BoxDecoration(
-              color: primaryColor, borderRadius: BorderRadius.circular(50)),
-          alignment: Alignment.center,
-          child: Text(
-            text,
-            style: const TextStyle(color: Colors.white),
-          ));
+            width: 35,
+            height: 35,
+            decoration: BoxDecoration(
+                color: Color.fromARGB(255, 145, 149, 145),
+                borderRadius: BorderRadius.circular(50)),
+            alignment: Alignment.center,
+            child: Text(
+              text,
+              style: const TextStyle(color: Colors.white),
+            ));
     }
   }
 
@@ -154,7 +169,7 @@ class _SingleDayAttendanceScreenState extends State<SingleDayAttendanceScreen> {
               // ),
               //const SizedBox(height: 10),
               Container(
-                decoration: BoxDecoration(color: primaryColor),
+                decoration: const BoxDecoration(color: primaryColor),
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
@@ -162,7 +177,7 @@ class _SingleDayAttendanceScreenState extends State<SingleDayAttendanceScreen> {
                       const SizedBox(height: 30),
                       Row(
                         children: [
-                          Text("Date :" + widget.date,
+                          Text("Date :${widget.date}",
                               style: const TextStyle(
                                 fontSize: 16,
                                 color: Colors.white70,
