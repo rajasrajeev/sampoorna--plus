@@ -42,6 +42,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
   bool checked10 = false;
   bool checked1 = false;
   DateTime selectedDate = DateTime.now();
+  String markedStatus = "";
 
   @override
   void initState() {
@@ -57,9 +58,10 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
       permittedBatches = data['permittedBatches'];
       if (widget.grade != "null") {
         for (var i = 0; i < permittedBatches.length; i++) {
-          if(widget.grade =='${permittedBatches[i]['class']} ${permittedBatches[i]['name']}'){
-          dropdownvalue = permittedBatches[i]['batch_id'];
-          }       
+          if (widget.grade ==
+              '${permittedBatches[i]['class']} ${permittedBatches[i]['name']}') {
+            dropdownvalue = permittedBatches[i]['batch_id'];
+          }
         }
       } else {
         dropdownvalue = permittedBatches[0]['batch_id'];
@@ -121,7 +123,9 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
     if (res.statusCode == 200) {
       Navigator.of(context).pop();
       var data = parseJwtAndSave(responseData['data']);
+
       setState(() {
+        markedStatus = data['markedStatus'];
         studentsList = data['token'];
       });
       await createCheckersList(data['token']);
@@ -151,7 +155,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
             ? (students[i]["absent_FN"] != '1')
                 ? true
                 : false
-            : false,//When null checkbox is not ticked for fn
+            : false, //When null checkbox is not ticked for fn
 
         "an": (students[i]["absent_AN"] != null)
             ? (students[i]["absent_AN"] != '1')
@@ -238,7 +242,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                   Container(
                     padding: EdgeInsets.all(size.width * 0.014),
                     height: size.height * 0.07,
-                    width: size.width * 0.40,
+                    width: size.width * 0.50,
                     decoration: BoxDecoration(
                       borderRadius: const BorderRadius.all(Radius.circular(30)),
                       color: Colors.white10,
@@ -261,7 +265,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                             ),
                           ),
                           // SizedBox(width: size.width*1),
-    
+
                           IconButton(
                             onPressed: () {
                               _selectDate(context);
@@ -284,7 +288,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
             Expanded(
               child: SingleChildScrollView(
                 child: DataTable(
-                  columnSpacing: size.width * 0.1,
+                  columnSpacing: 18,
                   columns: <DataColumn>[
                     const DataColumn(
                       label: Text(
@@ -386,7 +390,8 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                               // The background color
                               backgroundColor: Colors.white,
                               child: Padding(
-                                padding: const EdgeInsets.symmetric(vertical: 20),
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 20),
                                 child: Column(
                                   mainAxisSize: MainAxisSize.min,
                                   children: const [
@@ -405,11 +410,11 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                       int listLength = attendanceCheckers.length;
                       List absentees = [];
                       int fn, an;
-    
+
                       for (int i = 0; i < listLength; i++) {
                         attendanceCheckers[i]["fn"] == true ? fn = 1 : fn = 0;
                         attendanceCheckers[i]["an"] == true ? an = 1 : an = 0;
-    
+
                         Map<String, dynamic> obj = {
                           attendanceCheckers[i]["student_id"]: {
                             "1": fn,
@@ -419,19 +424,19 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                         };
                         absentees.add(obj);
                       }
-    
+
                       final DateFormat formatter = DateFormat('dd-MM-yyyy');
                       var date = formatter.format(selectedDate);
-    
+
                       dynamic dataToSubmit = {
                         "ts": date,
                         "school_id": studentsList[0]["school_id"],
                         "batch_id": batchid,
                         "absentee": absentees
                       };
-    
+
                       final res = await addAttendance(dataToSubmit);
-    
+
                       if (res.statusCode == 200) {
                         Navigator.pop(context);
                         Fluttertoast.showToast(
@@ -480,7 +485,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
         //      // i++;
         //     });
         //   },
-    
+
         // ),
       ),
     );
