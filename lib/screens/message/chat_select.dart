@@ -313,7 +313,12 @@ class _ChatSelectState extends State<ChatSelect> {
                                                       studentCode: studentsList[
                                                                   index]
                                                               ['student_code']
-                                                          .toString())),
+                                                          .toString(),
+                                                          studentName: studentsList[
+                                                                  index]
+                                                              ['full_name'],
+                                                          )
+                                                          ),
                                         );
                                       },
                                       onLongPress: () {

@@ -3,7 +3,8 @@ import 'package:student_management/constants.dart';
 
 class ChatDetail extends StatefulWidget {
   final String? studentCode;
-  const ChatDetail({required this.studentCode, super.key});
+  final String? studentName;
+  const ChatDetail({required this.studentCode,this.studentName, super.key});
 
   @override
   State<ChatDetail> createState() => _ChatDetailState();
@@ -64,7 +65,7 @@ class _ChatDetailState extends State<ChatDetail> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Text(
-                        widget.studentCode.toString(),
+                        "${widget.studentName.toString()} (${widget.studentCode.toString()})",
                         style: const TextStyle(
                             fontSize: 16, fontWeight: FontWeight.w600),
                       ),
