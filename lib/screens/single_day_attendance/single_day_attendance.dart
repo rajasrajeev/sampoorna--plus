@@ -139,7 +139,7 @@ class _SingleDayAttendanceScreenState extends State<SingleDayAttendanceScreen> {
             width: 35,
             height: 35,
             decoration: BoxDecoration(
-                color: Color.fromARGB(255, 145, 149, 145),
+                color: const Color.fromARGB(255, 145, 149, 145),
                 borderRadius: BorderRadius.circular(50)),
             alignment: Alignment.center,
             child: Text(
@@ -185,10 +185,7 @@ class _SingleDayAttendanceScreenState extends State<SingleDayAttendanceScreen> {
                               )),
                           const Spacer(),
                           Text(
-                              "Total Absent :" +
-                                  absentCount.toString() +
-                                  "/" +
-                                  attendanceDates.length.toString(),
+                              "Total Absent :$absentCount/${attendanceDates.length}",
                               style: const TextStyle(
                                 fontSize: 16,
                                 color: Colors.white,
