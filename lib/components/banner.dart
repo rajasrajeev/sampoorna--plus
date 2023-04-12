@@ -102,9 +102,9 @@ class _CommonBannerState extends State<CommonBanner> {
                                   itemBuilder: (context, index) {
                                     return Container(
                                       width: size.width * 0.2,
-                                      // height: size.height*0.02,
-                                      margin: const EdgeInsets.all(8),
-                                      padding: const EdgeInsets.all(0.1),
+                                      // height: size.height * 0.5,
+                                      margin: const EdgeInsets.all(4),
+                                      // padding: const EdgeInsets.all(0.5),
                                       decoration: BoxDecoration(
                                           border: Border.all(
                                               color: Color.fromARGB(
@@ -118,7 +118,8 @@ class _CommonBannerState extends State<CommonBanner> {
                                             MaterialPageRoute(
                                                 builder: (context) =>
                                                     AttendanceScreen(
-                                                      grade:"${permittedBatches[index]['class']} ${permittedBatches[index]['name']}",
+                                                      grade:
+                                                          "${permittedBatches[index]['class']} ${permittedBatches[index]['name']}",
                                                     )),
                                           );
                                         },

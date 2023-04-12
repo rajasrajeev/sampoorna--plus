@@ -14,9 +14,6 @@ Future postLogin(data) async {
     Uri.parse('$apiUrl/authenticateUser/format/json'),
     body: data,
   );
-   print("${response.body}");
-    debugPrint("*****Response Status code in API *******");
-print("${response.statusCode}");
   if (response.statusCode == 200) {
     final token = jsonDecode(response.body);
     await prefs.setString('token', token['token']);
@@ -25,19 +22,17 @@ print("${response.statusCode}");
     //await prefs.setString('isLoggedIn',"true");
 
     var tokenData = parseJwtAndSave(token['token']);
-    debugPrint("*****token data token *******");
-  print("${ tokenData}");
-    debugPrint("*****token data lastname code*******");
-  print("${ tokenData['token']['first_name']}");
-    print("${ tokenData['token']['last_name']}");
     await prefs.setString('school_id', tokenData['token']['school_id']);
     await prefs.setString('first_name', tokenData['token']['first_name']);
     await prefs.setString('last_name', tokenData['token']['last_name']);
     await prefs.setString('username', tokenData['token']['username']);
-    await prefs.setString(
-        'permittedBatches', tokenData['permittedBatches'][0]['batch_id']);
-    await prefs.setString('class', tokenData['permittedBatches'][0]['class']);
-    await prefs.setString('name', tokenData['permittedBatches'][0]['name']);
+    if (tokenData['permittedBatches'].length > 0) {
+      await prefs.setString(
+          'permittedBatches', tokenData['permittedBatches'][0]['batch_id']);
+      await prefs.setString('class', tokenData['permittedBatches'][0]['class']);
+      await prefs.setString('name', tokenData['permittedBatches'][0]['name']);
+    } else {}
+
     await prefs.setString('tokenData', tokenData.toString());
     // Teachers res = Teachers.fromJson(tokenData);
     await prefs.setString('loginData', json.encode(tokenData));
@@ -103,12 +98,6 @@ Future attendanceBetweenDates(date1, date2, school_id, batch_id) async {
 
 //API TO POST LOGIN
 Future attendanceOnDate(date, school_id, batch_id) async {
-    debugPrint("**************date************************");
-    debugPrint(date);
-        debugPrint("**************school_id************************");
-    debugPrint(school_id);
-        debugPrint("**************batch_id************************");
-    debugPrint(batch_id);
   final prefs = await SharedPreferences.getInstance();
   var token = await prefs.getString('token');
   final response = await http
@@ -119,10 +108,8 @@ Future attendanceOnDate(date, school_id, batch_id) async {
     "school_id": school_id,
     "batch_id": batch_id
   });
-    debugPrint("**************attendanceOnDate Response************************");
-    debugPrint("$response");
+
   return response;
-  
 }
 
 //API TO POST Add Attendance
