@@ -101,13 +101,13 @@ class _CommonBannerState extends State<CommonBanner> {
                                   shrinkWrap: true,
                                   itemBuilder: (context, index) {
                                     return Container(
-                                      width: size.width * 0.2,
-                                      // height: size.height * 0.5,
-                                      margin: const EdgeInsets.all(4),
-                                      // padding: const EdgeInsets.all(0.5),
+                                      width: size.width * 0.15,
+                                       height: size.height * 0.5,
+                                      margin: const EdgeInsets.all(8),
+                                      //padding:const EdgeInsets.all(12),
                                       decoration: BoxDecoration(
                                           border: Border.all(
-                                              color: Color.fromARGB(
+                                              color: const Color.fromARGB(
                                                   255, 255, 255, 255)),
                                           borderRadius:
                                               BorderRadius.circular(10)),
@@ -123,14 +123,19 @@ class _CommonBannerState extends State<CommonBanner> {
                                                     )),
                                           );
                                         },
-                                        child: Text(
-                                          "${permittedBatches[index]['class']} ${permittedBatches[index]['name']}",
-                                          textAlign: TextAlign.center,
-                                          style: const TextStyle(
-                                            fontSize: 17,
-                                            color: Color.fromARGB(
-                                                221, 255, 255, 255),
-                                            fontWeight: FontWeight.w700,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(0),
+                                          child: Center(
+                                            child: Text(
+                                              "${permittedBatches[index]['class']} ${permittedBatches[index]['name']}",
+                                              textAlign: TextAlign.center,
+                                              style: const TextStyle(
+                                                fontSize: 16,
+                                                color: Color.fromARGB(
+                                                    221, 255, 255, 255),
+                                                fontWeight: FontWeight.w700,
+                                              ),
+                                            ),
                                           ),
                                         ),
                                       ),

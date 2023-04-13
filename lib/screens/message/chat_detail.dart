@@ -4,7 +4,7 @@ import 'package:student_management/constants.dart';
 class ChatDetail extends StatefulWidget {
   final String? studentCode;
   final String? studentName;
-  const ChatDetail({required this.studentCode,this.studentName, super.key});
+  const ChatDetail({required this.studentCode, this.studentName, super.key});
 
   @override
   State<ChatDetail> createState() => _ChatDetailState();
@@ -20,11 +20,12 @@ class ChatMessage {
 class _ChatDetailState extends State<ChatDetail> {
   List<ChatMessage> messages = [
     ChatMessage(messageContent: "Hello,", messageType: "receiver"),
-    ChatMessage(messageContent: "Have you recieved Marklist?", messageType: "receiver"),
     ChatMessage(
-        messageContent: "Hey , I havent recieved",
-        messageType: "sender"),
-    ChatMessage(messageContent: "Marklist is updated ", messageType: "receiver"),
+        messageContent: "Have you recieved Marklist?", messageType: "receiver"),
+    ChatMessage(
+        messageContent: "Hey , I havent recieved", messageType: "sender"),
+    ChatMessage(
+        messageContent: "Marklist is updated ", messageType: "receiver"),
     ChatMessage(
         messageContent: "k Thank you will check now", messageType: "sender"),
   ];
@@ -73,7 +74,7 @@ class _ChatDetailState extends State<ChatDetail> {
                         height: 6,
                       ),
                       Text(
-                        "Online",
+                        "sampoorna",
                         style: TextStyle(
                             color: Colors.grey.shade600, fontSize: 13),
                       ),
@@ -94,8 +95,8 @@ class _ChatDetailState extends State<ChatDetail> {
             physics: const NeverScrollableScrollPhysics(),
             itemBuilder: (context, index) {
               return Container(
-                  padding:
-                      const EdgeInsets.only(left: 14, right: 14, top: 10, bottom: 10),
+                  padding: const EdgeInsets.only(
+                      left: 14, right: 14, top: 10, bottom: 10),
                   child: Align(
                       alignment: (messages[index].messageType == "receiver"
                           ? Alignment.topLeft
@@ -109,13 +110,26 @@ class _ChatDetailState extends State<ChatDetail> {
                         ),
                         padding: const EdgeInsets.only(
                             left: 16, right: 16, top: 10, bottom: 10),
-                        child: Text(messages[index].messageContent,
-                        style: TextStyle(
-                          color: (messages[index].messageType == "receiver"
-                              ? const Color.fromARGB(255, 0, 0, 0)
-                              : const Color.fromARGB(255, 255, 255, 255)
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              messages[index].messageContent,
+                              style: TextStyle(
+                                color: (messages[index].messageType ==
+                                        "receiver"
+                                    ? const Color.fromARGB(255, 0, 0, 0)
+                                    : const Color.fromARGB(255, 255, 255, 255)),
                               ),
-                        ),
+                            ),
+                            const SizedBox(height: 10,),
+                            const Text(
+                              "1-2-23",
+                              style: TextStyle(
+                                  color: Color.fromARGB(255, 180, 180, 180), fontSize: 10),
+                            ),
+                          ],
                         ),
                       )));
             },

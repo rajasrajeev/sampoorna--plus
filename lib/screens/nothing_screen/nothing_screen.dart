@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:student_management/components/app_bar.dart';
 
-import '../../components/profile_picture_picker.dart';
+import '../../components/student_profile_card.dart';
 
 class Nothing extends StatefulWidget {
   const Nothing({super.key});
@@ -18,17 +17,38 @@ class _NothingState extends State<Nothing> {
     Size size = MediaQuery.of(context).size;
     // ignore: prefer_const_constructors
     return SafeArea(
-        top: true,
+      top: true,
       child: Scaffold(
         key: key,
-        appBar:AppBar(),
+        appBar: AppBar(),
         body: Column(
           children: [
             const Center(child: Text("Under Maintenance")),
             //ProfilePicturePicker(),
+
+            SizedBox(
+              height: size.height * 0.85,
+              child: Stack(
+                children: [
+                  SingleChildScrollView(
+                      child: Column(
+                    children: const [
+                      StudentProfileCard(),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      StudentProfileCard(),
+                      SizedBox(
+                        height: 20,
+                      ),
+                    ],
+                  )),
+                ],
+              ),
+            ),
           ],
         ),
-        backgroundColor: Colors.white,
+        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
       ),
     );
   }

@@ -169,7 +169,9 @@ class _SingleDayAttendanceScreenState extends State<SingleDayAttendanceScreen> {
               // ),
               //const SizedBox(height: 10),
               Container(
-                decoration: const BoxDecoration(color: primaryColor),
+                decoration: const BoxDecoration(color: primaryColor,
+                  
+                ),
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
