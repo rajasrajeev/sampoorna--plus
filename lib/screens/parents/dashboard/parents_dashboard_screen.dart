@@ -87,8 +87,8 @@ class _ParentsDashboardScreenState extends State<ParentsDashboardScreen> {
       indexDate = indexDate.subtract(const Duration(days: 1));
     }
     setState(() {
-      day = workingDays;
-      date = dates;
+      day = workingDays.reversed.toList();
+      date = dates.reversed.toList();
     });
   }
 
@@ -158,19 +158,14 @@ class _ParentsDashboardScreenState extends State<ParentsDashboardScreen> {
                                         child: Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
-                                          children: [
+                                          children: const [
                                             SizedBox(
-                                              child: SingleChildScrollView(
-                                                scrollDirection:
-                                                    Axis.horizontal,
-                                                child: Text(
-                                                  "rama krishna shivananada",
-                                                  // softWrap: true,
-                                                  // textAlign: TextAlign.center,
-                                                  style: TextStyle(
-                                                    fontSize: 10,
-                                                    color: Color(0xFFFFFFFF),
-                                                  ),
+                                              height: 50,
+                                              child: Text(
+                                                "rama krishna shivananada",
+                                                style: TextStyle(
+                                                  fontSize: 15,
+                                                  color: Color(0xFFFFFFFF),
                                                 ),
                                               ),
                                             ),
@@ -178,7 +173,7 @@ class _ParentsDashboardScreenState extends State<ParentsDashboardScreen> {
                                             Text(
                                               "5 B",
                                               style: TextStyle(
-                                                fontSize: 9,
+                                                fontSize: 15,
                                                 color: Colors.black,
                                               ),
                                             ),
@@ -198,7 +193,58 @@ class _ParentsDashboardScreenState extends State<ParentsDashboardScreen> {
                           SizedBox(
                               height: 150,
                               child: Column(
-                                children: [],
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 8.0, right: 8.0, bottom: 8.0),
+                                    child: Column(
+                                      children: [
+                                        Text(
+                                          "St. Jpseph's H.S Mattakara",
+                                          style: buildMontserrat(
+                                            const Color(0xFF000000),
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                          overflow: TextOverflow.clip,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  TextButton.icon(
+                                    style: TextButton.styleFrom(
+                                      textStyle: TextStyle(color: Colors.blue),
+                                      backgroundColor: Colors.white,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                    ),
+                                    onPressed: () => {},
+                                    icon: Icon(
+                                      Icons.send_rounded,
+                                    ),
+                                    label: Text(
+                                      'Messages',
+                                    ),
+                                  ),
+                                  TextButton.icon(
+                                    style: TextButton.styleFrom(
+                                      textStyle: TextStyle(color: Colors.blue),
+                                      backgroundColor: Colors.white,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                    ),
+                                    onPressed: () => {},
+                                    icon: Icon(
+                                      Icons.send_rounded,
+                                    ),
+                                    label: Text(
+                                      'Attendance',
+                                    ),
+                                  ),
+                                ],
                               )),
                           Container(
                             height: 50,
@@ -208,15 +254,16 @@ class _ParentsDashboardScreenState extends State<ParentsDashboardScreen> {
                                 border: Border.all(
                                     color: Colors.black, width: 0.5)),
                             child: Row(children: [
-                              /* Expanded(
+                              Expanded(
                                 child: SizedBox(
                                   height: 50,
                                   width:
                                       (MediaQuery.of(context).size.width - 80) /
                                           7,
                                   child: ListView.builder(
-                                      reverse: true,
-                                      itemCount: day.length,
+                                      scrollDirection: Axis.horizontal,
+                                      // reverse: true,
+                                      itemCount: 7,
                                       shrinkWrap: true,
                                       itemBuilder: (context, index) {
                                         return Container(
@@ -226,221 +273,51 @@ class _ParentsDashboardScreenState extends State<ParentsDashboardScreen> {
                                                       .width -
                                                   80) /
                                               7,
-                                          decoration: const BoxDecoration(
+                                          decoration: BoxDecoration(
                                               border: Border(
-                                            right: BorderSide(
-                                              color: Colors.black,
-                                              width: 0.5,
-                                            ),
+                                            right: (index != 6)
+                                                ? const BorderSide(
+                                                    color: Colors.black,
+                                                    width: 0.5,
+                                                  )
+                                                : BorderSide.none,
                                           )),
-                                          // child: Text(date[index].toString()),
+                                          child: Column(children: [
+                                            Container(
+                                              height: 24,
+                                              decoration: const BoxDecoration(
+                                                  border: Border(
+                                                      bottom: BorderSide(
+                                                          width: 0.5,
+                                                          color:
+                                                              Colors.black))),
+                                              child: Center(
+                                                  child: Text(
+                                                      day[index].toString())),
+                                            ),
+                                            Container(
+                                              decoration: BoxDecoration(
+                                                color: primaryColor,
+                                                borderRadius: BorderRadius.only(
+                                                  bottomLeft: index == 0
+                                                      ? Radius.circular(5)
+                                                      : Radius.zero,
+                                                  bottomRight:
+                                                      index == day.length - 1
+                                                          ? Radius.circular(5)
+                                                          : Radius.zero,
+                                                ),
+                                              ),
+                                              height: 25,
+                                              child: Center(
+                                                  child: Text(
+                                                      date[index].toString())),
+                                            )
+                                          ]),
                                         );
                                       }),
                                 ),
-                              ), */
-                              Container(
-                                height: 50,
-                                width:
-                                    (MediaQuery.of(context).size.width - 80) /
-                                        7,
-                                decoration: const BoxDecoration(
-                                    border: Border(
-                                  right: BorderSide(
-                                    color: Colors.black,
-                                    width: 0.5,
-                                  ),
-                                )),
-                                child: Column(children: [
-                                  Container(
-                                    height: 24,
-                                    decoration: const BoxDecoration(
-                                        border: Border(
-                                            bottom: BorderSide(
-                                                width: 0.5,
-                                                color: Colors.black))),
-                                    child:
-                                        Center(child: Text(day[6].toString())),
-                                  ),
-                                  SizedBox(
-                                    height: 25,
-                                    child:
-                                        Center(child: Text(date[6].toString())),
-                                  )
-                                ]),
                               ),
-                              Container(
-                                height: 50,
-                                width:
-                                    (MediaQuery.of(context).size.width - 80) /
-                                        7,
-                                decoration: const BoxDecoration(
-                                    border: Border(
-                                  right: BorderSide(
-                                    color: Colors.black,
-                                    width: 0.5,
-                                  ),
-                                )),
-                                child: Column(children: [
-                                  Container(
-                                    height: 24,
-                                    decoration: const BoxDecoration(
-                                        border: Border(
-                                            bottom: BorderSide(
-                                                width: 0.5,
-                                                color: Colors.black))),
-                                    child:
-                                        Center(child: Text(day[5].toString())),
-                                  ),
-                                  SizedBox(
-                                    height: 25,
-                                    child:
-                                        Center(child: Text(date[5].toString())),
-                                  )
-                                ]),
-                              ),
-                              Container(
-                                height: 50,
-                                width:
-                                    (MediaQuery.of(context).size.width - 80) /
-                                        7,
-                                decoration: const BoxDecoration(
-                                    border: Border(
-                                  right: BorderSide(
-                                    color: Colors.black,
-                                    width: 0.5,
-                                  ),
-                                )),
-                                child: Column(children: [
-                                  Container(
-                                    height: 24,
-                                    decoration: const BoxDecoration(
-                                        border: Border(
-                                            bottom: BorderSide(
-                                                width: 0.5,
-                                                color: Colors.black))),
-                                    child:
-                                        Center(child: Text(day[4].toString())),
-                                  ),
-                                  SizedBox(
-                                    height: 25,
-                                    child:
-                                        Center(child: Text(date[4].toString())),
-                                  )
-                                ]),
-                              ),
-                              Container(
-                                height: 50,
-                                width:
-                                    (MediaQuery.of(context).size.width - 80) /
-                                        7,
-                                decoration: const BoxDecoration(
-                                    border: Border(
-                                  right: BorderSide(
-                                    color: Colors.black,
-                                    width: 0.5,
-                                  ),
-                                )),
-                                child: Column(children: [
-                                  Container(
-                                    height: 24,
-                                    decoration: const BoxDecoration(
-                                        border: Border(
-                                            bottom: BorderSide(
-                                                width: 0.5,
-                                                color: Colors.black))),
-                                    child:
-                                        Center(child: Text(day[3].toString())),
-                                  ),
-                                  SizedBox(
-                                    height: 25,
-                                    child:
-                                        Center(child: Text(date[3].toString())),
-                                  )
-                                ]),
-                              ),
-                              Container(
-                                height: 50,
-                                width:
-                                    (MediaQuery.of(context).size.width - 80) /
-                                        7,
-                                decoration: const BoxDecoration(
-                                    border: Border(
-                                  right: BorderSide(
-                                    color: Colors.black,
-                                    width: 0.5,
-                                  ),
-                                )),
-                                child: Column(children: [
-                                  Container(
-                                    height: 24,
-                                    decoration: const BoxDecoration(
-                                        border: Border(
-                                            bottom: BorderSide(
-                                                width: 0.5,
-                                                color: Colors.black))),
-                                    child:
-                                        Center(child: Text(day[2].toString())),
-                                  ),
-                                  SizedBox(
-                                    height: 25,
-                                    child:
-                                        Center(child: Text(date[2].toString())),
-                                  )
-                                ]),
-                              ),
-                              Container(
-                                height: 50,
-                                width:
-                                    (MediaQuery.of(context).size.width - 80) /
-                                        7,
-                                decoration: const BoxDecoration(
-                                    border: Border(
-                                  right: BorderSide(
-                                    color: Colors.black,
-                                    width: 0.5,
-                                  ),
-                                )),
-                                child: Column(children: [
-                                  Container(
-                                    height: 24,
-                                    decoration: const BoxDecoration(
-                                        border: Border(
-                                            bottom: BorderSide(
-                                                width: 0.5,
-                                                color: Colors.black))),
-                                    child:
-                                        Center(child: Text(day[1].toString())),
-                                  ),
-                                  SizedBox(
-                                    height: 25,
-                                    child:
-                                        Center(child: Text(date[1].toString())),
-                                  )
-                                ]),
-                              ),
-                              SizedBox(
-                                height: 50,
-                                width:
-                                    (MediaQuery.of(context).size.width - 80) /
-                                        7,
-                                child: Column(children: [
-                                  Container(
-                                    height: 24,
-                                    decoration: const BoxDecoration(
-                                        border: Border(
-                                            bottom: BorderSide(
-                                                width: 0.5,
-                                                color: Colors.black))),
-                                    child:
-                                        Center(child: Text(day[0].toString())),
-                                  ),
-                                  SizedBox(
-                                    height: 25,
-                                    child:
-                                        Center(child: Text(date[0].toString())),
-                                  )
-                                ]),
-                              )
                             ]),
                           )
                         ],
@@ -452,6 +329,17 @@ class _ParentsDashboardScreenState extends State<ParentsDashboardScreen> {
         ),
         backgroundColor: Colors.white,
       ),
+    );
+  }
+
+  TextStyle buildMontserrat(
+    Color color, {
+    FontWeight fontWeight = FontWeight.normal,
+  }) {
+    return TextStyle(
+      fontSize: 15,
+      color: color,
+      fontWeight: fontWeight,
     );
   }
 }
