@@ -15,9 +15,9 @@ class StudentProfileCard extends StatelessWidget {
     );
     return Center(
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24),
+        padding: const EdgeInsets.symmetric(horizontal: 10),
         child: Container(
-          constraints: BoxConstraints(maxWidth: size.width * 0.8),
+          constraints: BoxConstraints(maxWidth: size.width * 0.9),
           decoration: BoxDecoration(
             color: const Color.fromARGB(255, 255, 255, 255),
             borderRadius: BorderRadius.circular(20),
@@ -66,30 +66,33 @@ class StudentProfileCard extends StatelessWidget {
                             //height: double.infinity,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
+                              children: const [
                                 SizedBox(
                                   child: SingleChildScrollView(
                                     scrollDirection: Axis.horizontal,
-                                    child: Text(
-                                      "rama krishna shivananada",
-                                      // softWrap: true,
-                                      // textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        fontSize: 10,
-                                        color: Color(0xFFFFFFFF),
+                                    child: Padding(
+                                      padding: EdgeInsets.all(10.0),
+                                      child: Text(
+                                        "StudentName rama krishna shivananada",
+                                        // softWrap: true,
+                                        // textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          fontSize: 30,
+                                          color: Color(0xFFFFFFFF),
+                                        ),
                                       ),
                                     ),
                                   ),
                                 ),
-                                const SizedBox(height: 8),
+                                SizedBox(height: 8),
                                 Text(
                                   "5 B",
                                   style: TextStyle(
-                                    fontSize: 9,
+                                    fontSize: 20,
                                     color: Colors.black,
                                   ),
                                 ),
-                                const SizedBox(height: 8)
+                                SizedBox(height: 8)
                               ],
                             ),
                           )
