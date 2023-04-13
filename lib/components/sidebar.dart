@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:student_management/constants.dart';
 import 'package:student_management/screens/login_screen/login_screen.dart';
+import 'package:student_management/screens/parents/dashboard/parents_dashboard_screen.dart';
 
 class SideBar extends StatelessWidget {
   const SideBar({super.key});
@@ -17,12 +18,11 @@ class SideBar extends StatelessWidget {
             decoration: const BoxDecoration(
               color: Colors.white10,
             ),
-            child:
-        Image.asset(
-          "assets/images/sampoorna.png",
-          width: 200,
-          height: 200,
-        ),
+            child: Image.asset(
+              "assets/images/sampoorna.png",
+              width: 200,
+              height: 200,
+            ),
           ),
           ListTile(
             title: const Text('Popular', style: TextStyle(fontSize: 16)),
@@ -46,12 +46,25 @@ class SideBar extends StatelessWidget {
             },
           ),
           ListTile(
+            title:
+                const Text('Parents Dashboard', style: TextStyle(fontSize: 16)),
+            leading: const Icon(Icons.error_outline_outlined),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const ParentsDashboardScreen()),
+              );
+            },
+          ),
+          ListTile(
             title: const Text('Logout', style: TextStyle(fontSize: 16)),
             leading: const Icon(Icons.logout_outlined),
-            onTap: ()  async {
-              SharedPreferences preferences = await SharedPreferences.getInstance();
-                await preferences.clear();
-             
+            onTap: () async {
+              SharedPreferences preferences =
+                  await SharedPreferences.getInstance();
+              await preferences.clear();
+
               // ignore: use_build_context_synchronously
               Navigator.of(context).pushNamedAndRemoveUntil(
                 '/login',

@@ -71,11 +71,11 @@ class StudentProfileCard extends StatelessWidget {
                                   child: SingleChildScrollView(
                                     scrollDirection: Axis.horizontal,
                                     child: Text(
-                                      "StudentName rama krishna shivananada",
+                                      "rama krishna shivananada",
                                       // softWrap: true,
                                       // textAlign: TextAlign.center,
                                       style: TextStyle(
-                                        fontSize: size.width * 0.07,
+                                        fontSize: 10,
                                         color: Color(0xFFFFFFFF),
                                       ),
                                     ),
@@ -83,9 +83,9 @@ class StudentProfileCard extends StatelessWidget {
                                 ),
                                 const SizedBox(height: 8),
                                 Text(
-                                  "Class Division",
+                                  "5 B",
                                   style: TextStyle(
-                                    fontSize: size.width * 0.05,
+                                    fontSize: 9,
                                     color: Colors.black,
                                   ),
                                 ),

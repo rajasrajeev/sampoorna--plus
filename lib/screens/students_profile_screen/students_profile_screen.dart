@@ -141,12 +141,12 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
   }
 
   getImage(ImageSource source) async {
-    this.setState(() {
+    setState(() {
       _inProcess = true;
     });
     XFile? image = await ImagePicker().pickImage(source: source);
     if (image == null) {
-      this.setState(() {
+      setState(() {
         _inProcess = false;
       });
       return;
@@ -277,30 +277,37 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
                         ProfileDetails(
                             title: "Full Name",
                             value: studentDetail['personal_details']
-                                ['full_name'].toString()),
+                                    ['full_name']
+                                .toString()),
                         ProfileDetails(
                             title: "Admission No",
                             value: studentDetail['personal_details']
-                                ['admission_no'].toString()),
+                                    ['admission_no']
+                                .toString()),
                         ProfileDetails(
                             title: "Gender",
-                            value: studentDetail['personal_details']['gender'].toString()),
+                            value: studentDetail['personal_details']['gender']
+                                .toString()),
                         ProfileDetails(
                             title: "School Name",
                             value: studentDetail['personal_details']
-                                ['school_name'].toString()),
+                                    ['school_name']
+                                .toString()),
                         ProfileDetails(
                             title: "Student Code",
                             value: studentDetail['personal_details']
-                                ['student_code'].toString()),
+                                    ['student_code']
+                                .toString()),
                         ProfileDetails(
                             title: "Nationality",
                             value: studentDetail['personal_details']
-                                ['nationality'].toString()),
+                                    ['nationality']
+                                .toString()),
                         ProfileDetails(
                             title: ("Hostelite"), //.toUpperCase(),
                             value: studentDetail['personal_details']
-                                ['hostelite'].toString()),
+                                    ['hostelite']
+                                .toString()),
                         SizedBox(height: size.height * 0.05),
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.end,
@@ -325,27 +332,33 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
                         ProfileDetails(
                             title: ("Mothers Name"), //.toUpperCase(),
                             value: studentDetail['parent_details']
-                                ['mother_full_name'].toString()),
+                                    ['mother_full_name']
+                                .toString()),
                         ProfileDetails(
                             title: ("Fathers Name"), //.toUpperCase(),
                             value: studentDetail['parent_details']
-                                ['father_full_name'].toString()),
+                                    ['father_full_name']
+                                .toString()),
                         ProfileDetails(
                             title: ("Guardian Name"), //.toUpperCase(),
                             value: studentDetail['parent_details']
-                                ['guardian_name'].toString()),
+                                    ['guardian_name']
+                                .toString()),
                         ProfileDetails(
                             title: ("Guardian Relation"), //.toUpperCase(),
                             value: studentDetail['parent_details']
-                                ['guardian_relation']??"No Data Available"),
+                                    ['guardian_relation'] ??
+                                "No Data Available"),
                         ProfileDetails(
                             title: ("Guardian Occupation"), //.toUpperCase(),
                             value: studentDetail['parent_details']
-                                ['guardian_occupation']??"No Data Available"),
+                                    ['guardian_occupation'] ??
+                                "No Data Available"),
                         ProfileDetails(
                             title: ("Guardian Income"), //.toUpperCase(),
-                            value:studentDetail['parent_details']
-                                    ['guardian_income']??"No Data Available"),
+                            value: studentDetail['parent_details']
+                                    ['guardian_income'] ??
+                                "No Data Available"),
                         ProfileDetails(
                             title: ("APL/BPL").toUpperCase(),
                             value: studentDetail['parent_details']['apl']),
@@ -372,23 +385,27 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
                         SizedBox(height: size.height * 0.05),
                         ProfileDetails(
                             title: ("Class"), //.toUpperCase(),
-                            value: studentDetail['current_details']['class'].toString()),
+                            value: studentDetail['current_details']['class']
+                                .toString()),
                         ProfileDetails(
                             title: ("Division"), //.toUpperCase(),
-                            value: studentDetail['current_details']
-                                ['division'].toString()),
+                            value: studentDetail['current_details']['division']
+                                .toString()),
                         ProfileDetails(
                             title: ("Physically Challenged"), //.toUpperCase(),
                             value: studentDetail['current_details']
-                                ['physical_challenge'].toString()),
+                                    ['physical_challenge']
+                                .toString()),
                         ProfileDetails(
                             title: ("Medium Name"), //.toUpperCase(),
                             value: studentDetail['current_details']
-                                ['medium_name'].toString()),
+                                    ['medium_name']
+                                .toString()),
                         ProfileDetails(
                             title: ("First Language "), //.toUpperCase(),
                             value: studentDetail['current_details']
-                                ['first_language'].toString()),
+                                    ['first_language']
+                                .toString()),
                         ProfileDetails(
                             title: ("Second Language"), //.toUpperCase(),
                             value: studentDetail['current_details']
@@ -397,15 +414,18 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
                         ProfileDetails(
                             title: ("Third Language"), //.toUpperCase(),
                             value: studentDetail['current_details']
-                                ['third_language'].toString()),
+                                    ['third_language']
+                                .toString()),
                         ProfileDetails(
                             title: ("Additional Language"), //.toUpperCase(),
                             value: studentDetail['current_details']
-                                ['additional_language'].toString()),
+                                    ['additional_language']
+                                .toString()),
                         ProfileDetails(
                             title: ("Midday Meal"), //.toUpperCase(),
                             value: studentDetail['current_details']
-                                ['middaymeal'].toString()),
+                                    ['middaymeal']
+                                .toString()),
                         SizedBox(height: size.height * 0.05),
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.end,
@@ -430,7 +450,8 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
                         ProfileDetails(
                             title: ("Vaccinated"), //.toUpperCase(),
                             value: studentDetail['vaccination_details']
-                                ['vaccinated'].toString()),
+                                    ['vaccinated']
+                                .toString()),
                         SizedBox(height: size.height * 0.05),
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.end,
@@ -454,19 +475,23 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
                         ProfileDetails(
                             title: ("Mother Tongue"), //.toUpperCase(),
                             value: studentDetail['additional_details']
-                                ['mother_tongue'].toString()),
+                                    ['mother_tongue']
+                                .toString()),
                         ProfileDetails(
                             title: ("Homeless"), //.toUpperCase(),
                             value: studentDetail['additional_details']
-                                ['homeless'].toString()),
+                                    ['homeless']
+                                .toString()),
                         ProfileDetails(
                             title: ("Habitation"), //.toUpperCase(),
                             value: studentDetail['additional_details']
-                                ['habitation'].toString()),
+                                    ['habitation']
+                                .toString()),
                         ProfileDetails(
                             title: ("Uniform Sets"), //.toUpperCase(),
                             value: studentDetail['additional_details']
-                                ['uniform_sets'].toString()),
+                                    ['uniform_sets']
+                                .toString()),
                         ProfileDetails(
                             title: ("free texts").toUpperCase(),
                             value: studentDetail['additional_details']
@@ -475,27 +500,32 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
                         ProfileDetails(
                             title: ("Transport"), //.toUpperCase(),
                             value: studentDetail['additional_details']
-                                ['transport'].toString()),
+                                    ['transport']
+                                .toString()),
                         ProfileDetails(
                             title: ("Escort"), //.toUpperCase(),
-                            value: studentDetail['additional_details']
-                                ['escort'].toString()),
+                            value: studentDetail['additional_details']['escort']
+                                .toString()),
                         ProfileDetails(
                             title: ("Hostel Facility"), //.toUpperCase(),
                             value: studentDetail['additional_details']
-                                ['hostel_facility'].toString()),
+                                    ['hostel_facility']
+                                .toString()),
                         ProfileDetails(
                             title: ("Special Facility"), //.toUpperCase(),
                             value: studentDetail['additional_details']
-                                ['special_facility'].toString()),
+                                    ['special_facility']
+                                .toString()),
                         ProfileDetails(
                             title: ("Identification Mark 1"), //.toUpperCase(),
                             value: studentDetail['additional_details']
-                                ['identification_mark_1']??"No Data Available"),
+                                    ['identification_mark_1'] ??
+                                "No Data Available"),
                         ProfileDetails(
                             title: ("Identification Mark 2"), //.toUpperCase(),
                             value: studentDetail['additional_details']
-                                ['identification_mark_2']??"No Data Available"),
+                                    ['identification_mark_2'] ??
+                                "No Data Available"),
                         SizedBox(height: size.height * 0.05),
                         // const Divider(
                         //   height: 10,
