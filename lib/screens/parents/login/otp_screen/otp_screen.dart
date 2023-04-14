@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:pinput/pinput.dart';
 import 'package:student_management/constants.dart';
 
-import '../../components/submit_button.dart';
+import '../../../../components/submit_button.dart';
 
 class OtpScreen extends StatefulWidget {
   final String userName;
@@ -41,12 +41,12 @@ class _OtpScreenState extends State<OtpScreen> {
     //     fontSize: 15.0,
     //   );
     //   // ignore: use_build_context_synchronously
-    //   Navigator.pushReplacement(
-    //     context,
-    //     MaterialPageRoute(
-    //       builder: (context) => const MainScreen(),
-    //     ),
-    //   );
+      // Navigator.pushReplacement(
+      //   context,
+      //   MaterialPageRoute(
+      //     builder: (context) => const MainScreen(),
+      //   ),
+      // );
     // }
   }
 
