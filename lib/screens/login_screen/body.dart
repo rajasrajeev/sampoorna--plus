@@ -46,6 +46,7 @@ class _BodyState extends State<Body> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Column(
       children: <Widget>[
         const Spacer(),
@@ -105,21 +106,7 @@ class _BodyState extends State<Body> {
                             return null;
                           },
                         ),
-                        TextButton(
-                          child: const Text(
-                            "Don't have an account Signup Now",
-                            style: TextStyle(fontSize: 10),
-                          ),
-                          onPressed: () {
-                            //Mobile number screen screen
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const ParentOtpLogin(),
-                              ),
-                            );
-                          },
-                        ),
+                      
                         SubmitButton(
                           label: "Submit",
                           onClick: () async {
@@ -196,7 +183,30 @@ class _BodyState extends State<Body> {
                               ),
                             );
                           },
-                        )
+                        ),
+                          Padding(
+                            padding:EdgeInsets.only(left:size.width*0.2),
+                            child: Row(
+                            children: [
+                              const Text("Doesn't have an account?"),
+                              TextButton(
+                                child: const Text(
+                                  "Signup",
+                                  style: TextStyle(fontSize: 20),
+                                ),
+                                onPressed: () {
+                                  //Mobile number screen screen
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => const ParentOtpLogin(),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ],
+                                                  ),
+                          ),
                       ],
                     )
                   : Column(
