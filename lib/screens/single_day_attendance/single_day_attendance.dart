@@ -81,8 +81,7 @@ class _SingleDayAttendanceScreenState extends State<SingleDayAttendanceScreen> {
       setState(() {
         attendanceDates = data['token'];
       });
-      debugPrint("********attendanceDates***********");
-      debugPrint('$attendanceDates');
+
       for (var i = 0; i < attendanceDates.length; i++) {
         if (attendanceDates[i]["absent_FN"] == 1 ||
             attendanceDates[i]["absent_FN"] == "1" ||
@@ -109,7 +108,7 @@ class _SingleDayAttendanceScreenState extends State<SingleDayAttendanceScreen> {
 
   forenoonOrAfternoon(value, text) {
     if (value != null) {
-      if (value == 0 || value == "0" ) {
+      if (value == 0 || value == "0") {
         return Container(
             width: 35,
             height: 35,
@@ -133,19 +132,18 @@ class _SingleDayAttendanceScreenState extends State<SingleDayAttendanceScreen> {
               style: const TextStyle(color: Colors.white),
             ));
       }
-    }
-    else{
+    } else {
       return Container(
-            width: 35,
-            height: 35,
-            decoration: BoxDecoration(
-                color: const Color.fromARGB(255, 145, 149, 145),
-                borderRadius: BorderRadius.circular(50)),
-            alignment: Alignment.center,
-            child: Text(
-              text,
-              style: const TextStyle(color: Colors.white),
-            ));
+          width: 35,
+          height: 35,
+          decoration: BoxDecoration(
+              color: const Color.fromARGB(255, 145, 149, 145),
+              borderRadius: BorderRadius.circular(50)),
+          alignment: Alignment.center,
+          child: Text(
+            text,
+            style: const TextStyle(color: Colors.white),
+          ));
     }
   }
 
@@ -161,16 +159,9 @@ class _SingleDayAttendanceScreenState extends State<SingleDayAttendanceScreen> {
         body: SingleChildScrollView(
           child: Column(
             children: <Widget>[
-              //  CommonBanner(
-              //   imageUrl: "assets/images/profile.png",
-              //   name:userName,
-              //   grade: grade,
-              //   showDiv: false,
-              // ),
-              //const SizedBox(height: 10),
               Container(
-                decoration: const BoxDecoration(color: primaryColor,
-                  
+                decoration: const BoxDecoration(
+                  color: primaryColor,
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -199,7 +190,6 @@ class _SingleDayAttendanceScreenState extends State<SingleDayAttendanceScreen> {
                   ),
                 ),
               ),
-
               const SizedBox(height: 20),
               Row(
                 children: <Widget>[
@@ -267,7 +257,6 @@ class _SingleDayAttendanceScreenState extends State<SingleDayAttendanceScreen> {
                   )
                 ],
               ),
-              //const SizedBox(width: 100),
             ],
           ),
         ),

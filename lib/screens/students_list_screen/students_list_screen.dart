@@ -44,7 +44,8 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
     var details = await prefs.getString('loginData');
     dynamic data = json.decode(details!);
     setState(() {
-      userName ="${prefs.getString('first_name')} ${prefs.getString('last_name')}";
+      userName =
+          "${prefs.getString('first_name')} ${prefs.getString('last_name')}";
       grade = "${prefs.getString('class')} ${prefs.getString('name')}";
     });
     setState(() {
@@ -168,7 +169,7 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
     // Initial Selected Value
 
     return SafeArea(
-        top: true,
+      top: true,
       child: Scaffold(
         appBar: AppBar(
           title: const Text("Students List"),
@@ -197,11 +198,12 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
             SingleChildScrollView(
               child: Column(
                 children: <Widget>[
-                   CommonBanner(
-                      imageUrl: "assets/images/teacher.png",
-                      name: userName,
-                      grade: grade,
-                      showDiv: false,),
+                  CommonBanner(
+                    imageUrl: "assets/images/teacher.png",
+                    name: userName,
+                    grade: grade,
+                    showDiv: false,
+                  ),
                   const SizedBox(height: 10),
                   Row(
                     children: <Widget>[
@@ -210,15 +212,6 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
                         //padding: EdgeInsets.all(size.width * 0.03),
                         height: size.height * 0.085,
                         width: size.width * 0.60,
-                        // decoration: BoxDecoration(
-                        //  color: Colors.white,
-                        //   borderRadius: BorderRadius.circular(30.0),
-                        //   border: Border.all(
-                        //    style: BorderStyle.solid,
-                        //   width: 2.0,
-                        //    color: primaryColor,
-                        //  ),
-                        // ),
                         child: CustomTextField(
                           label: "Search here",
                           minLine: 1,
@@ -232,8 +225,8 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
                             return null;
                           },
                           onChanged: (value) async {
-                            dynamic localStudents =
-                                await _db.getStudentSearch(value, dropdownvalue);
+                            dynamic localStudents = await _db.getStudentSearch(
+                                value, dropdownvalue);
                             if (localStudents.length > 0) {
                               setState(() {
                                 studentsList = localStudents;
@@ -310,10 +303,10 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
                                           MaterialPageRoute(
                                               builder: (context) =>
                                                   StudentsProfileScreen(
-                                                      studentCode:
-                                                          studentsList[index]
-                                                                  ['student_code']
-                                                              .toString())),
+                                                      studentCode: studentsList[
+                                                                  index]
+                                                              ['student_code']
+                                                          .toString())),
                                         );
                                       },
                                       child: Card(
@@ -331,8 +324,8 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
                                                     height: 70,
                                                     decoration: BoxDecoration(
                                                         borderRadius:
-                                                            BorderRadius.circular(
-                                                                15)),
+                                                            BorderRadius
+                                                                .circular(15)),
                                                     alignment: Alignment.center,
                                                     child: Image.asset(
                                                         "assets/images/studentProfile.png")),
@@ -349,8 +342,6 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
                                                           fontWeight:
                                                               FontWeight.bold),
                                                     ),
-                                                    /* Text(
-                                                        "Student Code: ${studentsList[index]['student_code']}" ), */
                                                     Text(
                                                         "(Adm No: ${studentsList[index]['admission_no']})"),
                                                   ],

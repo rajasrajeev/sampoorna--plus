@@ -20,7 +20,7 @@ class _IndividualAttendanceScreenState
     Size size = MediaQuery.of(context).size;
     // ignore: prefer_const_constructors
     return SafeArea(
-        top: true,
+      top: true,
       child: Scaffold(
         key: key,
         appBar: AppBar(title: const Text("Profile")),

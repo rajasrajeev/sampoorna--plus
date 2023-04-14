@@ -58,22 +58,6 @@ class _ParentsDashboardScreenState extends State<ParentsDashboardScreen> {
   }
 
   getPastWeek() {
-    /* // Parse date without timestamp
-    // final DateFormat formatter = DateFormat('yyyy-MM-dd');
-
-    final DateTime today = DateTime.now();
-
-    for (int i = 0; i < 6; i++) {
-      // Get start date
-      final DateTime startDate = today.subtract(Duration(days: i + 1));
-      final DateTime endDate = today.subtract(Duration(days: i + 1));
-      setState(() {
-        day.add(DateFormat('EEE').format(endDate));
-        date.add(endDate.day);
-      });
-    }
-    print(day);
-    print(date); */
     final workingDays = [];
     final dates = [];
     final currentDate = DateTime.now();
@@ -277,7 +261,8 @@ class _ParentsDashboardScreenState extends State<ParentsDashboardScreen> {
                                               border: Border(
                                             right: (index != 6)
                                                 ? const BorderSide(
-                                                    color: Color.fromARGB(255, 105, 25, 25),
+                                                    color: Color.fromARGB(
+                                                        255, 105, 25, 25),
                                                     width: 0.5,
                                                   )
                                                 : BorderSide.none,
@@ -311,8 +296,10 @@ class _ParentsDashboardScreenState extends State<ParentsDashboardScreen> {
                                               height: 25,
                                               child: Center(
                                                   child: Text(
-                                                      date[index].toString(),
-                                                      style: TextStyle(color: Colors.white),)),
+                                                date[index].toString(),
+                                                style: TextStyle(
+                                                    color: Colors.white),
+                                              )),
                                             )
                                           ]),
                                         );

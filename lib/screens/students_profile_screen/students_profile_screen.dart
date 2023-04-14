@@ -92,35 +92,13 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
     }
   }
 
-  // Widget getImageWidget() {
-  //   if (_selectedFile != null) {
-  //     return Image.file(
-  //       _selectedFile!,
-  //       width: 250,
-  //       height: 250,
-  //       fit: BoxFit.cover,
-  //     );
-  //   } else {
-  //     return Image.asset(
-  //       "assets/images/studentProfile.png",
-  //       width: 250,
-  //       height: 250,
-  //       fit: BoxFit.cover,
-  //     );
-  //   }
-  // }
-
   void _handleError(dynamic error) {
     setState(() {
       _inProcess = false;
     });
-    // print(error);
   }
 
   void _handleLostFiles(List<XFile> files) {
-    // for (XFile file in files) {
-    //   print(file.path);
-    // }
     setState(() {
       _inProcess = false;
     });
@@ -173,18 +151,18 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
       );
       if (cropped != null) {
         final File newFile = File(cropped.path);
-        this.setState(() {
+        setState(() {
           _selectedFile = newFile;
           _inProcess = false;
         });
       } else {
-        this.setState(() {
+        setState(() {
           _inProcess = false;
         });
       }
     } catch (e) {
       // Handle error
-      this.setState(() {
+      setState(() {
         _inProcess = false;
       });
       await getLostData();
@@ -320,7 +298,6 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
                             ),
                           ],
                         ),
-
                         const Divider(
                           height: 10,
                           thickness: 1,
@@ -374,7 +351,6 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
                             ),
                           ],
                         ),
-
                         const Divider(
                           height: 10,
                           thickness: 1,
@@ -438,7 +414,6 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
                             ),
                           ],
                         ),
-
                         const Divider(
                           height: 10,
                           thickness: 1,
@@ -527,13 +502,6 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
                                     ['identification_mark_2'] ??
                                 "No Data Available"),
                         SizedBox(height: size.height * 0.05),
-                        // const Divider(
-                        //   height: 10,
-                        //   thickness: 1,
-                        //   indent: 20,
-                        //   endIndent: 20,
-                        //   color: Colors.black45,
-                        // ),
                         SizedBox(height: size.height * 0.05),
                       ],
                     ),
@@ -543,7 +511,7 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
               ),
             ),
             (_inProcess)
-                ? Container(
+                ? SizedBox(
                     height: MediaQuery.of(context).size.height * 0.95,
                     child: const Center(
                       child: CircularProgressIndicator(color: primaryColor),

@@ -66,10 +66,8 @@ class _TeachersProfileScreenState extends State<TeachersProfileScreen> {
     final responseData = jsonDecode(res.body);
 
     if (res.statusCode == 200) {
-      //await Future.delayed(const Duration(seconds: 3));
       Navigator.of(context).pop();
       var data = parseJwtAndSave(responseData['data']);
-      print(data);
       setState(() {
         teachersProfile = data['token'][0];
       });
@@ -91,7 +89,7 @@ class _TeachersProfileScreenState extends State<TeachersProfileScreen> {
     Size size = MediaQuery.of(context).size;
     // ignore: prefer_const_constructors
     return SafeArea(
-        top: true,
+      top: true,
       child: Scaffold(
         key: key,
         appBar: AppBar(title: const Text("Teacher's Profile")),

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:student_management/components/sidebar.dart';
 import 'package:student_management/constants.dart';
-import 'package:student_management/screens/attendance_screen/attendance_screen.dart';
 import 'package:student_management/screens/home_screen/home_screen.dart';
 import 'package:student_management/screens/nothing_screen/nothing_screen.dart';
 
@@ -125,7 +124,7 @@ class _MainScreenState extends State<MainScreen> {
           ),
           drawer: const SideBar(),
           extendBody: true,
-         // bottomNavigationBar: bottomBar,
+          // bottomNavigationBar: bottomBar,
           body: screens[currentIndex],
         ),
       ),

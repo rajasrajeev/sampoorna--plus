@@ -139,41 +139,6 @@ class StudentProfileCard extends StatelessWidget {
                       ],
                     ),
                   ),
-                  // Padding(
-                  //   padding: const EdgeInsets.symmetric(
-                  //     horizontal: 16,
-                  //     vertical: 30,
-                  //   ),
-                  //   child: Row(
-                  //     children: [
-                  //       Column(
-                  //         crossAxisAlignment: CrossAxisAlignment.end,
-                  //         children: [
-                  //           Text(
-                  //             "Student Class     :\nStudent Division :",
-                  //             style: montserrat,
-                  //           ),
-                  //           const SizedBox(height: 16),
-                  //           Text(
-                  //             "Student ID           :\nAttendance         :",
-                  //             style: montserrat,
-                  //           ),
-                  //         ],
-                  //       ),
-                  //       const SizedBox(width: 8),
-                  //       Column(
-                  //         crossAxisAlignment: CrossAxisAlignment.start,
-                  //         children: [
-                  //           Text("2ffdd2", style: montserrat),
-                  //           Text("5", style: montserrat),
-                  //           const SizedBox(height: 16),
-                  //           Text("B", style: montserrat),
-                  //           Text("22", style: montserrat),
-                  //         ],
-                  //       )
-                  //     ],
-                  //   ),
-                  // ),
                 ],
               ),
               const SizedBox(height: 40),

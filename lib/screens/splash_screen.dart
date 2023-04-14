@@ -50,13 +50,13 @@ class _SplashScreenState extends State<SplashScreen> {
   permission() async {
     if (await Permission.storage.request().isGranted) {
       Timer(
-      const Duration(seconds: 2),
-      () =>getUserLoggin(),
+        const Duration(seconds: 2),
+        () => getUserLoggin(),
       );
     } else {
       Timer(
-      const Duration(seconds: 2),
-      () =>getUserLoggin(),
+        const Duration(seconds: 2),
+        () => getUserLoggin(),
       );
     }
   }
@@ -78,10 +78,6 @@ class _SplashScreenState extends State<SplashScreen> {
           children: <Widget>[
             const Spacer(),
             Image.asset("assets/images/sampoorna.png"),
-            // const Text(
-            //   "Student Management",
-            //   style: TextStyle(fontSize: 24),
-            // ),
             const Spacer(),
             const Text("V 1.0.0"),
             const SizedBox(height: 3),

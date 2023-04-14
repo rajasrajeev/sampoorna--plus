@@ -111,7 +111,6 @@ class _BodyState extends State<Body> {
                             return null;
                           },
                         ),
-                      
                         SubmitButton(
                           label: "Submit",
                           onClick: () async {
@@ -189,9 +188,9 @@ class _BodyState extends State<Body> {
                             );
                           },
                         ),
-                          Padding(
-                            padding:EdgeInsets.only(left:size.width*0.2),
-                            child: Row(
+                        Padding(
+                          padding: EdgeInsets.only(left: size.width * 0.2),
+                          child: Row(
                             children: [
                               const Text("Doesn't have an account?"),
                               TextButton(
@@ -204,14 +203,15 @@ class _BodyState extends State<Body> {
                                   Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => const ParentOtpLogin(),
+                                      builder: (context) =>
+                                          const ParentOtpLogin(),
                                     ),
                                   );
                                 },
                               ),
                             ],
-                                                  ),
                           ),
+                        ),
                       ],
                     )
                   : Column(
@@ -279,13 +279,9 @@ class _BodyState extends State<Body> {
                                       ),
                                     );
                                   });
-                              // debugPrint("*****Response Status code*******");
                               final res = await postLogin(data);
-                              debugPrint("*****Response Status code*******");
-                              debugPrint(res.statusCode.toString());
 
                               if (res.statusCode == 200) {
-                                //await Future.delayed(const Duration(seconds: 3));
                                 // ignore: use_build_context_synchronously
 
                                 // ignore: use_build_context_synchronously
@@ -340,12 +336,6 @@ class _BodyState extends State<Body> {
                                 );
                               }
                             }
-                            /* Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const MainScreen(),
-                    ),
-                  ); */
                           },
                         ),
                       ],
