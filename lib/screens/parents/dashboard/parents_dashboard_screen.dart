@@ -162,9 +162,9 @@ class _ParentsDashboardScreenState extends State<ParentsDashboardScreen> {
                                             SizedBox(
                                               height: 50,
                                               child: Text(
-                                                "rama krishna shivananada",
+                                                "rama krishna shivananada sivakumar rao",
                                                 style: TextStyle(
-                                                  fontSize: 15,
+                                                  fontSize: 18,
                                                   color: Color(0xFFFFFFFF),
                                                 ),
                                               ),
@@ -277,7 +277,7 @@ class _ParentsDashboardScreenState extends State<ParentsDashboardScreen> {
                                               border: Border(
                                             right: (index != 6)
                                                 ? const BorderSide(
-                                                    color: Colors.black,
+                                                    color: Color.fromARGB(255, 105, 25, 25),
                                                     width: 0.5,
                                                   )
                                                 : BorderSide.none,
@@ -311,7 +311,8 @@ class _ParentsDashboardScreenState extends State<ParentsDashboardScreen> {
                                               height: 25,
                                               child: Center(
                                                   child: Text(
-                                                      date[index].toString())),
+                                                      date[index].toString(),
+                                                      style: TextStyle(color: Colors.white),)),
                                             )
                                           ]),
                                         );
