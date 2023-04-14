@@ -5,11 +5,11 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:student_management/components/custom_dropdown.dart';
-import 'package:student_management/components/custom_loader.dart';
 import 'package:student_management/components/forms/password_field.dart';
 import 'package:student_management/components/forms/text_field.dart';
 import 'package:student_management/components/submit_button.dart';
-import 'package:student_management/screens/otp_screen/otp_screen.dart';
+import 'package:student_management/screens/parents/login/otp_screen/otp_screen.dart';
+import 'package:student_management/screens/parents/login/parent_otp_login.dart';
 import 'package:student_management/services/api_services.dart';
 import 'package:student_management/services/jwt_token_parser.dart';
 
@@ -24,7 +24,10 @@ class Body extends StatefulWidget {
 
 class _BodyState extends State<Body> {
   final formKey = GlobalKey<FormState>();
-  final TextEditingController phoneController = TextEditingController();
+  final TextEditingController parentUsernameController =
+      TextEditingController();
+  final TextEditingController parentPasswordController =
+      TextEditingController();
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController dropDownController = TextEditingController();
@@ -48,6 +51,7 @@ class _BodyState extends State<Body> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Column(
       children: <Widget>[
         const Spacer(),
@@ -71,7 +75,7 @@ class _BodyState extends State<Body> {
                   });
                 },
                 validator: (value) {
-                  if (value == null || value.length < 1) {
+                  if (value == null || value.isEmpty) {
                     return "please select your role";
                   }
                   return null;
@@ -82,25 +86,40 @@ class _BodyState extends State<Body> {
                   ? Column(
                       children: [
                         CustomTextField(
-                          label: "Mobile Number",
+                          label: "Username",
                           minLine: 1,
                           maxLine: 1,
                           enabled: true,
-                          controller: phoneController,
+                          controller: parentUsernameController,
                           validator: (value) {
-                            if (value == null || value.length < 9) {
-                              return "Enter Registered Mobile";
+                            if (value == null || value.length < 1) {
+                              return "please enter username";
                             }
                             return null;
                           },
                         ),
+                        PasswordField(
+                          label: "Password",
+                          minLine: 1,
+                          maxLine: 1,
+                          enabled: true,
+                          controller: parentPasswordController,
+                          validator: (value) {
+                            if (value == null || value.length < 1) {
+                              return "please enter password";
+                            }
+                            return null;
+                          },
+                        ),
+                      
                         SubmitButton(
                           label: "Submit",
                           onClick: () async {
                             // material page route
                             if (formKey.currentState!.validate()) {
                               var data = {
-                                "username": phoneController.text,
+                                "username": parentUsernameController.text,
+                                "password": parentPasswordController.text,
                                 "usert_type": role,
                               };
                               // ignore: use_build_context_synchronously
@@ -130,51 +149,69 @@ class _BodyState extends State<Body> {
                                       ),
                                     );
                                   });
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      OtpScreen(userName: phoneController.text),
-                                ),
-                              );
-                              //debugPrint("*****Response Status code*******");
-                              // final res = await postLogin(data);
-                              //debugPrint("*****Response Status code*******");
-                              // debugPrint(res.statusCode.toString());
 
-                              // if (res.statusCode == 200) {
-                              //   //await Future.delayed(const Duration(seconds: 3));
-                              //   // ignore: use_build_context_synchronously
-                              //   Navigator.of(context).pop();
-                              //   // ignore: use_build_context_synchronously
-                              //   Navigator.pushReplacement(
-                              //     context,
-                              //     MaterialPageRoute(
-                              //       builder: (context) => const MainScreen(),
-                              //     ),
-                              //   );
-                              // } else {
-                              //   // ignore: use_build_context_synchronously
-                              //   Navigator.of(context).pop();
-                              //   Fluttertoast.showToast(
-                              //     msg:
-                              //         "Username or password is incorrect. Please try again later!!!",
-                              //     gravity: ToastGravity.TOP,
-                              //     timeInSecForIosWeb: 1,
-                              //     backgroundColor: Colors.red,
-                              //     textColor: Colors.white,
-                              //     fontSize: 15.0,
-                              //   );
-                              // }
+                              debugPrint("*****Response Status code*******");
+                              final res = await postLogin(data);
+                              debugPrint("*****Response Status code*******");
+                              debugPrint(res.statusCode.toString());
+
+                              if (res.statusCode == 200) {
+                                //await Future.delayed(const Duration(seconds: 3));
+                                // ignore: use_build_context_synchronously
+                                Navigator.of(context).pop();
+                                // ignore: use_build_context_synchronously
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const MainScreen(),
+                                  ),
+                                );
+                              } else {
+                                // ignore: use_build_context_synchronously
+                                Navigator.of(context).pop();
+                                Fluttertoast.showToast(
+                                  msg:
+                                      "Username or password is incorrect. Please try again later!!!",
+                                  gravity: ToastGravity.TOP,
+                                  timeInSecForIosWeb: 1,
+                                  backgroundColor: Colors.red,
+                                  textColor: Colors.white,
+                                  fontSize: 15.0,
+                                );
+                              }
                             }
-                            /* Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const MainScreen(),
-                    ),
-                  ); */
+                            // ignore: use_build_context_synchronously
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const MainScreen(),
+                              ),
+                            );
                           },
-                        )
+                        ),
+                          Padding(
+                            padding:EdgeInsets.only(left:size.width*0.2),
+                            child: Row(
+                            children: [
+                              const Text("Doesn't have an account?"),
+                              TextButton(
+                                child: const Text(
+                                  "Signup",
+                                  style: TextStyle(fontSize: 20),
+                                ),
+                                onPressed: () {
+                                  //Mobile number screen screen
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => const ParentOtpLogin(),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ],
+                                                  ),
+                          ),
                       ],
                     )
                   : Column(
