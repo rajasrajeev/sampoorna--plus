@@ -19,22 +19,14 @@ Future postLogin(data) async {
     await prefs.setString('token', token['token']);
     await prefs.setString('user_id', token['user_id']);
     await prefs.setString('user_type', token['user_type']);
-    //await prefs.setString('isLoggedIn',"true");
 
     var tokenData = parseJwtAndSave(token['token']);
     await prefs.setString('school_id', tokenData['token']['school_id']);
     await prefs.setString('first_name', tokenData['token']['first_name']);
     await prefs.setString('last_name', tokenData['token']['last_name']);
     await prefs.setString('username', tokenData['token']['username']);
-    if (tokenData['permittedBatches'].length > 0) {
-      await prefs.setString(
-          'permittedBatches', tokenData['permittedBatches'][0]['batch_id']);
-      await prefs.setString('class', tokenData['permittedBatches'][0]['class']);
-      await prefs.setString('name', tokenData['permittedBatches'][0]['name']);
-    } else {}
 
     await prefs.setString('tokenData', tokenData.toString());
-    // Teachers res = Teachers.fromJson(tokenData);
     await prefs.setString('loginData', json.encode(tokenData));
   } else {}
   return response;
@@ -122,5 +114,26 @@ Future addAttendance(payload) async {
         'Content-type': 'application/json'
       },
       body: json.encode(payload));
+  return response;
+}
+
+//API TO POST Add Attendance
+Future getDivisionList(payload) async {
+  final prefs = await SharedPreferences.getInstance();
+  var token = await prefs.getString('token');
+  final response = await http.post(
+      Uri.parse('$apiUrl/getBatchesofSchool/format/json/'),
+      headers: {
+        'Authorization': 'Bearer $token',
+        'Content-type': 'application/json'
+      },
+      body: json.encode(payload));
+  if (response.statusCode == 200) {
+    final token = jsonDecode(response.body);
+
+    var tokenData = parseJwtAndSave(token['token']);
+    await prefs.setString('tokenData', tokenData.toString());
+    await prefs.setString('loginData', json.encode(tokenData));
+  } else {}
   return response;
 }

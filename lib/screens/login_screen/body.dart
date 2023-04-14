@@ -1,3 +1,7 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:student_management/components/custom_dropdown.dart';
@@ -7,6 +11,7 @@ import 'package:student_management/components/forms/text_field.dart';
 import 'package:student_management/components/submit_button.dart';
 import 'package:student_management/screens/otp_screen/otp_screen.dart';
 import 'package:student_management/services/api_services.dart';
+import 'package:student_management/services/jwt_token_parser.dart';
 
 import '../main_screen/main_screen.dart';
 
@@ -240,19 +245,50 @@ class _BodyState extends State<Body> {
                               // debugPrint("*****Response Status code*******");
                               final res = await postLogin(data);
                               debugPrint("*****Response Status code*******");
-                               debugPrint(res.statusCode.toString());
+                              debugPrint(res.statusCode.toString());
 
                               if (res.statusCode == 200) {
                                 //await Future.delayed(const Duration(seconds: 3));
                                 // ignore: use_build_context_synchronously
-                                Navigator.of(context).pop();
+
                                 // ignore: use_build_context_synchronously
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => const MainScreen(),
-                                  ),
-                                );
+                                final token = jsonDecode(res.body);
+                                if (token['user_type'] == "ADMIN") {
+                                  var tokenData =
+                                      parseJwtAndSave(token['token']);
+                                  final response = await getDivisionList({
+                                    "school_id": tokenData['token']
+                                        ['school_id'],
+                                    "startYear": 2022
+                                  });
+                                  if (response.statusCode == 200) {
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            const MainScreen(),
+                                      ),
+                                    );
+                                  } else {
+                                    Navigator.of(context).pop();
+                                    Fluttertoast.showToast(
+                                      msg:
+                                          "Unable to fetch class list. Contact Admin!!!",
+                                      gravity: ToastGravity.TOP,
+                                      timeInSecForIosWeb: 1,
+                                      backgroundColor: Colors.red,
+                                      textColor: Colors.white,
+                                      fontSize: 15.0,
+                                    );
+                                  }
+                                } else {
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => const MainScreen(),
+                                    ),
+                                  );
+                                }
                               } else {
                                 // ignore: use_build_context_synchronously
                                 Navigator.of(context).pop();

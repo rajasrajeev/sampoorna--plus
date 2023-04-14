@@ -22,6 +22,7 @@ class Body extends StatefulWidget {
 class _BodyState extends State<Body> {
   String userName = "";
   String grade = "";
+  String userType = "";
 
   @override
   initState() {
@@ -33,8 +34,10 @@ class _BodyState extends State<Body> {
   getUserData() async {
     final prefs = await SharedPreferences.getInstance();
 
+    userType = "${prefs.getString('user_type')}";
     setState(() {
-      userName ="${prefs.getString('first_name')} ${prefs.getString('last_name')}";
+      userName =
+          "${prefs.getString('first_name')} ${prefs.getString('last_name')}";
       grade = "${prefs.getString('class')} ${prefs.getString('name')}";
     });
   }
@@ -62,11 +65,11 @@ class _BodyState extends State<Body> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           CommonBanner(
-              imageUrl: "assets/images/teacher.png",
-              name: userName,
-              grade: grade,
-              showDiv: true,
-              ),
+            imageUrl: "assets/images/teacher.png",
+            name: userName,
+            grade: grade,
+            showDiv: true,
+          ),
           const SizedBox(height: 10),
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -89,17 +92,32 @@ class _BodyState extends State<Body> {
                       },
                     ),
                     SizedBox(width: size.width * 0.029),
-                    Tile(
-                      label: "Add Attendance",
-                      image: "assets/images/attendance.png",
-                      onClick: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const AttendanceScreen( grade:'null',)),
-                        );
-                      },
-                    ),
+                    userType == "ADMIN"
+                        ? Tile(
+                            label: "Add Attendance",
+                            image: "assets/images/attendance.png",
+                            onClick: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const AttendanceScreen(
+                                          grade: 'null',
+                                        )),
+                              );
+                            },
+                          )
+                        : Tile(
+                            label: "Broadcast Messages",
+                            image: "assets/images/config.png",
+                            onClick: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const ChatSelect()),
+                              );
+                            },
+                          ),
                     SizedBox(width: size.width * 0.029),
                     Tile(
                       label: "Profile",
@@ -126,8 +144,7 @@ class _BodyState extends State<Body> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) =>
-                                  const StudentsListScreen()),
+                              builder: (context) => const StudentsListScreen()),
                         );
                       },
                     ),
@@ -173,17 +190,19 @@ class _BodyState extends State<Body> {
                       },
                     ),
                     SizedBox(width: size.width * 0.029),
-                    Tile(
-                      label: "Broadcast Messages",
-                      image: "assets/images/config.png",
-                      onClick: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const ChatSelect()),
-                        );
-                      },
-                    ),
+                    userType == "ADMIN"
+                        ? Tile(
+                            label: "Broadcast Messages",
+                            image: "assets/images/config.png",
+                            onClick: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const ChatSelect()),
+                              );
+                            },
+                          )
+                        : Container(),
                     SizedBox(width: size.width * 0.029),
                     SizedBox(
                       width: size.width * 0.29,
