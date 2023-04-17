@@ -11,6 +11,7 @@ class CustomTextField extends StatelessWidget {
   final bool? enabled;
   final TextEditingController? controller;
   final Function? onChanged;
+  final bool numberEnabled;
 
   const CustomTextField(
       {Key? key,
@@ -20,6 +21,7 @@ class CustomTextField extends StatelessWidget {
       this.label,
       this.controller,
       this.enabled,
+      this.numberEnabled = false,
       this.onChanged})
       : super(key: key);
 
