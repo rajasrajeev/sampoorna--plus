@@ -84,7 +84,9 @@ class _ParentsDashboardScreenState extends State<ParentsDashboardScreen> {
       top: true,
       child: Scaffold(
         key: key,
-        appBar: AppBar(title: const Text("Profile")),
+        appBar: AppBar(title: const Text("Profile"),
+        elevation: 0,
+        ),
         body: SingleChildScrollView(
           child: Column(
             // ignore: prefer_const_literals_to_create_immutables
@@ -103,9 +105,18 @@ class _ParentsDashboardScreenState extends State<ParentsDashboardScreen> {
                   Container(
                       height: 400,
                       width: MediaQuery.of(context).size.width - 50,
+                      constraints: BoxConstraints(maxWidth: size.width * 0.9),
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                          border: Border.all(color: Colors.black, width: 0.5)),
+                        color: const Color.fromARGB(255, 255, 255, 255),
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: const [
+                          BoxShadow(
+                            color: Color.fromARGB(166, 142, 138, 138),
+                            spreadRadius: 1,
+                            blurRadius: 4,
+                          )
+                        ],
+                      ),
                       child: Column(
                         children: <Widget>[
                           SizedBox(
@@ -186,10 +197,11 @@ class _ParentsDashboardScreenState extends State<ParentsDashboardScreen> {
                                     child: Column(
                                       children: [
                                         Text(
-                                          "St. Jpseph's H.S Mattakara",
+                                          "St. Joseph's H.S Mattakara",
                                           style: buildMontserrat(
                                             const Color(0xFF000000),
-                                            fontWeight: FontWeight.bold,
+                                            fontWeight: FontWeight.normal,
+                                          
                                           ),
                                           overflow: TextOverflow.clip,
                                         ),
@@ -325,7 +337,7 @@ class _ParentsDashboardScreenState extends State<ParentsDashboardScreen> {
     FontWeight fontWeight = FontWeight.normal,
   }) {
     return TextStyle(
-      fontSize: 15,
+      fontSize: 12,
       color: color,
       fontWeight: fontWeight,
     );

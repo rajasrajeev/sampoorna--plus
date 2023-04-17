@@ -95,6 +95,17 @@ class _BodyState extends State<Body> {
                     SizedBox(width: size.width * 0.029),
                     userType == "ADMIN"
                         ? Tile(
+                            label: "Broadcast Messages",
+                            image: "assets/images/config.png",
+                            onClick: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const ChatSelect()),
+                              );
+                            },
+                          )
+                        : Tile(
                             label: "Add Attendance",
                             image: "assets/images/attendance.png",
                             onClick: () {
@@ -105,17 +116,6 @@ class _BodyState extends State<Body> {
                                         const AttendanceScreen(
                                           grade: 'null',
                                         )),
-                              );
-                            },
-                          )
-                        : Tile(
-                            label: "Broadcast Messages",
-                            image: "assets/images/config.png",
-                            onClick: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const ChatSelect()),
                               );
                             },
                           ),
@@ -191,7 +191,7 @@ class _BodyState extends State<Body> {
                       },
                     ),
                     SizedBox(width: size.width * 0.029),
-                    userType == "ADMIN"
+                    userType != "ADMIN"
                         ? Tile(
                             label: "Broadcast Messages",
                             image: "assets/images/config.png",
@@ -203,8 +203,8 @@ class _BodyState extends State<Body> {
                               );
                             },
                           )
-                        : Container(),
-                    SizedBox(width: size.width * 0.029),
+                        : SizedBox(width: size.width * 0.29),
+
                     SizedBox(
                       width: size.width * 0.29,
                     ),
