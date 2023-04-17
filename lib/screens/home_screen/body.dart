@@ -35,6 +35,7 @@ class _BodyState extends State<Body> {
     final prefs = await SharedPreferences.getInstance();
 
     userType = "${prefs.getString('user_type')}";
+    print("=============> ============> ${prefs.getString("loginData")}");
     setState(() {
       userName =
           "${prefs.getString('first_name')} ${prefs.getString('last_name')}";

@@ -4,6 +4,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:student_management/components/custom_dropdown.dart';
 import 'package:student_management/components/forms/password_field.dart';
 import 'package:student_management/components/forms/text_field.dart';
@@ -149,10 +150,7 @@ class _BodyState extends State<Body> {
                                     );
                                   });
 
-                              debugPrint("*****Response Status code*******");
                               final res = await postLogin(data);
-                              debugPrint("*****Response Status code*******");
-                              debugPrint(res.statusCode.toString());
 
                               if (res.statusCode == 200) {
                                 //await Future.delayed(const Duration(seconds: 3));
@@ -286,27 +284,63 @@ class _BodyState extends State<Body> {
 
                                 // ignore: use_build_context_synchronously
                                 final token = jsonDecode(res.body);
-                                if (token['user_type'] == "ADMIN") {
-                                  var tokenData =
-                                      parseJwtAndSave(token['token']);
-                                  final response = await getDivisionList({
-                                    "school_id": tokenData['token']
-                                        ['school_id'],
-                                    "startYear": 2022
-                                  });
-                                  if (response.statusCode == 200) {
-                                    Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            const MainScreen(),
-                                      ),
-                                    );
+
+                                if (token["message"] != "No Data Found!") {
+                                  if (token['user_type'] == "ADMIN") {
+                                    var tokenData =
+                                        parseJwtAndSave(token['token']);
+                                    final response = await getDivisionList({
+                                      "school_id": tokenData['token']
+                                          ['school_id'],
+                                      "startYear": "2022"
+                                    });
+                                    if (response.statusCode == 200) {
+                                      Navigator.of(context).pop();
+                                      final data = jsonDecode(response.body);
+                                      var tokenData =
+                                          parseJwtAndSave(data['data']);
+                                      final prefs =
+                                          await SharedPreferences.getInstance();
+                                      var details =
+                                          prefs.getString('loginData');
+                                      dynamic permittedBatches =
+                                          json.decode(details!);
+                                      permittedBatches['permittedBatches'] =
+                                          tokenData['token'];
+                                      await prefs.setString('tokenData',
+                                          permittedBatches.toString());
+                                      await prefs.setString('loginData',
+                                          json.encode(permittedBatches));
+                                      Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const MainScreen(),
+                                        ),
+                                      );
+                                    } else {
+                                      Navigator.of(context).pop();
+                                      SharedPreferences preferences =
+                                          await SharedPreferences.getInstance();
+                                      await preferences.clear();
+                                      Fluttertoast.showToast(
+                                        msg:
+                                            "Unable to fetch class list. Contact Admin!!!",
+                                        gravity: ToastGravity.TOP,
+                                        timeInSecForIosWeb: 1,
+                                        backgroundColor: Colors.red,
+                                        textColor: Colors.white,
+                                        fontSize: 15.0,
+                                      );
+                                    }
                                   } else {
                                     Navigator.of(context).pop();
+                                    SharedPreferences preferences =
+                                        await SharedPreferences.getInstance();
+                                    await preferences.clear();
                                     Fluttertoast.showToast(
                                       msg:
-                                          "Unable to fetch class list. Contact Admin!!!",
+                                          "No Class List Found. Contact Admin!!!",
                                       gravity: ToastGravity.TOP,
                                       timeInSecForIosWeb: 1,
                                       backgroundColor: Colors.red,

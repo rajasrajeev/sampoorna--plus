@@ -34,11 +34,11 @@ Future postLogin(data) async {
 //API TO POST LOGIN
 Future studentList(data) async {
   final prefs = await SharedPreferences.getInstance();
-  var token = await prefs.getString('token');
+  var token = prefs.getString('token');
   final response = await http.post(
     Uri.parse('$apiUrl/student_list_all/format/json/'),
     headers: {
-      'Authorization': 'Bearer ${token}',
+      'Authorization': 'Bearer $token',
     },
     body: data,
   );
@@ -48,10 +48,10 @@ Future studentList(data) async {
 //API TO POST LOGIN
 Future studentDetails(studentCode) async {
   final prefs = await SharedPreferences.getInstance();
-  var token = await prefs.getString('token');
+  var token = prefs.getString('token');
   final response = await http
       .post(Uri.parse('$apiUrl/getStudentDetailsById/format/json/'), headers: {
-    'Authorization': 'Bearer ${token}',
+    'Authorization': 'Bearer $token',
   }, body: {
     "studentCode": studentCode
   });
@@ -61,10 +61,10 @@ Future studentDetails(studentCode) async {
 //API TO POST LOGIN
 Future teacherProfile(user_id) async {
   final prefs = await SharedPreferences.getInstance();
-  var token = await prefs.getString('token');
+  var token = prefs.getString('token');
   final response = await http
       .post(Uri.parse('$apiUrl/teacherProfileById/format/json/'), headers: {
-    'Authorization': 'Bearer ${token}',
+    'Authorization': 'Bearer $token',
   }, body: {
     "user_id": user_id
   });
@@ -74,10 +74,10 @@ Future teacherProfile(user_id) async {
 //API TO POST LOGIN
 Future attendanceBetweenDates(date1, date2, school_id, batch_id) async {
   final prefs = await SharedPreferences.getInstance();
-  var token = await prefs.getString('token');
+  var token = prefs.getString('token');
   final response = await http
       .post(Uri.parse('$apiUrl/attendenceCountByDates/format/json/'), headers: {
-    'Authorization': 'Bearer ${token}',
+    'Authorization': 'Bearer $token',
   }, body: {
     "date1": date1,
     "date2": date2,
@@ -90,10 +90,10 @@ Future attendanceBetweenDates(date1, date2, school_id, batch_id) async {
 //API TO POST LOGIN
 Future attendanceOnDate(date, school_id, batch_id) async {
   final prefs = await SharedPreferences.getInstance();
-  var token = await prefs.getString('token');
+  var token = prefs.getString('token');
   final response = await http
       .post(Uri.parse('$apiUrl/student_list_absentee/format/json/'), headers: {
-    'Authorization': 'Bearer ${token}',
+    'Authorization': 'Bearer $token',
   }, body: {
     "date": date,
     "school_id": school_id,
@@ -120,19 +120,12 @@ Future addAttendance(payload) async {
 Future getDivisionList(payload) async {
   final prefs = await SharedPreferences.getInstance();
   var token = await prefs.getString('token');
-  final response = await http.post(
-      Uri.parse('$apiUrl/getBatchesofSchool/format/json/'),
-      headers: {
-        'Authorization': 'Bearer $token',
-        'Content-type': 'application/json'
-      },
-      body: json.encode(payload));
-  if (response.statusCode == 200) {
-    final token = jsonDecode(response.body);
-
-    var tokenData = parseJwtAndSave(token['token']);
-    await prefs.setString('tokenData', tokenData.toString());
-    await prefs.setString('loginData', json.encode(tokenData));
-  } else {}
+  final response =
+      await http.post(Uri.parse('$apiUrl/getBatchesofSchool/format/json/'),
+          headers: {
+            'Authorization': 'Bearer $token',
+            // 'Content-type': 'application/json'
+          },
+          body: payload);
   return response;
 }
