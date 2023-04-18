@@ -1,4 +1,4 @@
-package com.example.student_management
+package com.kite.sampoornaplus
 
 import io.flutter.embedding.android.FlutterActivity
 
