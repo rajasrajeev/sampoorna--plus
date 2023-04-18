@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:student_management/components/banner.dart';
 import 'package:student_management/components/profile_header.dart';
+import 'package:student_management/components/sidebar.dart';
 import 'package:student_management/components/student_profile_card.dart';
 import 'package:student_management/constants.dart';
 
@@ -28,7 +29,7 @@ class _ParentsDashboardScreenState extends State<ParentsDashboardScreen> {
   @override
   void initState() {
     super.initState();
-    getData();
+    // getData();
     getPastWeek();
   }
 
@@ -84,19 +85,21 @@ class _ParentsDashboardScreenState extends State<ParentsDashboardScreen> {
       top: true,
       child: Scaffold(
         key: key,
-        appBar: AppBar(title: const Text("Profile"),
-        elevation: 0,
+        appBar: AppBar(
+          title: const Text(""),
+          elevation: 0,
         ),
+        drawer: const SideBar(),
         body: SingleChildScrollView(
           child: Column(
             // ignore: prefer_const_literals_to_create_immutables
             children: <Widget>[
-              CommonBanner(
+              /* CommonBanner(
                 imageUrl: "assets/images/teacher.png",
                 name: userName,
                 grade: grade,
                 showDiv: false,
-              ),
+              ), */
               Column(
                 children: <Widget>[
                   const SizedBox(
@@ -201,7 +204,6 @@ class _ParentsDashboardScreenState extends State<ParentsDashboardScreen> {
                                           style: buildMontserrat(
                                             const Color(0xFF000000),
                                             fontWeight: FontWeight.normal,
-                                          
                                           ),
                                           overflow: TextOverflow.clip,
                                         ),

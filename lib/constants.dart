@@ -8,3 +8,5 @@ const cardColor = Color(0xFFE6E6FA);
 
 //base api
 const apiUrl = "https://sampoornaapi.kite.kerala.gov.in/index.php/SampoornaApp";
+const parentApiUrl =
+    "https://sampoornaapi.kite.kerala.gov.in/index.php/SampoornaParent";

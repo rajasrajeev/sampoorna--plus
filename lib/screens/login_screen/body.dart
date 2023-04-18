@@ -9,6 +9,7 @@ import 'package:student_management/components/custom_dropdown.dart';
 import 'package:student_management/components/forms/password_field.dart';
 import 'package:student_management/components/forms/text_field.dart';
 import 'package:student_management/components/submit_button.dart';
+import 'package:student_management/screens/parents/dashboard/parents_dashboard_screen.dart';
 import 'package:student_management/screens/parents/login/otp_screen/otp_screen.dart';
 import 'package:student_management/screens/parents/login/parent_otp_login.dart';
 import 'package:student_management/services/api_services.dart';
@@ -17,8 +18,8 @@ import 'package:student_management/services/jwt_token_parser.dart';
 import '../main_screen/main_screen.dart';
 
 class Body extends StatefulWidget {
-  late  String passedRole;
-   Body({super.key,required this.passedRole});
+  late String passedRole;
+  Body({super.key, required this.passedRole});
 
   @override
   State<Body> createState() => _BodyState();
@@ -42,20 +43,18 @@ class _BodyState extends State<Body> {
   @override
   void initState() {
     super.initState();
-     getRoles();
+    getRoles();
   }
 
   Future<void> getRoles() async {
     // setState(() {
     //   roles = [];
     // });
-    if(widget.passedRole=="PARENT"){
+    if (widget.passedRole == "PARENT") {
       setState(() {
-      role=widget.passedRole;
-    });
+        role = widget.passedRole;
+      });
     }
-    
-    
   }
 
   @override
@@ -158,7 +157,7 @@ class _BodyState extends State<Body> {
                                     );
                                   });
 
-                              final res = await postLogin(data);
+                              final res = await parentLogin(data);
 
                               if (res.statusCode == 200) {
                                 //await Future.delayed(const Duration(seconds: 3));
@@ -168,7 +167,8 @@ class _BodyState extends State<Body> {
                                 Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => const MainScreen(),
+                                    builder: (context) =>
+                                        const ParentsDashboardScreen(),
                                   ),
                                 );
                               } else {
@@ -185,13 +185,6 @@ class _BodyState extends State<Body> {
                                 );
                               }
                             }
-                            // ignore: use_build_context_synchronously
-                            // Navigator.push(
-                            //   context,
-                            //   MaterialPageRoute(
-                            //     builder: (context) => const MainScreen(),
-                            //   ),
-                            // );
                           },
                         ),
                         Padding(
