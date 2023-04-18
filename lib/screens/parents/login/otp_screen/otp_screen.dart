@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:pinput/pinput.dart';
 import 'package:student_management/constants.dart';
+import 'package:student_management/screens/parents/login/registration/registration.dart';
 
 import '../../../../components/submit_button.dart';
 
@@ -26,7 +27,12 @@ class _OtpScreenState extends State<OtpScreen> {
       "username": widget.userName,
       "otp": otp,
     });
-
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const Registration(),
+      ),
+    );
     // final res = await authOTP(data);
     // setState(() {
     //   isLoading = false;
@@ -41,12 +47,12 @@ class _OtpScreenState extends State<OtpScreen> {
     //     fontSize: 15.0,
     //   );
     //   // ignore: use_build_context_synchronously
-      // Navigator.pushReplacement(
-      //   context,
-      //   MaterialPageRoute(
-      //     builder: (context) => const MainScreen(),
-      //   ),
-      // );
+    // Navigator.pushReplacement(
+    //   context,
+    //   MaterialPageRoute(
+    //     builder: (context) => const MainScreen(),
+    //   ),
+    // );
     // }
   }
 
@@ -106,7 +112,7 @@ class _OtpScreenState extends State<OtpScreen> {
             padding: EdgeInsets.symmetric(horizontal: size.width * 0.030),
             child: SubmitButton(
               label: 'Submit',
-             // loading: isLoading,
+              // loading: isLoading,
               onClick: () {
                 onSubmit();
               },

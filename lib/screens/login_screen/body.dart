@@ -17,7 +17,8 @@ import 'package:student_management/services/jwt_token_parser.dart';
 import '../main_screen/main_screen.dart';
 
 class Body extends StatefulWidget {
-  const Body({super.key});
+  late  String passedRole;
+   Body({super.key,required this.passedRole});
 
   @override
   State<Body> createState() => _BodyState();
@@ -41,13 +42,20 @@ class _BodyState extends State<Body> {
   @override
   void initState() {
     super.initState();
-    // getRoles();
+     getRoles();
   }
 
   Future<void> getRoles() async {
-    setState(() {
-      roles = [];
+    // setState(() {
+    //   roles = [];
+    // });
+    if(widget.passedRole=="PARENT"){
+      setState(() {
+      role=widget.passedRole;
     });
+    }
+    
+    
   }
 
   @override
@@ -178,12 +186,12 @@ class _BodyState extends State<Body> {
                               }
                             }
                             // ignore: use_build_context_synchronously
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const MainScreen(),
-                              ),
-                            );
+                            // Navigator.push(
+                            //   context,
+                            //   MaterialPageRoute(
+                            //     builder: (context) => const MainScreen(),
+                            //   ),
+                            // );
                           },
                         ),
                         Padding(

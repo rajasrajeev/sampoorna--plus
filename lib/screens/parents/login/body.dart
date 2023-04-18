@@ -37,6 +37,7 @@ class _BodyState extends State<Body> {
                   minLine: 1,
                   maxLine: 1,
                   enabled: true,
+                  numberEnabled:true,
                   controller: phoneController,
                   validator: (value) {
                     if (value == null || value.length < 1) {
