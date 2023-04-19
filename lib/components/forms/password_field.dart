@@ -54,7 +54,7 @@ class _PasswordFieldState extends State<PasswordField> {
               const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
           hintText: widget.label,
           hintStyle: const TextStyle(
-            fontSize: 16,
+            fontSize: 12,
             color: Colors.black87,
           ),
           filled: true,

@@ -103,7 +103,7 @@ class _RegistrationState extends State<Registration> {
                   enabled: true,
                   controller: confirmParentPasswordController,
                   validator: (value) {
-                    if (value == null || value.length < 1) {
+                    if ((confirmParentPasswordController.text != parentPasswordController.text)||(value == null || value.length < 1)) {
                       return "please confirm password";
                     }
                     return null;
