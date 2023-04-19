@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:student_management/screens/main_screen/main_screen.dart';
+import 'package:student_management/screens/parents/dashboard/parents_dashboard_screen.dart';
 import 'package:upgrader/upgrader.dart';
 import 'package:flutter/material.dart';
 import 'package:student_management/screens/login_screen/login_screen.dart';
@@ -18,6 +19,7 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   String token = "";
+  String userType = "";
 
   @override
   void initState() {
@@ -29,19 +31,31 @@ class _SplashScreenState extends State<SplashScreen> {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
       token = "${prefs.getString('token')}";
+      userType = "${prefs.getString('user_type')}";
     });
     if (token != "null") {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const MainScreen(),
-        ),
-      );
+      if (userType == "TEACHER" || userType == "ADMIN") {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const MainScreen(),
+          ),
+        );
+      } else {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const ParentsDashboardScreen(),
+          ),
+        );
+      }
     } else {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => const LoginScreen(passedRoles: "",),
+          builder: (context) => const LoginScreen(
+            passedRoles: "",
+          ),
         ),
       );
     }

@@ -138,19 +138,14 @@ Future parentLogin(data) async {
     body: data,
   );
   if (response.statusCode == 200) {
-    /* final token = jsonDecode(response.body);
+    final token = jsonDecode(response.body);
     await prefs.setString('token', token['token']);
     await prefs.setString('user_id', token['user_id']);
     await prefs.setString('user_type', token['user_type']);
 
     var tokenData = parseJwtAndSave(token['token']);
-    await prefs.setString('school_id', tokenData['token']['school_id']);
-    await prefs.setString('first_name', tokenData['token']['first_name']);
-    await prefs.setString('last_name', tokenData['token']['last_name']);
-    await prefs.setString('username', tokenData['token']['username']);
 
-    await prefs.setString('tokenData', tokenData.toString());
-    await prefs.setString('loginData', json.encode(tokenData)); */
+    await prefs.setString('childDetails', json.encode(tokenData['data']));
   } else {}
   return response;
 }
