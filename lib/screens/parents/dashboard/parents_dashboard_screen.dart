@@ -88,7 +88,7 @@ class _ParentsDashboardScreenState extends State<ParentsDashboardScreen> {
             children: <Widget>[
               const SizedBox(height: 10),
               Container(
-                  padding: const EdgeInsets.fromLTRB(5, 5, 10, 0),
+                  padding: const EdgeInsets.fromLTRB(15, 5, 30, 0),
                   child: Expanded(
                     child: ListView.builder(
                         itemCount: childDetails.length,
