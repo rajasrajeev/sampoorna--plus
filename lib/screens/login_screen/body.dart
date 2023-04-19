@@ -286,8 +286,8 @@ class _BodyState extends State<Body> {
                                 // ignore: use_build_context_synchronously
                                 final token = jsonDecode(res.body);
 
-                                if (token["message"] != "No Data Found!") {
-                                  if (token['user_type'] == "ADMIN") {
+                                if (token["user_type"] == "ADMIN") {
+                                  if (token['message'] != "No Data Found!") {
                                     var tokenData =
                                         parseJwtAndSave(token['token']);
                                     final response = await getDivisionList({
