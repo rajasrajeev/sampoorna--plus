@@ -30,6 +30,7 @@ class _SingleDayAttendanceScreenState extends State<SingleDayAttendanceScreen> {
   bool _loading = false;
   String grade = "";
   String userName = "";
+  String markedStatus="";
   @override
   void initState() {
     super.initState();
@@ -76,13 +77,17 @@ class _SingleDayAttendanceScreenState extends State<SingleDayAttendanceScreen> {
         _loading = false;
       });
       final responseData = jsonDecode(res.body);
-     
+
       Navigator.of(context).pop();
       var data = parseJwtAndSave(responseData['data']);
       setState(() {
         attendanceDates = data['token'];
+         markedStatus=data['markedStatus'];
       });
-
+       debugPrint("*******responseData**********");
+      debugPrint("$data");
+             debugPrint("*******responseData End**********");
+            
       for (var i = 0; i < attendanceDates.length; i++) {
         if (attendanceDates[i]["absent_FN"] == 1 ||
             attendanceDates[i]["absent_FN"] == "1" ||
@@ -108,6 +113,8 @@ class _SingleDayAttendanceScreenState extends State<SingleDayAttendanceScreen> {
   }
 
   forenoonOrAfternoon(value, text) {
+    
+    // if (markedStatus == "1") { //marked status from API
     if (value != null) {
       if (value == 0 || value == "0") {
         return Container(
