@@ -137,7 +137,8 @@ class _AttendanceListState extends State<AttendanceList> {
       var currentDate = DateTime.parse(dates[i]['date']);
       final kEventSource = {
         // for (var item in List.generate(50, (index) => index))
-        if (dates[i]['total_absentees'] != 'Holiday')
+        if (dates[i]['total_absentees'] != 'Holiday' &&
+            dates[i]['total_absentees'] != "")
           DateTime.utc(currentDate.year, currentDate.month, currentDate.day):
               List.generate(
                   int.parse(dates[i]['total_absentees']),
