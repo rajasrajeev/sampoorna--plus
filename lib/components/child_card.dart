@@ -30,7 +30,7 @@ class _ChildCardState extends State<ChildCard> {
         height: 400,
         width: MediaQuery.of(context).size.width,
         constraints: BoxConstraints(maxWidth: size.width * 0.9),
-        margin: const EdgeInsets.fromLTRB(20, 5, 5, 5),
+        margin: const EdgeInsets.fromLTRB(5, 5, 5, 5),
         decoration: BoxDecoration(
           color: const Color.fromARGB(255, 255, 255, 255),
           borderRadius: BorderRadius.circular(20),

@@ -81,30 +81,30 @@ class _ParentsDashboardScreenState extends State<ParentsDashboardScreen> {
           elevation: 0,
         ),
         drawer: const SideBar(),
-        body: SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              const SizedBox(height: 10),
-              Container(
-                  padding: const EdgeInsets.fromLTRB(15, 5, 30, 0),
-                  child: Expanded(
-                    child: ListView.builder(
-                        itemCount: childDetails.length,
-                        shrinkWrap: true,
-                        itemBuilder: (context, index) {
-                          return ChildCard(
-                            day: day,
-                            date: date,
-                            fullName: childDetails[index]['full_name'],
-                            grade: childDetails[index]['class'],
-                            division: childDetails[index]['name'],
-                            school: childDetails[index]['school_name'],
-                          );
-                        }),
-                  ))
-            ],
+        body: Padding(
+          padding: const EdgeInsets.all(15),
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  height: size.height * 0.85,
+                  child: ListView.builder(
+                      itemCount: childDetails.length,
+                      //shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                        return ChildCard(
+                          day: day,
+                          date: date,
+                          fullName: childDetails[index]['full_name'],
+                          grade: childDetails[index]['class'],
+                          division: childDetails[index]['name'],
+                          school: childDetails[index]['school_name'],
+                        );
+                      }),
+                ),
+              ],
+            ),
           ),
         ),
         backgroundColor: Colors.white,
