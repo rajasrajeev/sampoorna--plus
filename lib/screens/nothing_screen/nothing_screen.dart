@@ -23,26 +23,37 @@ class _NothingState extends State<Nothing> {
         appBar: AppBar(),
         body: Column(
           children: [
-            const Center(child: Text("Under Maintenance")),
+            
             //ProfilePicturePicker(),
 
             SizedBox(
               height: size.height * 0.85,
               child: Stack(
                 children: [
-                  SingleChildScrollView(
-                      child: Column(
-                    children: const [
-                      StudentProfileCard(),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      StudentProfileCard(),
-                      SizedBox(
-                        height: 20,
-                      ),
-                    ],
-                  )),
+                  // SingleChildScrollView(
+                  //     child: Column(
+                  //   children: const [
+                  //     StudentProfileCard(),
+                  //     SizedBox(
+                  //       height: 20,
+                  //     ),
+                  //     StudentProfileCard(),
+                  //     SizedBox(
+                  //       height: 20,
+                  //     ),
+                  //   ],
+                  // )
+                  // ),
+                   
+                  const SizedBox(height: 30),
+                 
+                  Center(
+                    child: Image.asset(
+                      "assets/images/phone maintenance.png",
+                      width: 200,
+                      height: 200,
+                    ),
+                  ),
                 ],
               ),
             ),

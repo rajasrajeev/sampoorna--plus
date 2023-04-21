@@ -76,6 +76,7 @@ class _SingleDayAttendanceScreenState extends State<SingleDayAttendanceScreen> {
         _loading = false;
       });
       final responseData = jsonDecode(res.body);
+     
       Navigator.of(context).pop();
       var data = parseJwtAndSave(responseData['data']);
       setState(() {

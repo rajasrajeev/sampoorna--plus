@@ -10,13 +10,13 @@ import 'package:student_management/components/forms/password_field.dart';
 import 'package:student_management/components/forms/text_field.dart';
 import 'package:student_management/components/submit_button.dart';
 import 'package:student_management/screens/parents/dashboard/parents_dashboard_screen.dart';
-import 'package:student_management/screens/parents/login/otp_screen/otp_screen.dart';
 import 'package:student_management/screens/parents/login/parent_otp_login.dart';
 import 'package:student_management/services/api_services.dart';
 import 'package:student_management/services/jwt_token_parser.dart';
 
 import '../main_screen/main_screen.dart';
 
+// ignore: must_be_immutable
 class Body extends StatefulWidget {
   late String passedRole;
   Body({super.key, required this.passedRole});
@@ -129,7 +129,6 @@ class _BodyState extends State<Body> {
                                 "password": parentPasswordController.text,
                                 "usert_type": role,
                               };
-                              // ignore: use_build_context_synchronously
                               showDialog(
                                   // The user CANNOT close this dialog  by pressing outsite it
                                   barrierDismissible: true,
@@ -161,9 +160,9 @@ class _BodyState extends State<Body> {
 
                               if (res.statusCode == 200) {
                                 //await Future.delayed(const Duration(seconds: 3));
-                                // ignore: use_build_context_synchronously
+
                                 Navigator.of(context).pop();
-                                // ignore: use_build_context_synchronously
+
                                 Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
@@ -251,7 +250,6 @@ class _BodyState extends State<Body> {
                                 "password": passwordController.text,
                                 "usert_type": role,
                               };
-                              // ignore: use_build_context_synchronously
                               showDialog(
                                   // The user CANNOT close this dialog  by pressing outsite it
                                   barrierDismissible: true,
@@ -281,9 +279,6 @@ class _BodyState extends State<Body> {
                               final res = await postLogin(data);
 
                               if (res.statusCode == 200) {
-                                // ignore: use_build_context_synchronously
-
-                                // ignore: use_build_context_synchronously
                                 final token = jsonDecode(res.body);
 
                                 if (token["user_type"] == "ADMIN") {
@@ -358,7 +353,6 @@ class _BodyState extends State<Body> {
                                   );
                                 }
                               } else {
-                                // ignore: use_build_context_synchronously
                                 Navigator.of(context).pop();
                                 Fluttertoast.showToast(
                                   msg:

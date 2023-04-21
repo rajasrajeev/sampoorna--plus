@@ -45,18 +45,18 @@ class SideBar extends StatelessWidget {
               Navigator.pop(context);
             },
           ),
-          ListTile(
-            title:
-                const Text('Parents Dashboard', style: TextStyle(fontSize: 16)),
-            leading: const Icon(Icons.error_outline_outlined),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const ParentsDashboardScreen()),
-              );
-            },
-          ),
+          // ListTile(
+          //   title:
+          //       const Text('Parents Dashboard', style: TextStyle(fontSize: 16)),
+          //   leading: const Icon(Icons.error_outline_outlined),
+          //   onTap: () {
+          //     Navigator.push(
+          //       context,
+          //       MaterialPageRoute(
+          //           builder: (context) => const ParentsDashboardScreen()),
+          //     );
+          //   },
+          // ),
           ListTile(
             title: const Text('Logout', style: TextStyle(fontSize: 16)),
             leading: const Icon(Icons.logout_outlined),
