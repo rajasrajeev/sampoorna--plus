@@ -234,8 +234,11 @@ class _SingleDayAttendanceScreenState extends State<SingleDayAttendanceScreen> {
                                                         BorderRadius.circular(
                                                             15)),
                                                 alignment: Alignment.center,
-                                                child: Image.asset(
-                                                    "assets/images/studentProfile.png")),
+                                                child:attendanceDates[index]["photo_url"]==""? Image.asset(
+                                                    "assets/images/studentProfile.png"):
+                                                    Image.memory(
+                                                    base64Decode(attendanceDates[index]["photo_url"])),
+                                                    ),
                                             const SizedBox(width: 30),
                                             SizedBox(
                                               width: 90,

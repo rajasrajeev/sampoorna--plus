@@ -77,8 +77,8 @@ void _handleLostFiles(List<XFile> files) {
       sourcePath: image.path,
       aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
       compressQuality: 100,
-      maxWidth: 700,
-      maxHeight: 700,
+      maxWidth: 150,
+      maxHeight: 200,
       compressFormat: ImageCompressFormat.jpg,
       uiSettings: [
         AndroidUiSettings(
