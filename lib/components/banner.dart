@@ -103,7 +103,7 @@ class _CommonBannerState extends State<CommonBanner> {
                                     return Container(
                                       width: size.width * 0.15,
                                        height: size.height * 0.5,
-                                      margin: const EdgeInsets.all(8),
+                                      margin:  EdgeInsets.all(size.width*0.005),
                                       //padding:const EdgeInsets.all(12),
                                       decoration: BoxDecoration(
                                           border: Border.all(

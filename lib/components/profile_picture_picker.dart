@@ -1,9 +1,11 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:image/image.dart' as img;
 
 class ProfilePicturePicker extends StatefulWidget {
   final ImageSource source;
@@ -15,6 +17,11 @@ class ProfilePicturePicker extends StatefulWidget {
   @override
   _ProfilePicturePickerState createState() => _ProfilePicturePickerState();
 }
+
+const double targetWidth = 150.0;
+const double targetHeight = 200.0;
+const int targetSizeKB = 30;
+const int quality = 70;
 
 class _ProfilePicturePickerState extends State<ProfilePicturePicker> {
    File? _selectedFile;
@@ -62,53 +69,71 @@ void _handleLostFiles(List<XFile> files) {
     }
   }
   getImage(ImageSource source) async {
+       debugPrint("**********************");
+  // ignore: unnecessary_this
   this.setState(() {
     _inProcess = true;
   });
   XFile? image = await ImagePicker().pickImage(source: source);
   if (image == null) {
-    this.setState(() {
+    setState(() {
       _inProcess = false;
     });
     return;
   }
   try {
+     debugPrint("**********************");
     CroppedFile? cropped = await ImageCropper().cropImage(
       sourcePath: image.path,
-      aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
-      compressQuality: 100,
-      maxWidth: 150,
-      maxHeight: 200,
+      aspectRatio: const CropAspectRatio(ratioX: 3, ratioY: 4),
+      compressQuality: quality,
+      maxWidth: targetWidth.toInt()*3,
+      maxHeight: targetHeight.toInt()*3,
       compressFormat: ImageCompressFormat.jpg,
       uiSettings: [
         AndroidUiSettings(
           toolbarTitle: 'Cropper',
           toolbarColor: Colors.deepOrange,
           toolbarWidgetColor: Colors.white,
-          initAspectRatio: CropAspectRatioPreset.original,
+          initAspectRatio: CropAspectRatioPreset.ratio3x2,
           lockAspectRatio: false,
         ),
         IOSUiSettings(title: 'Cropper'),
+        // ignore: use_build_context_synchronously
         WebUiSettings(context: context),
       ],
     );
+      debugPrint("****$cropped****");
     if (cropped != null) {
       final File newFile = File(cropped.path);
-      this.setState(() {
-        _selectedFile = newFile;
+      final bytes = await newFile.readAsBytes();
+      final compressedImage = await compressImage(bytes, targetSizeKB);
+      final compressedSize =compressedImage.length;
+             debugPrint("********");
+        debugPrint('Compressed image size: $compressedSize bytes');
+      setState(() {
+        
+        _selectedFile = compressedImage as File?;
+        
+
+        //base64Encode
+         //base64Encode(_selectedFile as List<int>);
         _inProcess = false;
       });
+      final compressedSizes = _selectedFile!.lengthSync();
+              debugPrint("********");
+        debugPrint('Compressed image size: $compressedSizes bytes');
     } else {
-      this.setState(() {
+      setState(() {
         _inProcess = false;
       });
     }
   } catch (e) {
     // Handle error
-    this.setState(() {
+    setState(() {
       _inProcess = false;
     });
-    await getLostData();
+   // await getLostData();
   }
 }
 
@@ -118,26 +143,34 @@ getImageNoCrop() async {
     imageQuality: 50,
   );
   if (image == null) {
-    this.setState(() {
+    setState(() {
       _inProcess = false;
     });
     return;
   }
   try {
-    this.setState(() {
+    setState(() {
       _selectedFile = File(image.path);
       _inProcess = false;
     });
   } catch (e) {
     // Handle error
-    this.setState(() {
+    setState(() {
       _inProcess = false;
     });
     await getLostData();
   }
 }
 
-
+  Future<List<int>> compressImage(List<int> imageData, int maxFileSizeKB) async {
+    var image = img.decodeImage(imageData.toList())!;
+    var compressedImageData = img.encodeJpg(image, quality: quality);
+    while (compressedImageData.length > maxFileSizeKB * 1024) {
+      image = img.copyResize(image, width: image.width ~/ 2, height: image.height ~/ 2);
+      compressedImageData = img.encodeJpg(image, quality: quality);
+    }
+    return compressedImageData;
+  }
 
   @override
   Widget build(BuildContext context) {

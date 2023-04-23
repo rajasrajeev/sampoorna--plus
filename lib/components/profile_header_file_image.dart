@@ -1,10 +1,11 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:student_management/constants.dart';
 
 class ProfileHeaderImageFile extends StatefulWidget {
-  final File imageUrl;
+  final Uint8List imageUrl;
   final String name;
   final String grade;
 
@@ -35,7 +36,7 @@ class _ProfileHeaderImageFileState extends State<ProfileHeaderImageFile> {
                 child:
                     ClipRRect(
                     borderRadius: BorderRadius.circular(100.0),
-                    child: Image.file(
+                    child: Image.memory(
                       widget.imageUrl,
                       fit: BoxFit.fill,
                       height:size.height*0.4,

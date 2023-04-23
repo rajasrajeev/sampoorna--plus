@@ -204,7 +204,7 @@ class _BodyState extends State<Body> {
                             },
                           )
                         : SizedBox(width: size.width * 0.29),
-
+                    SizedBox(width: size.width * 0.029),//Spacing between tile don't change
                     SizedBox(
                       width: size.width * 0.29,
                     ),
@@ -214,7 +214,7 @@ class _BodyState extends State<Body> {
             ),
           ),
           SizedBox(
-            height: size.height * 0.49,
+            height: size.height * 0.1,
           ),
         ],
       ),

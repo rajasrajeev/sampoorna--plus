@@ -98,7 +98,7 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
       setState(() {
         studentsList = data['token'];
       });
-
+ debugPrint("==================> $studentsList");
       //To insert Value into database
       await syncStudentsList();
     } else {

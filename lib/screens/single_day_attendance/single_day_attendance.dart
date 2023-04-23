@@ -203,7 +203,7 @@ class _SingleDayAttendanceScreenState extends State<SingleDayAttendanceScreen> {
                 children: <Widget>[
                   Expanded(
                     child: SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.78,
+                      height: MediaQuery.of(context).size.height * 0.7,
                       child: _loading == false && attendanceDates.length > 0
                           ? ListView.builder(
                               itemCount: attendanceDates.length,

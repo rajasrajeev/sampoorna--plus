@@ -2,20 +2,23 @@
 
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:student_management/components/profile_details.dart';
 import 'package:student_management/components/profile_header.dart';
+import 'package:student_management/components/profile_picture_picker.dart';
 import 'package:student_management/constants.dart';
 import 'package:student_management/screens/main_screen/main_screen.dart';
 import 'package:student_management/services/api_services.dart';
 import 'package:student_management/services/jwt_token_parser.dart';
-
 import '../../components/profile_header_file_image.dart';
+import 'package:image/image.dart' as img;
 
 class StudentsProfileScreen extends StatefulWidget {
   final String? studentCode;
@@ -25,12 +28,18 @@ class StudentsProfileScreen extends StatefulWidget {
   State<StudentsProfileScreen> createState() => _StudentsProfileScreenState();
 }
 
+const double targetWidth = 150.0;
+const double targetHeight = 200.0;
+const int targetSizeKB = 30;
+const int quality = 70;
+
 class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
   final GlobalKey<ScaffoldState> key = GlobalKey();
-  dynamic? studentDetail;
-  File? _selectedFile;
-  bool _inProcess = false;
 
+  dynamic studentDetail;
+  Uint8List? _selectedFile;
+  bool _inProcess = false;
+ File? tempFile ;
   @override
   void initState() {
     // TODO: implement initState
@@ -130,20 +139,21 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
       return;
     }
     try {
+     
       CroppedFile? cropped = await ImageCropper().cropImage(
         sourcePath: image.path,
         aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
-        compressQuality: 100,
-        maxWidth: 700,
-        maxHeight: 700,
+        compressQuality: quality,
+        maxWidth: targetWidth.toInt() * 3,
+        maxHeight: targetHeight.toInt() * 3,
         compressFormat: ImageCompressFormat.jpg,
         uiSettings: [
           AndroidUiSettings(
             toolbarTitle: 'Cropper',
             toolbarColor: primaryColor,
             toolbarWidgetColor: Colors.white,
-            initAspectRatio: CropAspectRatioPreset.original,
-            lockAspectRatio: false,
+            initAspectRatio: CropAspectRatioPreset.ratio3x2,
+            lockAspectRatio: true,
           ),
           IOSUiSettings(title: 'Cropper'),
           WebUiSettings(context: context),
@@ -151,10 +161,21 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
       );
       if (cropped != null) {
         final File newFile = File(cropped.path);
+        final bytes = await newFile.readAsBytes();
+        final compressedImage = await compressImage(bytes, targetSizeKB);
+
+        // final tempDir = await getTemporaryDirectory();
+        //  tempFile = await File('${tempDir.path}/temp.jpg').create();
+        // await tempFile!.writeAsBytes(compressedImage);
+        final base64Image = base64.encode(compressedImage);
         setState(() {
-          _selectedFile = newFile;
+          _selectedFile =base64Decode(base64Image);
+         //  _selectedFile =File.fromRawPath(Uint8List.fromList(compressedImage));
+         // _selectedFile = tempFile;
+          // _selectedFile = newFile ;
           _inProcess = false;
         });
+
       } else {
         setState(() {
           _inProcess = false;
@@ -167,6 +188,18 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
       });
       await getLostData();
     }
+  }
+
+  Future<Uint8List> compressImage(
+      List<int> imageData, int maxFileSizeKB) async {
+    var image = img.decodeImage(imageData.toList())!;
+    var compressedImageData = img.encodeJpg(image, quality: quality);
+    while (compressedImageData.length > maxFileSizeKB * 1024) {
+      image = img.copyResize(image,
+          width: image.width ~/ 2, height: image.height ~/ 2);
+      compressedImageData = img.encodeJpg(image, quality: quality);
+    }
+    return Uint8List.fromList(compressedImageData);
   }
 
   @override
@@ -233,6 +266,7 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
                                           ['class'] +
                                       studentDetail['current_details']
                                           ['division']),
+                          //   : Image.file(_selectedFile!, width: targetWidth, height: targetHeight, fit: BoxFit.cover),
                         ),
                       ),
                       Positioned(
@@ -243,6 +277,13 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
                               showModalBottomSheet(
                                   context: context,
                                   builder: ((builder) => bottosmheet(context)));
+                              //  Navigator.push(
+                              //             context,
+                              //             MaterialPageRoute(
+                              //                 builder: (context) =>
+                              //                    ProfilePicturePicker(source: ImageSource.gallery)
+                              //                             ),
+                              //           );
                             },
                             icon: const Icon(Icons.camera_alt),
                           )),
