@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:student_management/constants.dart';
 import 'package:http/http.dart' as http;
 import 'package:student_management/services/jwt_token_parser.dart';
@@ -191,4 +192,20 @@ Future parentRegistration(data, token) async {
   if (response.statusCode == 200) {
   } else {}
   return response;
+}
+
+
+//API TO UPLOAD IMAGE
+Future uploadPhoto(payload) async {
+    final prefs = await SharedPreferences.getInstance();
+     var token = await prefs.getString('token');
+     debugPrint("**************Image upload function called************************");
+    
+     final response = await http.post(Uri.parse('$apiUrl/upload_image_sampoorna/format/json/'),
+     headers: {
+       'Authorization': 'Bearer $token',
+       'Content-type': 'application/json'
+     },
+     body: json.encode(payload));
+    return response;
 }
