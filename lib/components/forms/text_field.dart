@@ -8,6 +8,7 @@ class CustomTextField extends StatelessWidget {
   final Function validator;
   final bool? enabled;
   final TextEditingController? controller;
+  final bool numberEnabled;
 
   const CustomTextField({
     Key? key,
@@ -17,6 +18,7 @@ class CustomTextField extends StatelessWidget {
     this.label,
     this.controller,
     this.enabled,
+    this.numberEnabled = false,
   }) : super(key: key);
 
   @override
@@ -29,6 +31,7 @@ class CustomTextField extends StatelessWidget {
         enabled: enabled,
         controller: controller,
         cursorColor: Colors.black87,
+        keyboardType: numberEnabled ? TextInputType.number : TextInputType.name,
         decoration: InputDecoration(
           contentPadding:
               const EdgeInsets.symmetric(vertical: 20, horizontal: 10),

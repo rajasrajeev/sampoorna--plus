@@ -1,15 +1,25 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:pinput/pinput.dart';
 import 'package:student_management/constants.dart';
 import 'package:student_management/screens/parents/login/registration/registration.dart';
 
 import '../../../../components/submit_button.dart';
+import '../../../../services/api_services.dart';
 
 class OtpScreen extends StatefulWidget {
   final String userName;
-  const OtpScreen({super.key, required this.userName});
+  final String generatedOtp;
+  final String token;
+  const OtpScreen(
+      {super.key,
+      required this.userName,
+      required this.generatedOtp,
+      required this.token});
 
   @override
   State<OtpScreen> createState() => _OtpScreenState();
@@ -23,37 +33,66 @@ class _OtpScreenState extends State<OtpScreen> {
     setState(() {
       isLoading = true;
     });
-    final data = jsonEncode(<String, String>{
-      "username": widget.userName,
-      "otp": otp,
-    });
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const Registration(),
-      ),
-    );
-    // final res = await authOTP(data);
-    // setState(() {
-    //   isLoading = false;
-    // });
-    // if (res.statusCode == 200) {
-    //   Fluttertoast.showToast(
-    //     msg: "User login successfull.",
-    //     gravity: ToastGravity.TOP,
-    //     timeInSecForIosWeb: 1,
-    //     backgroundColor: Colors.green,
-    //     textColor: Colors.white,
-    //     fontSize: 15.0,
-    //   );
-    //   // ignore: use_build_context_synchronously
-    // Navigator.pushReplacement(
-    //   context,
-    //   MaterialPageRoute(
-    //     builder: (context) => const MainScreen(),
-    //   ),
-    // );
-    // }
+    final data = {
+      "mobile": widget.userName,
+      "entered_otp": otp,
+      "generated_otp": widget.generatedOtp
+    };
+    showDialog(
+        // The user CANNOT close this dialog  by pressing outsite it
+        barrierDismissible: true,
+        context: context,
+        builder: (_) {
+          return Dialog(
+            // The background color
+            backgroundColor: Colors.white,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 20),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: const [
+                  // The loading indicator
+                  CircularProgressIndicator(),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  // Some text
+                  Text('Loading...')
+                ],
+              ),
+            ),
+          );
+        });
+    final res = await validateOTP(data, widget.token);
+
+    if (res.statusCode == 200) {
+      Navigator.of(context).pop();
+      Fluttertoast.showToast(
+        msg: "OTP verification successful",
+        gravity: ToastGravity.TOP,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.green,
+        textColor: Colors.white,
+        fontSize: 15.0,
+      );
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+            builder: (context) =>
+                Registration(userName: widget.userName, token: widget.token)),
+      );
+    } else {
+      Navigator.of(context).pop();
+
+      Fluttertoast.showToast(
+        msg: "Error! Something went wrong!!!",
+        gravity: ToastGravity.TOP,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 15.0,
+      );
+    }
   }
 
   @override
@@ -93,7 +132,7 @@ class _OtpScreenState extends State<OtpScreen> {
           const SizedBox(height: 30),
           Center(
             child: Pinput(
-              length: 6,
+              length: 5,
               defaultPinTheme: defaultPinTheme,
               validator: (s) {
                 return null;

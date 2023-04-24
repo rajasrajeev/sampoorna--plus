@@ -1,13 +1,17 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
-import 'package:student_management/components/custom_textfield.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:student_management/components/forms/password_field.dart';
+import 'package:student_management/components/forms/text_field.dart';
 import 'package:student_management/components/submit_button.dart';
 import 'package:student_management/screens/login_screen/login_screen.dart';
+import 'package:student_management/services/api_services.dart';
 
 class Registration extends StatefulWidget {
-  const Registration({super.key});
+  final String userName;
+  final String token;
+  const Registration({super.key, required this.userName, required this.token});
 
   @override
   State<Registration> createState() => _RegistrationState();
@@ -74,7 +78,7 @@ class _RegistrationState extends State<Registration> {
                   minLine: 1,
                   maxLine: 1,
                   enabled: true,
-                  numberEnabled:true,
+                  numberEnabled: true,
                   controller: phoneController,
                   validator: (value) {
                     if (value == null || value.length < 1) {
@@ -103,7 +107,9 @@ class _RegistrationState extends State<Registration> {
                   enabled: true,
                   controller: confirmParentPasswordController,
                   validator: (value) {
-                    if ((confirmParentPasswordController.text != parentPasswordController.text)||(value == null || value.length < 1)) {
+                    if ((confirmParentPasswordController.text !=
+                            parentPasswordController.text) ||
+                        (value == null || value.length < 1)) {
                       return "please confirm password";
                     }
                     return null;
@@ -162,44 +168,47 @@ class _RegistrationState extends State<Registration> {
                               );
                             });
 
-                        // debugPrint("*****Response Status code*******");
-                        // final res = await postLogin(data);
-                        // debugPrint("*****Response Status code*******");
-                        // debugPrint(res.statusCode.toString());
+                        final res =
+                            await parentRegistration(data, widget.token);
 
-                        // if (res.statusCode == 200) {
-                        //   //await Future.delayed(const Duration(seconds: 3));
-                        //   // ignore: use_build_context_synchronously
-                        //   Navigator.of(context).pop();
-                        //   // ignore: use_build_context_synchronously
-                        //   Navigator.pushReplacement(
-                        //     context,
-                        //     MaterialPageRoute(
-                        //       builder: (context) =>
-                        //           OtpScreen(userName: phoneController.text),
-                        //     ),
-                        //   );
-                        // } else {
-                        //   // ignore: use_build_context_synchronously
-                        //   Navigator.of(context).pop();
-                        //   Fluttertoast.showToast(
-                        //     msg: "Mobile Number not added to database!!!",
-                        //     gravity: ToastGravity.TOP,
-                        //     timeInSecForIosWeb: 1,
-                        //     backgroundColor: Colors.red,
-                        //     textColor: Colors.white,
-                        //     fontSize: 15.0,
-                        //   );
-                        // }
+                        if (res.statusCode == 200) {
+                          Navigator.of(context).pop();
+                          Fluttertoast.showToast(
+                            msg: "Registration is Successful. Please Login!!!",
+                            gravity: ToastGravity.TOP,
+                            timeInSecForIosWeb: 1,
+                            backgroundColor: Colors.green,
+                            textColor: Colors.white,
+                            fontSize: 15.0,
+                          );
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  const LoginScreen(passedRoles: "PARENT"),
+                            ),
+                          );
+                        } else {
+                          Navigator.of(context).pop();
+                          Fluttertoast.showToast(
+                            msg: "Mobile Number not added to database!!!",
+                            gravity: ToastGravity.TOP,
+                            timeInSecForIosWeb: 1,
+                            backgroundColor: Colors.red,
+                            textColor: Colors.white,
+                            fontSize: 15.0,
+                          );
+                        }
 
                         //Remove when API available
                         // ignore: use_build_context_synchronously
-                        Navigator.push(
+                        /* Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const LoginScreen(passedRoles:"PARENT"),
+                            builder: (context) =>
+                                const LoginScreen(passedRoles: "PARENT"),
                           ),
-                        );
+                        ); */
                       }
                     })
               ],

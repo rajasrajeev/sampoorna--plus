@@ -154,20 +154,23 @@ Future parentLogin(data) async {
 Future sendOTP(data) async {
   final prefs = await SharedPreferences.getInstance();
   final response = await http.post(
-    Uri.parse('$parentApiUrl/authenticateOTP/format/json/'),
-    body: data,
-  );
+      Uri.parse('$parentApiUrl/authenticateOTP/format/json/'),
+      body: data);
   if (response.statusCode == 200) {
   } else {}
   return response;
 }
 
 //API TO POST LOGIN
-Future validateOTP(data) async {
-  final prefs = await SharedPreferences.getInstance();
+Future validateOTP(data, token) async {
+  // final prefs = await SharedPreferences.getInstance();
   final response = await http.post(
     Uri.parse('$parentApiUrl/OTPValidation/format/json/'),
     body: data,
+    headers: {
+      'Authorization': 'Bearer $token',
+      // 'Content-type': 'application/json'
+    },
   );
   if (response.statusCode == 200) {
   } else {}
@@ -175,11 +178,15 @@ Future validateOTP(data) async {
 }
 
 //API TO POST LOGIN
-Future parentRegistration(data) async {
-  final prefs = await SharedPreferences.getInstance();
+Future parentRegistration(data, token) async {
+  // final prefs = await SharedPreferences.getInstance();
   final response = await http.post(
     Uri.parse('$parentApiUrl/ParentRegistration/format/json/'),
     body: data,
+    headers: {
+      'Authorization': 'Bearer $token',
+      // 'Content-type': 'application/json'
+    },
   );
   if (response.statusCode == 200) {
   } else {}
