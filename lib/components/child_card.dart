@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:student_management/components/student_profile_card.dart';
 import 'package:student_management/constants.dart';
+import 'package:student_management/screens/exams/exams.dart';
 
 class ChildCard extends StatefulWidget {
   final List day;
@@ -139,27 +140,49 @@ class _ChildCardState extends State<ChildCard> {
                         ),
                       ),
                       onPressed: () => {},
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.send_rounded,
                       ),
-                      label: Text(
+                      label: const Text(
                         'Messages',
                       ),
                     ),
-                    TextButton.icon(
+                    /* TextButton.icon(
                       style: TextButton.styleFrom(
-                        textStyle: TextStyle(color: Colors.blue),
+                        textStyle: const TextStyle(color: Colors.blue),
                         backgroundColor: Colors.white,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
                       ),
                       onPressed: () => {},
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.send_rounded,
                       ),
-                      label: Text(
-                        'Attendance',
+                      label: const Text(
+                        'Attendances',
+                      ),
+                    ), */
+                    TextButton.icon(
+                      style: TextButton.styleFrom(
+                        textStyle: const TextStyle(color: Colors.blue),
+                        backgroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      onPressed: () => {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const ExamsScreen()),
+                        )
+                      },
+                      icon: const Icon(
+                        Icons.send_rounded,
+                      ),
+                      label: const Text(
+                        'Exams',
                       ),
                     ),
                   ],

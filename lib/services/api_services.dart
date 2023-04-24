@@ -194,18 +194,38 @@ Future parentRegistration(data, token) async {
   return response;
 }
 
-
 //API TO UPLOAD IMAGE
 Future uploadPhoto(payload) async {
-    final prefs = await SharedPreferences.getInstance();
-     var token = await prefs.getString('token');
-     debugPrint("**************Image upload function called************************");
-    
-     final response = await http.post(Uri.parse('$apiUrl/upload_image_sampoorna/format/json/'),
-     headers: {
-       'Authorization': 'Bearer $token',
-       'Content-type': 'application/json'
-     },
-     body: json.encode(payload));
-    return response;
+  final prefs = await SharedPreferences.getInstance();
+  var token = await prefs.getString('token');
+  debugPrint(
+      "**************Image upload function called************************");
+
+  final response = await http.post(
+      Uri.parse('$apiUrl/upload_image_sampoorna/format/json/'),
+      headers: {
+        'Authorization': 'Bearer $token',
+        'Content-type': 'application/json'
+      },
+      body: json.encode(payload));
+  return response;
+}
+
+Future getWebViewURL() async {
+  /* final prefs = await SharedPreferences.getInstance();
+  var token = prefs.getString('token'); */
+  final response = await http
+      .post(Uri.parse('$apiUrl/getwebviewURL/format/json/'), headers: {
+    // 'Authorization': 'Bearer $token',
+  }, body: {});
+  return response;
+}
+
+Future getWebView(link) async {
+  final prefs = await SharedPreferences.getInstance();
+  var token = prefs.getString('token');
+  final response = await http.get(Uri.parse('$link'), headers: {
+    'Authorization': 'Bearer $token',
+  });
+  return response;
 }

@@ -51,6 +51,7 @@ dependencies:
   image_cropper: ^3.0.2
   pinput: ^2.2.31
   image: ^3.3.0
+  webview_flutter: ^3.0.4
 
 dev_dependencies:
   test: ^1.5.1
