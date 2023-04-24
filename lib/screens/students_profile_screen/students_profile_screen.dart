@@ -31,15 +31,18 @@ class StudentsProfileScreen extends StatefulWidget {
 const double targetWidth = 150.0;
 const double targetHeight = 200.0;
 const int targetSizeKB = 30;
-const int quality = 70;
+const int quality = 100;
+const int maxFileSizeB = 30 * 1024;
+const int minFileSizeB = 20 * 1024;
 
 class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
   final GlobalKey<ScaffoldState> key = GlobalKey();
 
+  dynamic base64Image;
   dynamic studentDetail;
   Uint8List? _selectedFile;
   bool _inProcess = false;
- File? tempFile ;
+  File? tempFile;
   @override
   void initState() {
     // TODO: implement initState
@@ -87,7 +90,7 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
       setState(() {
         studentDetail = data;
       });
-      print("==================> ${studentDetail}");
+      debugPrint("==================> $studentDetail");
     } else {
       Navigator.of(context).pop();
       Fluttertoast.showToast(
@@ -139,21 +142,20 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
       return;
     }
     try {
-     
       CroppedFile? cropped = await ImageCropper().cropImage(
         sourcePath: image.path,
         aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
         compressQuality: quality,
-        maxWidth: targetWidth.toInt() * 3,
-        maxHeight: targetHeight.toInt() * 3,
+        // maxWidth: 800,
+        // maxHeight: 800,
         compressFormat: ImageCompressFormat.jpg,
         uiSettings: [
           AndroidUiSettings(
             toolbarTitle: 'Cropper',
             toolbarColor: primaryColor,
             toolbarWidgetColor: Colors.white,
-            initAspectRatio: CropAspectRatioPreset.ratio3x2,
-            lockAspectRatio: true,
+            initAspectRatio: CropAspectRatioPreset.original,
+            lockAspectRatio: false,
           ),
           IOSUiSettings(title: 'Cropper'),
           WebUiSettings(context: context),
@@ -162,20 +164,42 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
       if (cropped != null) {
         final File newFile = File(cropped.path);
         final bytes = await newFile.readAsBytes();
-        final compressedImage = await compressImage(bytes, targetSizeKB);
+       // final compressedImage = await compressImage(bytes, targetSizeKB);
+       // final compressedImage = await compressImage(bytes, 30, 150, 200);
+        final compressedImage = await compressImage(bytes, 30);
+        final compressedSize = compressedImage.length;
+        debugPrint("********");
+        debugPrint('Compressed image size: $compressedSize bytes');
+        final image = img.decodeImage(compressedImage)!;
+        final width = image.width;
+        final height = image.height;
+        debugPrint('Image width: $width');
+        debugPrint('Image height: $height');
 
         // final tempDir = await getTemporaryDirectory();
         //  tempFile = await File('${tempDir.path}/temp.jpg').create();
         // await tempFile!.writeAsBytes(compressedImage);
-        final base64Image = base64.encode(compressedImage);
+
+          // Resize the image to 150x200 pixels
+
+    //   final resizedImage = img.copyResize(image, width: 150, height: 200);
+    // final resizedWidth = resizedImage.width;
+    // final resizedHeight = resizedImage.height;
+    // debugPrint('Resized image width: $resizedWidth');
+    // debugPrint('Resized image height: $resizedHeight');
+    // var compressedImageData = img.encodeJpg(resizedImage, quality: 100);
+    // var size = compressedImageData.length;
+    // debugPrint('Resized image size: $size bytes');
+
+        base64Image = base64.encode(compressedImage);
         setState(() {
-          _selectedFile =base64Decode(base64Image);
-         //  _selectedFile =File.fromRawPath(Uint8List.fromList(compressedImage));
-         // _selectedFile = tempFile;
+          _selectedFile = base64Decode(base64Image);
+          //  _selectedFile =File.fromRawPath(Uint8List.fromList(compressedImage));
+          // _selectedFile = tempFile;
           // _selectedFile = newFile ;
           _inProcess = false;
         });
-
+        imageupload();
       } else {
         setState(() {
           _inProcess = false;
@@ -190,16 +214,237 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
     }
   }
 
-  Future<Uint8List> compressImage(
-      List<int> imageData, int maxFileSizeKB) async {
-    var image = img.decodeImage(imageData.toList())!;
-    var compressedImageData = img.encodeJpg(image, quality: quality);
-    while (compressedImageData.length > maxFileSizeKB * 1024) {
-      image = img.copyResize(image,
-          width: image.width ~/ 2, height: image.height ~/ 2);
-      compressedImageData = img.encodeJpg(image, quality: quality);
+  // Future<Uint8List> compressImage(List<int> imageData, int maxFileSizeKB) async {
+  //      bool imagevalid=true;
+  //   var image = img.decodeImage(imageData.toList())!;
+  //   var quality = 90;
+  //   var compressedImageData = img.encodeJpg(image, quality: quality);
+  //   // if(compressedImageData.length < minFileSizeB){
+  //   //    imagevalid=false;
+  //   //   Fluttertoast.showToast(
+  //   //     msg: " lessthan 20 kb!!!",
+  //   //     gravity: ToastGravity.TOP,
+  //   //     timeInSecForIosWeb: 1,
+  //   //     backgroundColor: Colors.red,
+  //   //     textColor: Colors.white,
+  //   //     fontSize: 15.0,
+  //   //   );
+
+  //   // }
+  //   // while ((compressedImageData.length > maxFileSizeB) ) {
+  //   //   // if(compressedImageData.length < minFileSizeB){
+  //   //   //   break;
+  //   //   // }
+  //   //   // image = img.copyResize(image,
+  //   //   //     width: image.width ~/ 2, height: image.height ~/ 2);
+  //   //   compressedImageData = img.encodeJpg(image, quality: quality);
+
+  //   // }
+  //     while (compressedImageData.length > 30000) {
+  //   quality -= 10;
+  //   compressedImageData = img.encodeJpg(image, quality: quality);
+  // }
+  // while (compressedImageData.length < 20000) {
+  //   quality += 5;
+  //   compressedImageData = img.encodeJpg(image, quality: quality);
+  // }
+  //   return Uint8List.fromList(compressedImageData);
+  // }
+
+  // Future<Uint8List> compressImage(
+  //     List<int> imageData, int maxFileSizeKB) async {
+  //   // converted to list
+  //   var image = img.decodeImage(imageData.toList())!;
+
+  //   // encode to jpg with 100% quality
+  //   var quality = 100;
+  //   var compressedImageData = img.encodeJpg(image, quality: quality);
+
+  //   // find current image size
+  //   int size = await compressedImageData.length;
+
+  //   debugPrint("***** ***** $size ******");
+  //   while (size > maxFileSizeB && quality > 10) {
+  //     image = img.copyResize(image, width: 150, height: 200); 
+  //     quality = (quality - (quality * 0.1)).toInt();
+  //     compressedImageData = img.encodeJpg(image, quality: quality);
+  //   }
+
+  //   return Uint8List.fromList(compressedImageData);
+  // }
+
+//   Future<Uint8List> compressImage(
+//   List<int> imageData, int targetSizeKB, int targetWidth, int targetHeight) async {
+
+//   // decode the image
+//   var image = img.decodeImage(imageData.toList())!;
+
+//   // resize the image to the target width and height
+//   image = img.copyResize(image, width: targetWidth, height: targetHeight);
+
+//   // encode to jpg with 100% quality
+//   var quality = 100;
+//   var compressedImageData = img.encodeJpg(image, quality: quality);
+
+//   // find current image size
+//   int size = await compressedImageData.length;
+
+//   debugPrint("***** ***** $size ******");
+
+//   // reduce the quality until the target size is reached
+//   while (size > targetSizeKB * 1024 && quality > 10) {
+//     quality = (quality - (quality * 0.1)).toInt();
+//     compressedImageData = img.encodeJpg(image, quality: quality);
+//     size = compressedImageData.length;
+//   }
+
+//   return Uint8List.fromList(compressedImageData);
+// }
+
+// Future<Uint8List> compressImage(
+//   List<int> imageData, int targetSizeKB) async {
+//     var image = img.decodeImage(imageData.toList())!;
+//     var quality = 100;
+//     var compressedImageData = img.encodeJpg(image, quality: quality);
+//     int size = compressedImageData.length;
+
+//     debugPrint("***** ***** $size ******");
+//     while (size > targetSizeKB * 1024 && quality > 10) {
+//       image = img.copyResize(image, width: 150, height: 200);
+//       quality = (quality - (quality * 0.1)).toInt();
+//       compressedImageData = img.encodeJpg(image, quality: quality);
+//       size = compressedImageData.length;
+//     }
+//     while (size < targetSizeKB * 1024 && quality <= 100) {
+//       quality = (quality + (quality * 0.1)).toInt();
+//       compressedImageData = img.encodeJpg(image, quality: quality);
+//       size = compressedImageData.length;
+//     }
+
+//     return Uint8List.fromList(compressedImageData);
+// }
+
+
+//*******Don't Delete this code *******//
+
+// Future<Uint8List> compressImage(List<int> imageData, int targetSizeKB) async {
+//   // converted to list
+//   var image = img.decodeImage(imageData.toList())!;
+
+//   // encode to jpg with 100% quality
+//   var quality = 100;
+//   var compressedImageData = img.encodeJpg(image, quality: quality);
+
+//   // find current image size
+//   int size = compressedImageData.length;
+
+//   debugPrint("***** ***** $size ******");
+//   while (size > targetSizeKB * 1024 && quality > 10) {
+//     // reduce image quality by 10%
+//     quality -= 10;
+//     compressedImageData = img.encodeJpg(image, quality: quality);
+
+//     // find current image size
+//     size = compressedImageData.length;
+//   }
+
+//   // resize image if it is still larger than target size
+//   if (size > targetSizeKB * 1024) {
+//     image = img.copyResize(image, width: 150, height: 200);
+//     quality = 100;
+//     compressedImageData = img.encodeJpg(image, quality: quality);
+
+//     // find current image size
+//     size = compressedImageData.length;
+
+//     while (size > targetSizeKB * 1024 && quality > 10) {
+//       // reduce image quality by 10%
+//       quality -= 10;
+//       compressedImageData = img.encodeJpg(image, quality: quality);
+
+//       // find current image size
+//       size = compressedImageData.length;
+//     }
+//   }
+
+//   return Uint8List.fromList(compressedImageData);
+// }
+
+Future<Uint8List> compressImage(List<int> imageData, int targetSizeKB) async {
+  // converted to list
+  var image = img.decodeImage(imageData.toList())!;
+
+  // resize image to 150 x 200
+  image = img.copyResize(image, width: 150, height: 200);
+
+  // encode to jpg with 100% quality
+  var quality = 100;
+  var compressedImageData = img.encodeJpg(image, quality: quality);
+
+  // find current image size
+  int size = compressedImageData.length;
+
+  while (size > (targetSizeKB * 1024) && quality > 10) {
+    // reduce image quality by 10%
+    quality -= 10;
+
+    compressedImageData = img.encodeJpg(image, quality: quality);
+
+    // find current image size
+    int ts = compressedImageData.length;
+    debugPrint("***** while ***** $ts ******");
+  }
+
+  return Uint8List.fromList(compressedImageData);
+}
+  Future<dynamic> imageupload() async {
+    dynamic dataToSubmit = {
+      "image_data": base64Image,
+      "student_code": widget.studentCode,
+    };
+
+    final res = await uploadPhoto(dataToSubmit);
+    //var responsedata = parseJwtAndSave(res);
+    debugPrint("***********responsedata");
+    debugPrint((res).toString());
+//res.statusCode=200;
+    if (res.statusCode == 200) {
+     // final responseData = jsonDecode(res.body);
+    //  debugPrint("***********responsedata message********");
+      //debugPrint(responseData["message"].toString());
+      //Navigator.pop(context);
+      Fluttertoast.showToast(
+        //msg: "Image Uploaded Succesfully",
+        msg:"Image Uploaded Succesfully",
+        gravity: ToastGravity.TOP,
+        timeInSecForIosWeb: 10,
+        backgroundColor: Colors.green,
+        textColor: Colors.white,
+        fontSize: 15.0,
+      );
+    } else if (res.statusCode == 202) {
+      final responseData = jsonDecode(res.body);
+     // Navigator.pop(context);
+      Fluttertoast.showToast(
+        msg: responseData["message"],
+        gravity: ToastGravity.TOP,
+        timeInSecForIosWeb: 10,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 15.0,
+      );
+    } else {
+      // ignore: use_build_context_synchronously
+      //Navigator.pop(context);
+      Fluttertoast.showToast(
+        msg: "Something went wrong!!!",
+        gravity: ToastGravity.TOP,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 15.0,
+      );
     }
-    return Uint8List.fromList(compressedImageData);
   }
 
   @override
