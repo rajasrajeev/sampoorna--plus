@@ -8,7 +8,6 @@ import 'package:webview_flutter/webview_flutter.dart';
 import 'dart:io';
 
 import '../../services/api_services.dart';
-import '../../services/jwt_token_parser.dart';
 
 class ExamsScreen extends StatefulWidget {
   const ExamsScreen({Key? key}) : super(key: key);
@@ -21,7 +20,7 @@ class _ExamsScreenState extends State<ExamsScreen> {
   bool _loading = true;
   String? token;
   dynamic url;
-dynamic link;
+  dynamic link;
 
   @override
   void initState() {
@@ -41,28 +40,21 @@ dynamic link;
       final responseData = jsonDecode(res.body);
 
       setState(() {
-         url = responseData['url'];
+        url = responseData['url'];
       });
-      debugPrint("*******URL responseData**********");
-      debugPrint("$url");
-      debugPrint("*******responseData End**********");
-      final res2 = await getWebView(url);
-    debugPrint("*******response2 Data status code**********");
-    debugPrint(res2.statusCode.toString());
-    debugPrint("*******end response2 Data status code**********");
-    if (res2.statusCode == 200) {
-       setState(() {
-        _loading = false;
-      });
-     final response2Data = jsonDecode(res2.body);
 
-    setState(() {
-        link = response2Data['link'];
-      });
-           debugPrint("******* response2 Data Link **********");
-    debugPrint(Uri.decodeComponent(link).toString());
-    debugPrint("******* end response2 Data Link **********");
-    }
+      final res2 = await getWebView(url);
+
+      if (res2.statusCode == 200) {
+        setState(() {
+          _loading = false;
+        });
+        final response2Data = jsonDecode(res2.body);
+
+        setState(() {
+          link = response2Data['link'];
+        });
+      }
     } else {
       setState(() {
         _loading = false;
@@ -112,12 +104,10 @@ dynamic link;
                     WebView(
                       javascriptMode: JavascriptMode.unrestricted,
                       onWebViewCreated: (WebViewController webViewController) {
-                       var headers = {"Authorization": "Bearer $token"};
-                      var decodedlink = Uri.decodeComponent(link);
-                        webViewController.loadUrl(
-                          decodedlink,
-                            headers: headers
-                            );
+                        var headers = {"Authorization": "Bearer $token"};
+                        var decodedlink = Uri.decodeComponent(link);
+                        webViewController.loadUrl(decodedlink,
+                            headers: headers);
                       },
                       onPageFinished: (finish) {
                         setState(() {
