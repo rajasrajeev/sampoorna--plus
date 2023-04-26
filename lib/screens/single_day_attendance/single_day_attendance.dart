@@ -1,4 +1,4 @@
-// ignore_for_file: use_build_context_synchronously
+// ignore_for_file: use_build_context_synchronously, unrelated_type_equality_checks
 
 import 'dart:convert';
 import 'package:flutter/material.dart';
@@ -30,7 +30,7 @@ class _SingleDayAttendanceScreenState extends State<SingleDayAttendanceScreen> {
   bool _loading = false;
   String grade = "";
   String userName = "";
-  String markedStatus="";
+  String markedStatus = "";
   @override
   void initState() {
     super.initState();
@@ -82,12 +82,9 @@ class _SingleDayAttendanceScreenState extends State<SingleDayAttendanceScreen> {
       var data = parseJwtAndSave(responseData['data']);
       setState(() {
         attendanceDates = data['token'];
-         markedStatus=data['markedStatus'];
+        markedStatus = data['markedStatus'];
       });
-       debugPrint("*******responseData**********");
-      debugPrint("$data");
-             debugPrint("*******responseData End**********");
-            
+
       for (var i = 0; i < attendanceDates.length; i++) {
         if (attendanceDates[i]["absent_FN"] == 1 ||
             attendanceDates[i]["absent_FN"] == "1" ||
@@ -113,10 +110,20 @@ class _SingleDayAttendanceScreenState extends State<SingleDayAttendanceScreen> {
   }
 
   forenoonOrAfternoon(value, text) {
-    
-    // if (markedStatus == "1") { //marked status from API
-    if (value != null) {
-      if (value == 0 || value == "0") {
+    if (markedStatus == "") {
+      return Container(
+          width: 35,
+          height: 35,
+          decoration: BoxDecoration(
+              color: const Color.fromARGB(255, 145, 149, 145),
+              borderRadius: BorderRadius.circular(50)),
+          alignment: Alignment.center,
+          child: Text(
+            text,
+            style: const TextStyle(color: Colors.white),
+          ));
+    } else if (markedStatus == 1 || markedStatus == "1") {
+      if (value == null || value == 0 || value == "0") {
         return Container(
             width: 35,
             height: 35,
@@ -141,17 +148,30 @@ class _SingleDayAttendanceScreenState extends State<SingleDayAttendanceScreen> {
             ));
       }
     } else {
-      return Container(
-          width: 35,
-          height: 35,
-          decoration: BoxDecoration(
-              color: const Color.fromARGB(255, 145, 149, 145),
-              borderRadius: BorderRadius.circular(50)),
-          alignment: Alignment.center,
-          child: Text(
-            text,
-            style: const TextStyle(color: Colors.white),
-          ));
+      if (value == null || value == 0 || value == "0") {
+        return Container(
+            width: 35,
+            height: 35,
+            decoration: BoxDecoration(
+                color: const Color.fromARGB(255, 49, 115, 58),
+                borderRadius: BorderRadius.circular(50)),
+            alignment: Alignment.center,
+            child: Text(
+              text,
+              style: const TextStyle(color: Colors.white),
+            ));
+      } else {
+        return Container(
+            width: 35,
+            height: 35,
+            decoration: BoxDecoration(
+                color: primaryColor, borderRadius: BorderRadius.circular(50)),
+            alignment: Alignment.center,
+            child: Text(
+              text,
+              style: const TextStyle(color: Colors.white),
+            ));
+      }
     }
   }
 
@@ -227,18 +247,22 @@ class _SingleDayAttendanceScreenState extends State<SingleDayAttendanceScreen> {
                                         child: Row(
                                           children: [
                                             Container(
-                                                width: 70,
-                                                height: 70,
-                                                decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            15)),
-                                                alignment: Alignment.center,
-                                                child:attendanceDates[index]["photo_url"]==""? Image.asset(
-                                                    "assets/images/studentProfile.png"):
-                                                    Image.memory(
-                                                    base64Decode(attendanceDates[index]["photo_url"])),
-                                                    ),
+                                              width: 70,
+                                              height: 70,
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          15)),
+                                              alignment: Alignment.center,
+                                              child: attendanceDates[index]
+                                                          ["photo_url"] ==
+                                                      ""
+                                                  ? Image.asset(
+                                                      "assets/images/studentProfile.png")
+                                                  : Image.memory(base64Decode(
+                                                      attendanceDates[index]
+                                                          ["photo_url"])),
+                                            ),
                                             const SizedBox(width: 30),
                                             SizedBox(
                                               width: 90,

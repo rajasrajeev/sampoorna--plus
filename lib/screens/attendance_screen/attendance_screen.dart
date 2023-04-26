@@ -40,11 +40,16 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
   bool checked1 = false;
   DateTime selectedDate = DateTime.now();
   String markedStatus = "";
+  bool disabledArea = false;
 
   @override
   void initState() {
     getData();
     super.initState();
+  }
+
+  checkAttendanceDateToday() {
+    if (selectedDate == DateTime.now()) {}
   }
 
   getData() async {
@@ -142,22 +147,43 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
   createCheckersList(students) {
     attendanceCheckers = [];
     for (int i = 0; i < students.length; i++) {
-      Map<String, dynamic> obj = {
-        "student_id": students[i]["student_code"],
-        "full_name": students[i]["full_name"],
-        "fn": (students[i]["absent_FN"] != null)
-            ? (students[i]["absent_FN"] != '1')
-                ? true
-                : false
-            : false, //When null checkbox is not ticked for fn
-
-        "an": (students[i]["absent_AN"] != null)
-            ? (students[i]["absent_AN"] != '1')
-                ? true
-                : false
-            : false //When null checkbox is not ticked for an
-      };
-      attendanceCheckers.add(obj);
+      if (markedStatus == "") {
+        Map<String, dynamic> obj = {
+          "student_id": students[i]["student_code"],
+          "full_name": students[i]["full_name"],
+          "fn": false,
+          "an": false
+        };
+        attendanceCheckers.add(obj);
+      } else if (markedStatus == 1 || markedStatus == "1") {
+        Map<String, dynamic> obj = {
+          "student_id": students[i]["student_code"],
+          "full_name": students[i]["full_name"],
+          "fn": (students[i]["absent_FN"] == null)
+              ? true
+              : (students[i]["absent_FN"] == '0')
+                  ? true
+                  : false,
+          "an": false
+        };
+        attendanceCheckers.add(obj);
+      } else {
+        Map<String, dynamic> obj = {
+          "student_id": students[i]["student_code"],
+          "full_name": students[i]["full_name"],
+          "fn": (students[i]["absent_FN"] == null)
+              ? true
+              : (students[i]["absent_FN"] == '0')
+                  ? true
+                  : false, //When null checkbox is not ticked for fn
+          "an": (students[i]["absent_AN"] == null)
+              ? true
+              : (students[i]["absent_AN"] == '0')
+                  ? true
+                  : false //When null checkbox is not ticked for an
+        };
+        attendanceCheckers.add(obj);
+      }
     }
   }
 
