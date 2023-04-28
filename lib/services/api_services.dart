@@ -212,13 +212,10 @@ Future uploadPhoto(payload) async {
 }
 
 Future getWebViewURL() async {
-  /* final prefs = await SharedPreferences.getInstance();
-  var token = prefs.getString('token'); */
-
-  final response = await http
-      .post(Uri.parse('$apiUrl/getwebviewURL/format/json/'), headers: {
-    // 'Authorization': 'Bearer $token',
-  }, body: {});
+  final response = await http.post(
+      Uri.parse('$apiUrl/getwebviewURL/format/json/'),
+      headers: {},
+      body: {});
 
   return response;
 }
@@ -229,8 +226,5 @@ Future getWebView(link) async {
   final response = await http.get(Uri.parse('$link'), headers: {
     'Authorization': 'Bearer $token',
   });
-         debugPrint("*******API responseData**********");
-        debugPrint(response.body);
-        debugPrint("*******API responseData End**********");
   return response;
 }

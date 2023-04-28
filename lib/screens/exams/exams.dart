@@ -34,9 +34,6 @@ class _ExamsScreenState extends State<ExamsScreen> {
     token = prefs.getString('token');
     final res = await getWebViewURL();
     if (res.statusCode == 200) {
-      setState(() {
-        _loading = false;
-      });
       final responseData = jsonDecode(res.body);
 
       setState(() {
@@ -52,7 +49,7 @@ class _ExamsScreenState extends State<ExamsScreen> {
         final response2Data = jsonDecode(res2.body);
 
         setState(() {
-          link = response2Data['link'];
+          link = Uri.decodeComponent(response2Data['link']);
         });
       }
     } else {
@@ -101,23 +98,17 @@ class _ExamsScreenState extends State<ExamsScreen> {
           return orientation == Orientation.portrait
               ? Stack(
                   children: <Widget>[
-                    WebView(
-                      javascriptMode: JavascriptMode.unrestricted,
-                      onWebViewCreated: (WebViewController webViewController) {
-                        var headers = {"Authorization": "Bearer $token"};
-                        var decodedlink = Uri.decodeComponent(link);
-                        webViewController.loadUrl(decodedlink,
-                            headers: headers);
-                      },
-                      onPageFinished: (finish) {
-                        setState(() {
-                          _loading = false;
-                        });
-                      },
-                    ),
                     _loading
                         ? const Center(child: CircularProgressIndicator())
-                        : Stack(),
+                        : WebView(
+                            initialUrl: link,
+                            javascriptMode: JavascriptMode.unrestricted,
+                            onPageFinished: (finish) {
+                              setState(() {
+                                _loading = false;
+                              });
+                            },
+                          ),
                   ],
                 )
               : const Center(
