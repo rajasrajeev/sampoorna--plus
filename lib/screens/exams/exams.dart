@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:student_management/screens/main_screen/main_screen.dart';
 import 'package:student_management/screens/parents/dashboard/parents_dashboard_screen.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'dart:io';
@@ -21,6 +22,7 @@ class _ExamsScreenState extends State<ExamsScreen> {
   String? token;
   dynamic url;
   dynamic link;
+  String? userType = "";
 
   @override
   void initState() {
@@ -32,6 +34,7 @@ class _ExamsScreenState extends State<ExamsScreen> {
   getToken() async {
     final prefs = await SharedPreferences.getInstance();
     token = prefs.getString('token');
+    userType = prefs.getString('user_type');
     final res = await getWebViewURL();
     if (res.statusCode == 200) {
       final responseData = jsonDecode(res.body);
@@ -82,7 +85,9 @@ class _ExamsScreenState extends State<ExamsScreen> {
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const ParentsDashboardScreen(),
+                      builder: (context) => userType == "PARENT"
+                          ? const ParentsDashboardScreen()
+                          : const MainScreen(),
                     ),
                   );
                 },
