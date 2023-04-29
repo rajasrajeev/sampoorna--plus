@@ -71,11 +71,13 @@ class _AttendanceListState extends State<AttendanceList> {
       schoolId = prefs.getString('school_id');
     });
     final DateTime now = DateTime.now();
-    final DateFormat formatter = DateFormat('dd-MM-yyyy');
+    final DateFormat formatter = DateFormat('yyyy-MM-dd');
+    final DateFormat monthFormatter = DateFormat('MM');
     setState(() {
       date2 = formatter.format(now);
-      date1 = "${now.year}-${now.month}-01";
+      date1 = "${now.year}-${monthFormatter.format(now)}-01";
     });
+    print("-=-=-=-=$date1 =-=-=-=-=$date2");
     getStudentsData(date1, date2, schoolId!, dropdownvalue);
   }
 
@@ -222,6 +224,8 @@ class _AttendanceListState extends State<AttendanceList> {
                 batchId: dropdownvalue,
                 schoolId: schoolId.toString(),
                 attendanceDates: attendanceDates!,
+                date1: date1,
+                date2: date2,
                 onPageChanged: (date) {
                   if (date.month == DateTime.now().month) {
                     getDataBetweenDates();

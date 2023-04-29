@@ -139,6 +139,9 @@ class _RegistrationState extends State<Registration> {
                         var data = {
                           "username": phoneController.text,
                           "usert_type": "PARENT",
+                          "name": nameController.text,
+                          "email": emailController.text,
+                          "password": confirmParentPasswordController.text
                         };
                         // ignore: use_build_context_synchronously
                         showDialog(

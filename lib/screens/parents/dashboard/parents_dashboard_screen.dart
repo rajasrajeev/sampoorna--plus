@@ -22,6 +22,7 @@ class _ParentsDashboardScreenState extends State<ParentsDashboardScreen> {
   List items = [];
   List date = [];
   List day = [];
+  bool _loading = false;
 
   @override
   void initState() {
@@ -38,15 +39,7 @@ class _ParentsDashboardScreenState extends State<ParentsDashboardScreen> {
     setState(() {
       childDetails = data;
     });
-    /* for (var i = 0; i < childDetails.length; i++) {
-      setState(() {
-        items.add({
-          "grade":
-              '${permittedBatches[i]['class']} ${permittedBatches[i]['name']}',
-          "batch_id": '${permittedBatches[i]['batch_id']}'
-        });
-      });
-    } */
+    for (var i = 0; i < childDetails.length; i++) {}
   }
 
   getPastWeek() {

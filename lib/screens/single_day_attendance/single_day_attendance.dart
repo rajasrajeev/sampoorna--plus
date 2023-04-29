@@ -13,10 +13,14 @@ class SingleDayAttendanceScreen extends StatefulWidget {
   final String date;
   final String batchId;
   final String schoolId;
+  final String date1;
+  final String date2;
   const SingleDayAttendanceScreen(
       {required this.batchId,
       required this.schoolId,
       required this.date,
+      required this.date1,
+      required this.date2,
       super.key});
 
   @override
@@ -235,7 +239,13 @@ class _SingleDayAttendanceScreenState extends State<SingleDayAttendanceScreen> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                              const IndividualAttendanceScreen()),
+                                              IndividualAttendanceScreen(
+                                                studentCode:
+                                                    attendanceDates[index]
+                                                        ['student_code'],
+                                                date1: widget.date1,
+                                                date2: widget.date2,
+                                              )),
                                     );
                                   },
                                   child: Card(

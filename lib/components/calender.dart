@@ -10,6 +10,8 @@ import 'package:intl/intl.dart';
 class AttendanceListCalender extends StatefulWidget {
   final String batchId;
   final String schoolId;
+  final String date1;
+  final String date2;
   final dynamic attendanceDates;
   final Function(DateTime date) onPageChanged;
 
@@ -17,6 +19,8 @@ class AttendanceListCalender extends StatefulWidget {
       {required this.batchId,
       required this.attendanceDates,
       required this.schoolId,
+      required this.date1,
+      required this.date2,
       required this.onPageChanged,
       super.key});
 
@@ -76,7 +80,6 @@ class _AttendanceListCalenderState extends State<AttendanceListCalender> {
       _selectedEvents.value = _getEventsForDay(selectedDay);
       final DateFormat formatter = DateFormat('dd-MM-yyyy');
       final String formatted = formatter.format(_selectedDay!);
-      print("=======================> ${widget.attendanceDates}");
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -84,6 +87,8 @@ class _AttendanceListCalenderState extends State<AttendanceListCalender> {
                   date: formatted,
                   batchId: widget.batchId,
                   schoolId: widget.schoolId,
+                  date1: widget.date1,
+                  date2: widget.date2,
                 )),
       );
     }
@@ -163,14 +168,7 @@ class _AttendanceListCalenderState extends State<AttendanceListCalender> {
           }
         },
         onPageChanged: (focusedDay) {
-          print("===========> ===========> $focusedDay");
           _focusedDay = focusedDay;
-          /* final DateFormat formatter = DateFormat('yyyy-MM-dd');
-          final String formatted = formatter.format(focusedDay);
-          int lastday = DateTime(focusedDay.year, focusedDay.month + 1, 0).day;
-          print(
-              "$formatted - ${focusedDay.year}-${focusedDay.month}-${lastday}");
-          _focusedDay = focusedDay; */
           return widget.onPageChanged(focusedDay);
         },
         calendarBuilders: CalendarBuilders(
@@ -189,18 +187,18 @@ class _AttendanceListCalenderState extends State<AttendanceListCalender> {
                   width: 20,
                   height: 20,
                   alignment: Alignment.center,
-                  decoration:  BoxDecoration(
-                      color: Color.fromARGB(112, 92, 92, 92),
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                      border: Border.all(
-                        style: BorderStyle.solid,
-                        width: 1.0,
-                        color: secondaryColor,
-                      ),
-                      ),
+                  decoration: BoxDecoration(
+                    color: Color.fromARGB(112, 92, 92, 92),
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                    border: Border.all(
+                      style: BorderStyle.solid,
+                      width: 1.0,
+                      color: secondaryColor,
+                    ),
+                  ),
                   child: Text(
                     '${events.length}',
-                    style: const TextStyle(color: Colors.white,fontSize: 10),
+                    style: const TextStyle(color: Colors.white, fontSize: 10),
                   ),
                 )
               : null,
@@ -208,8 +206,9 @@ class _AttendanceListCalenderState extends State<AttendanceListCalender> {
               margin: const EdgeInsets.all(4.0),
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                  color: secondaryColor,
-                  borderRadius: BorderRadius.circular(10.0),),
+                color: secondaryColor,
+                borderRadius: BorderRadius.circular(10.0),
+              ),
               child: Text(
                 date.day.toString(),
                 style: const TextStyle(color: Colors.white),

@@ -194,6 +194,38 @@ Future parentRegistration(data, token) async {
   return response;
 }
 
+//API TO POST LOGIN
+Future lastWeekAttendance(data, token) async {
+  // final prefs = await SharedPreferences.getInstance();
+  final response = await http.post(
+    Uri.parse('$parentApiUrl/parentLastWeekAttendence/format/json/'),
+    body: data,
+    headers: {
+      'authorization': 'Bearer $token',
+      // 'Content-type': 'application/json'
+    },
+  );
+  if (response.statusCode == 200) {
+  } else {}
+  return response;
+}
+
+//API TO POST LOGIN
+Future individualAttendanceForStudent(data, token) async {
+  // final prefs = await SharedPreferences.getInstance();
+  final response = await http.post(
+    Uri.parse('$parentApiUrl/parentStudentAbsenteeIndividual/format/json/'),
+    body: data,
+    headers: {
+      'authorization': 'Bearer $token',
+      // 'Content-type': 'application/json'
+    },
+  );
+  if (response.statusCode == 200) {
+  } else {}
+  return response;
+}
+
 //API TO UPLOAD IMAGE
 Future uploadPhoto(payload) async {
   final prefs = await SharedPreferences.getInstance();
