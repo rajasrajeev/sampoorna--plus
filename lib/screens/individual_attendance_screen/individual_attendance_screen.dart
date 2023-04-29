@@ -203,7 +203,7 @@ class _IndividualAttendanceScreenState
                         itemBuilder: (context, index) {
                           return GestureDetector(
                             onTap: () {
-                              Navigator.push(
+                              /* Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) =>
@@ -213,7 +213,7 @@ class _IndividualAttendanceScreenState
                                           date1: widget.date1,
                                           date2: widget.date2,
                                         )),
-                              );
+                              ); */
                             },
                             child: Card(
                               borderOnForeground: true,
