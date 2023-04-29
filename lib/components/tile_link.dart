@@ -18,20 +18,20 @@ class TileLink extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
     return GestureDetector(
       child: Container(
-        width: size.width * 0.29,
-        height: 130,
+        width: size.width * 0.19,
+        height: 70,
         // ignore: prefer_const_constructors
         decoration: BoxDecoration(
-          borderRadius: const BorderRadius.all(Radius.circular(10)),
+          borderRadius: const BorderRadius.all(Radius.circular(5)),
           color: Colors.white,
           // ignore: prefer_const_literals_to_create_immutables
-          // boxShadow: [
-          //   const BoxShadow(
-          //     color: Color.fromARGB(166, 142, 138, 138),
-          //     spreadRadius: 1,
-          //     blurRadius: 1,
-          //   )
-          // ],
+          boxShadow: [
+            const BoxShadow(
+              color: Color.fromARGB(166, 142, 138, 138),
+              spreadRadius: 1,
+              blurRadius: 1,
+            )
+          ],
         ),
         child: Column(
           children: <Widget>[

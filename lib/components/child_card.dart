@@ -13,14 +13,21 @@ class ChildCard extends StatefulWidget {
   final String grade;
   final String division;
   final String school;
-  const ChildCard(
-      {super.key,
-      required this.day,
-      required this.date,
-      required this.fullName,
-      required this.grade,
-      required this.division,
-      required this.school});
+  final String studentCode;
+  final String admissionNo;
+  final String schoolId;
+  const ChildCard({
+    super.key,
+    required this.day,
+    required this.date,
+    required this.fullName,
+    required this.grade,
+    required this.division,
+    required this.school,
+    required this.studentCode,
+    required this.admissionNo,
+    required this.schoolId,
+  });
 
   @override
   State<ChildCard> createState() => _ChildCardState();
@@ -29,9 +36,12 @@ class ChildCard extends StatefulWidget {
 class _ChildCardState extends State<ChildCard> {
   @override
   Widget build(BuildContext context) {
+    var montserrat = const TextStyle(
+      fontSize: 12,
+    );
     Size size = MediaQuery.of(context).size;
     return Container(
-        height: 400,
+        height: size.height * 0.75,
         width: MediaQuery.of(context).size.width,
         constraints: BoxConstraints(maxWidth: size.width * 0.9),
         margin: const EdgeInsets.fromLTRB(5, 5, 5, 5),
@@ -99,7 +109,7 @@ class _ChildCardState extends State<ChildCard> {
                                   color: Colors.black,
                                 ),
                               ),
-                              const SizedBox(height: 8)
+                              const SizedBox(height: 8),
                             ],
                           ),
                         )
@@ -110,62 +120,118 @@ class _ChildCardState extends State<ChildCard> {
               ),
             ),
             const SizedBox(
-              height: 20,
+              height: 5,
             ),
-            SizedBox(
-                height: 150,
+            Expanded(
+                //height: size.height*0.3,
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(
-                          left: 8.0, right: 8.0, bottom: 8.0),
-                      child: Column(
+              // mainAxisAlignment: MainAxisAlignment.start,
+              // crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  margin: const EdgeInsets.all(0.0),
+                  child: Text(
+                    widget.school,
+                    style: buildMontserrat(
+                      const Color(0xFF000000),
+                      fontWeight: FontWeight.w600,
+                    ),
+                    overflow: TextOverflow.clip,
+                  ),
+                ),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 30),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            widget.school,
-                            style: buildMontserrat(
-                              const Color(0xFF000000),
-                              fontWeight: FontWeight.w600,
-                            ),
-                            overflow: TextOverflow.clip,
+                            "School Id",
+                            style: montserrat,
+                          ),
+                          const SizedBox(height: 16),
+                          Text(
+                            "Student Id",
+                            style: montserrat,
+                          ),
+                          const SizedBox(height: 16),
+                          Text(
+                            "Admission Number",
+                            style: montserrat,
+                          ),
+                          const SizedBox(height: 16),
+                          Text(
+                            "Class",
+                            style: montserrat,
                           ),
                         ],
                       ),
-                    ),
-                    Expanded(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      const SizedBox(width: 5),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          TileLink(
-                              label: "Broadcast Messages",
-                              image: "assets/images/config.png",
-                              onClick: () {
-                                // Navigator.push(
-                                //   context,
-                                //   MaterialPageRoute(
-                                //       builder: (context) => const ChatSelect()),
-                                // );
-                              },
-                            ),
-                          // TextButton.icon(
-                          //   style: TextButton.styleFrom(
-                          //     textStyle: const TextStyle(color: Colors.blue),
-                          //     backgroundColor: Colors.white,
-                          //     shape: RoundedRectangleBorder(
-                          //       borderRadius: BorderRadius.circular(10),
-                          //     ),
-                          //   ),
-                          //   onPressed: () => {},
-                          //   icon: const Icon(
-                          //     Icons.send_rounded,
-                          //   ),
-                          //   label: const Text(
-                          //     'Messages',
-                          //   ),
-                          // ),
-                          /* TextButton.icon(
+                          Text(
+                            ":${widget.schoolId}",
+                            style: montserrat,
+                          ),
+                          const SizedBox(height: 16),
+                          Text(
+                            ":${widget.studentCode}",
+                            style: montserrat,
+                          ),
+                          const SizedBox(height: 16),
+                          Text(
+                            ":${widget.admissionNo}",
+                            style: montserrat,
+                          ),
+                          const SizedBox(height: 16),
+                          Text(
+                            ":${widget.grade}${widget.division}",
+                            style: montserrat,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      // SizedBox(
+                      //     width: size.width *
+                      //         0.029),
+                      // TileLink(
+                      //   label: "Broadcast Messages",
+                      //   image: "assets/images/config.png",
+                      //   onClick: () {
+                      //     // Navigator.push(
+                      //     //   context,
+                      //     //   MaterialPageRoute(
+                      //     //       builder: (context) => const ChatSelect()),
+                      //     // );
+                      //   },
+                      // ),
+                      TextButton.icon(
+                        style: TextButton.styleFrom(
+                          textStyle: const TextStyle(color: Colors.blue),
+                          backgroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        onPressed: () => {},
+                        icon: const Icon(
+                          Icons.send_rounded,
+                        ),
+                        label: const Text(
+                          'Messages',
+                        ),
+                      ),
+                      /* TextButton.icon(
                         style: TextButton.styleFrom(
                           textStyle: const TextStyle(color: Colors.blue),
                           backgroundColor: Colors.white,
@@ -181,55 +247,54 @@ class _ChildCardState extends State<ChildCard> {
                           'Attendances',
                         ),
                       ), */
-                      // TextButton.icon(
-                      //   style: TextButton.styleFrom(
-                      //     textStyle: const TextStyle(color: Colors.blue),
-                      //     backgroundColor: Colors.white,
-                      //     shape: RoundedRectangleBorder(
-                      //       borderRadius: BorderRadius.circular(10),
-                      //     ),
-                      //   ),
-                      //   onPressed: () => {
-                      //     Navigator.pushReplacement(
-                      //       context,
-                      //       MaterialPageRoute(
-                      //           builder: (context) => const ExamsScreen()),
-                      //     )
-                      //   },
-                      //   icon: const Icon(
-                      //     Icons.receipt_long,
-                      //   ),
-                      //   label: const Text(
-                      //     'Exams',
-                      //   ),
-                      // ),
-                      SizedBox(
-                        width: size.width *
-                            0.029), //Spacing between tile don't change
-                      TileLink(
-                        label: "Exams",
-                        image: "assets/images/exam.png",
-                        onClick: () {
-                          Navigator.push(
+                      TextButton.icon(
+                        style: TextButton.styleFrom(
+                          textStyle: const TextStyle(color: Colors.blue),
+                          backgroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        onPressed: () => {
+                          Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => const ExamsScreen()),
-                          );
+                          )
                         },
+                        icon: const Icon(
+                          Icons.receipt_long,
+                        ),
+                        label: const Text(
+                          'Exams',
+                        ),
                       ),
-                      SizedBox(
-                        width: size.width *
-                            0.029), //Spacing between tile don't change
-                    SizedBox(
-                      width: size.width * 0.25,
-                    ),
-                        ],
-                      ),
-                    ),
-                    
-                  ],
-                )),
-                SizedBox(height: size.width * 0.030),
+                      // SizedBox(
+                      //     width: size.width *
+                      //         0.029), //Spacing between tile don't change
+                      // TileLink(
+                      //   label: "Exams",
+                      //   image: "assets/images/exam.png",
+                      //   onClick: () {
+                      //     Navigator.push(
+                      //       context,
+                      //       MaterialPageRoute(
+                      //           builder: (context) => const ExamsScreen()),
+                      //     );
+                      //   },
+                      // ),
+                      // SizedBox(
+                      //     width: size.width *
+                      //         0.029), //Spacing between tile don't change
+                      // SizedBox(
+                      //   width: size.width * 0.21,
+                      // ),
+                    ],
+                  ),
+                ),
+              ],
+            )),
+            SizedBox(height: size.width * 0.030),
             Container(
               height: 50,
               width: MediaQuery.of(context).size.width - 79,
@@ -294,7 +359,8 @@ class _ChildCardState extends State<ChildCard> {
                   ),
                 ),
               ]),
-            )
+            ),
+            SizedBox(height: size.width * 0.030),
           ],
         ));
   }
