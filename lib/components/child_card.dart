@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:student_management/components/student_profile_card.dart';
+import 'package:student_management/components/tile_link.dart';
 import 'package:student_management/constants.dart';
 import 'package:student_management/screens/exams/exams.dart';
+
+import '../screens/message/chat_select.dart';
 
 class ChildCard extends StatefulWidget {
   final List day;
@@ -124,69 +127,109 @@ class _ChildCardState extends State<ChildCard> {
                             widget.school,
                             style: buildMontserrat(
                               const Color(0xFF000000),
-                              fontWeight: FontWeight.normal,
+                              fontWeight: FontWeight.w600,
                             ),
                             overflow: TextOverflow.clip,
                           ),
                         ],
                       ),
                     ),
-                    TextButton.icon(
-                      style: TextButton.styleFrom(
-                        textStyle: const TextStyle(color: Colors.blue),
-                        backgroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
+                    Expanded(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          TileLink(
+                              label: "Broadcast Messages",
+                              image: "assets/images/config.png",
+                              onClick: () {
+                                // Navigator.push(
+                                //   context,
+                                //   MaterialPageRoute(
+                                //       builder: (context) => const ChatSelect()),
+                                // );
+                              },
+                            ),
+                          // TextButton.icon(
+                          //   style: TextButton.styleFrom(
+                          //     textStyle: const TextStyle(color: Colors.blue),
+                          //     backgroundColor: Colors.white,
+                          //     shape: RoundedRectangleBorder(
+                          //       borderRadius: BorderRadius.circular(10),
+                          //     ),
+                          //   ),
+                          //   onPressed: () => {},
+                          //   icon: const Icon(
+                          //     Icons.send_rounded,
+                          //   ),
+                          //   label: const Text(
+                          //     'Messages',
+                          //   ),
+                          // ),
+                          /* TextButton.icon(
+                        style: TextButton.styleFrom(
+                          textStyle: const TextStyle(color: Colors.blue),
+                          backgroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
                         ),
+                        onPressed: () => {},
+                        icon: const Icon(
+                          Icons.send_rounded,
+                        ),
+                        label: const Text(
+                          'Attendances',
+                        ),
+                      ), */
+                      // TextButton.icon(
+                      //   style: TextButton.styleFrom(
+                      //     textStyle: const TextStyle(color: Colors.blue),
+                      //     backgroundColor: Colors.white,
+                      //     shape: RoundedRectangleBorder(
+                      //       borderRadius: BorderRadius.circular(10),
+                      //     ),
+                      //   ),
+                      //   onPressed: () => {
+                      //     Navigator.pushReplacement(
+                      //       context,
+                      //       MaterialPageRoute(
+                      //           builder: (context) => const ExamsScreen()),
+                      //     )
+                      //   },
+                      //   icon: const Icon(
+                      //     Icons.receipt_long,
+                      //   ),
+                      //   label: const Text(
+                      //     'Exams',
+                      //   ),
+                      // ),
+                      SizedBox(
+                        width: size.width *
+                            0.029), //Spacing between tile don't change
+                      TileLink(
+                        label: "Exams",
+                        image: "assets/images/exam.png",
+                        onClick: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const ExamsScreen()),
+                          );
+                        },
                       ),
-                      onPressed: () => {},
-                      icon: const Icon(
-                        Icons.send_rounded,
-                      ),
-                      label: const Text(
-                        'Messages',
+                      SizedBox(
+                        width: size.width *
+                            0.029), //Spacing between tile don't change
+                    SizedBox(
+                      width: size.width * 0.25,
+                    ),
+                        ],
                       ),
                     ),
-                    /* TextButton.icon(
-                      style: TextButton.styleFrom(
-                        textStyle: const TextStyle(color: Colors.blue),
-                        backgroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
-                      onPressed: () => {},
-                      icon: const Icon(
-                        Icons.send_rounded,
-                      ),
-                      label: const Text(
-                        'Attendances',
-                      ),
-                    ), */
-                    TextButton.icon(
-                      style: TextButton.styleFrom(
-                        textStyle: const TextStyle(color: Colors.blue),
-                        backgroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
-                      onPressed: () => {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const ExamsScreen()),
-                        )
-                      },
-                      icon: const Icon(
-                        Icons.send_rounded,
-                      ),
-                      label: const Text(
-                        'Exams',
-                      ),
-                    ),
+                    
                   ],
                 )),
+                SizedBox(height: size.width * 0.030),
             Container(
               height: 50,
               width: MediaQuery.of(context).size.width - 79,
@@ -231,10 +274,10 @@ class _ChildCardState extends State<ChildCard> {
                                   color: primaryColor,
                                   borderRadius: BorderRadius.only(
                                     bottomLeft: index == 0
-                                        ? Radius.circular(5)
+                                        ? const Radius.circular(5)
                                         : Radius.zero,
                                     bottomRight: index == widget.day.length - 1
-                                        ? Radius.circular(5)
+                                        ? const Radius.circular(5)
                                         : Radius.zero,
                                   ),
                                 ),
@@ -242,7 +285,7 @@ class _ChildCardState extends State<ChildCard> {
                                 child: Center(
                                     child: Text(
                                   widget.date[index].toString(),
-                                  style: TextStyle(color: Colors.white),
+                                  style: const TextStyle(color: Colors.white),
                                 )),
                               )
                             ]),
@@ -261,7 +304,7 @@ class _ChildCardState extends State<ChildCard> {
     FontWeight fontWeight = FontWeight.normal,
   }) {
     return TextStyle(
-      fontSize: 12,
+      fontSize: 14,
       color: color,
       fontWeight: fontWeight,
     );
