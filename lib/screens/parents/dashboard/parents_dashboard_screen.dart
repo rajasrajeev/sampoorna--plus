@@ -86,22 +86,31 @@ debugPrint("$data");
                       itemCount: childDetails.length,
                       //shrinkWrap: true,
                       itemBuilder: (context, index) {
-                        return ChildCard(
-                          day: day,
-                          date: date,
-                          fullName: childDetails[index]['full_name'],
-                          grade: childDetails[index]['class'],
-                          division: childDetails[index]['name'],
-                          school: childDetails[index]['school_name'],
-                          studentCode:childDetails[index]['student_code'],
-                          admissionNo:childDetails[index]['admission_no'],
-                          schoolId:childDetails[index]['school_id'],
+                        return Column(
+                          children: [
+                            ChildCard(
+                              day: day,
+                              date: date,
+                              fullName: childDetails[index]['full_name'],
+                              grade: childDetails[index]['class'],
+                              division: childDetails[index]['name'],
+                              school: childDetails[index]['school_name'],
+                              studentCode:childDetails[index]['student_code'],
+                              admissionNo:childDetails[index]['admission_no'],
+                              schoolId:childDetails[index]['school_id'],
+                              imageURL:(childDetails[index]['photo_url'].toString()),
+                            ),
+                            SizedBox(height: size.height * 0.030),
+                          ],
                         );
                       }),
                 ),
+               
               ],
             ),
+            
           ),
+          
         ),
         backgroundColor: Colors.white,
       ),

@@ -1,4 +1,8 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:student_management/components/student_profile_card.dart';
 import 'package:student_management/components/tile_link.dart';
 import 'package:student_management/constants.dart';
@@ -16,8 +20,9 @@ class ChildCard extends StatefulWidget {
   final String studentCode;
   final String admissionNo;
   final String schoolId;
+  final String imageURL;
   const ChildCard({
-    super.key,
+    Key? key,
     required this.day,
     required this.date,
     required this.fullName,
@@ -27,7 +32,8 @@ class ChildCard extends StatefulWidget {
     required this.studentCode,
     required this.admissionNo,
     required this.schoolId,
-  });
+    required this.imageURL,
+  }) : super(key: key);
 
   @override
   State<ChildCard> createState() => _ChildCardState();
@@ -80,10 +86,23 @@ class _ChildCardState extends State<ChildCard> {
                     top: 50,
                     child: Row(
                       children: [
-                        const CircleAvatar(
-                          radius: 50,
-                          backgroundImage: AssetImage("assets/images/boy.png"),
-                        ),
+                        CircleAvatar(
+                            radius: 50,
+                            backgroundColor: primaryColor,
+                            // ignore: unnecessary_null_comparison
+                            backgroundImage: (widget.imageURL ==null)
+                            ? AssetImage(base64Decode(widget.imageURL).toString())
+                            : const AssetImage('assets/images/studentProfile.png'),
+                            // child:(widget.imageURL =="")
+                            //                       ? Image.memory(base64Decode(
+                            //                           widget.imageURL))
+                            //                       : Image.asset(
+                            //                           "assets/images/studentProfile.png",
+                            //                           fit: BoxFit.contain,
+                            //                            height:100,
+                            //                            width:100,
+                            //                           ),
+                          ),
                         const SizedBox(width: 20),
                         SizedBox(
                           width: size.width * 0.5,
@@ -94,7 +113,7 @@ class _ChildCardState extends State<ChildCard> {
                               SizedBox(
                                 height: 50,
                                 child: Text(
-                                  widget.fullName,
+                                  widget.fullName.toString(),
                                   style: const TextStyle(
                                     fontSize: 18,
                                     color: Color(0xFFFFFFFF),
@@ -174,22 +193,22 @@ class _ChildCardState extends State<ChildCard> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            ":${widget.schoolId}",
+                            ":${widget.schoolId.toString()}",
                             style: montserrat,
                           ),
                           const SizedBox(height: 16),
                           Text(
-                            ":${widget.studentCode}",
+                            ":${widget.studentCode.toString()}",
                             style: montserrat,
                           ),
                           const SizedBox(height: 16),
                           Text(
-                            ":${widget.admissionNo}",
+                            ":${widget.admissionNo.toString()}",
                             style: montserrat,
                           ),
                           const SizedBox(height: 16),
                           Text(
-                            ":${widget.grade}${widget.division}",
+                            ":${widget.grade.toString()}${widget.division.toString()}",
                             style: montserrat,
                           ),
                         ],
@@ -263,7 +282,7 @@ class _ChildCardState extends State<ChildCard> {
                           )
                         },
                         icon: const Icon(
-                          Icons.receipt_long,
+                          Icons.history_edu,
                         ),
                         label: const Text(
                           'Exams',
@@ -347,11 +366,38 @@ class _ChildCardState extends State<ChildCard> {
                                   ),
                                 ),
                                 height: 25,
-                                child: Center(
-                                    child: Text(
+                                child: Row(
+                                    children:[
+                                      
+                                Padding(
+                                  padding: const EdgeInsets.only(left:2.0,top:10.0 ),
+                                  child: Container(
+                                    width: size.width*0.025,
+                                     height: size.height*0.015,
+                                    decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(50
+                                      
+                                    ),
+                                  ),
+                                  child:const Center(
+                                    child: Text("ab",
+                                     style:  TextStyle(
+                                       color: Colors.black54,
+                                       fontSize: 8,
+                                       fontWeight: FontWeight.w900
+                                       ),
+                                    ),
+                                  ),
+                                  ),
+                                ),
+                                Text(
                                   widget.date[index].toString(),
                                   style: const TextStyle(color: Colors.white),
-                                )),
+                                ),
+                                  ]
+                                ),
+                                    
                               )
                             ]),
                           );
@@ -360,7 +406,7 @@ class _ChildCardState extends State<ChildCard> {
                 ),
               ]),
             ),
-            SizedBox(height: size.width * 0.030),
+            SizedBox(height: size.height * 0.030),
           ],
         ));
   }
