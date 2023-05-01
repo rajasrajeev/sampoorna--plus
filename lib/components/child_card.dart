@@ -141,178 +141,180 @@ class _ChildCardState extends State<ChildCard> {
             const SizedBox(
               height: 5,
             ),
-            Expanded(
-                //height: size.height*0.3,
-                child: Column(
+            Column(
               // mainAxisAlignment: MainAxisAlignment.start,
               // crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                  margin: const EdgeInsets.all(0.0),
-                  child: Text(
-                    widget.school,
-                    style: buildMontserrat(
-                      const Color(0xFF000000),
-                      fontWeight: FontWeight.w600,
+            Container(
+              margin: const EdgeInsets.all(0.0),
+              child: Text(
+                widget.school,
+                style: buildMontserrat(
+                  const Color(0xFF000000),
+                  fontWeight: FontWeight.w600,
+                ),
+                overflow: TextOverflow.clip,
+              ),
+            ),
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 16, vertical: 30),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "School Id",
+                        style: montserrat,
+                      ),
+                      const SizedBox(height: 16),
+                      Text(
+                        "Student Id",
+                        style: montserrat,
+                      ),
+                      const SizedBox(height: 16),
+                      Text(
+                        "Admission Number",
+                        style: montserrat,
+                      ),
+                      const SizedBox(height: 16),
+                      Text(
+                        "Class",
+                        style: montserrat,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(width: 5),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        ":${widget.schoolId.toString()}",
+                        style: montserrat,
+                      ),
+                      const SizedBox(height: 16),
+                      Text(
+                        ":${widget.studentCode.toString()}",
+                        style: montserrat,
+                      ),
+                      const SizedBox(height: 16),
+                      Text(
+                        ":${widget.admissionNo.toString()}",
+                        style: montserrat,
+                      ),
+                      const SizedBox(height: 16),
+                      Text(
+                        ":${widget.grade.toString()}${widget.division.toString()}",
+                        style: montserrat,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                // SizedBox(
+                //     width: size.width *
+                //         0.029),
+                // TileLink(
+                //   label: "Broadcast Messages",
+                //   image: "assets/images/config.png",
+                //   onClick: () {
+                //     // Navigator.push(
+                //     //   context,
+                //     //   MaterialPageRoute(
+                //     //       builder: (context) => const ChatSelect()),
+                //     // );
+                //   },
+                // ),
+                TextButton.icon(
+                  style: TextButton.styleFrom(
+                    textStyle: const TextStyle(color: Colors.blue),
+                    backgroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
                     ),
-                    overflow: TextOverflow.clip,
+                  ),
+                  onPressed: () => {
+                     Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const ChatSelect()),
+                    )
+                  },
+                  icon: const Icon(
+                    Icons.send_rounded,
+                  ),
+                  label: const Text(
+                    'Messages',
                   ),
                 ),
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 30),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "School Id",
-                            style: montserrat,
-                          ),
-                          const SizedBox(height: 16),
-                          Text(
-                            "Student Id",
-                            style: montserrat,
-                          ),
-                          const SizedBox(height: 16),
-                          Text(
-                            "Admission Number",
-                            style: montserrat,
-                          ),
-                          const SizedBox(height: 16),
-                          Text(
-                            "Class",
-                            style: montserrat,
-                          ),
-                        ],
-                      ),
-                      const SizedBox(width: 5),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            ":${widget.schoolId.toString()}",
-                            style: montserrat,
-                          ),
-                          const SizedBox(height: 16),
-                          Text(
-                            ":${widget.studentCode.toString()}",
-                            style: montserrat,
-                          ),
-                          const SizedBox(height: 16),
-                          Text(
-                            ":${widget.admissionNo.toString()}",
-                            style: montserrat,
-                          ),
-                          const SizedBox(height: 16),
-                          Text(
-                            ":${widget.grade.toString()}${widget.division.toString()}",
-                            style: montserrat,
-                          ),
-                        ],
-                      ),
-                    ],
+                /* TextButton.icon(
+                  style: TextButton.styleFrom(
+                    textStyle: const TextStyle(color: Colors.blue),
+                    backgroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  onPressed: () => {},
+                  icon: const Icon(
+                    Icons.send_rounded,
+                  ),
+                  label: const Text(
+                    'Attendances',
+                  ),
+                ), */
+                TextButton.icon(
+                  style: TextButton.styleFrom(
+                    textStyle: const TextStyle(color: Colors.blue),
+                    backgroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  onPressed: () => {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const ExamsScreen()),
+                    )
+                  },
+                  icon: const Icon(
+                    Icons.history_edu,
+                  ),
+                  label: const Text(
+                    'Exams',
                   ),
                 ),
-                Expanded(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      // SizedBox(
-                      //     width: size.width *
-                      //         0.029),
-                      // TileLink(
-                      //   label: "Broadcast Messages",
-                      //   image: "assets/images/config.png",
-                      //   onClick: () {
-                      //     // Navigator.push(
-                      //     //   context,
-                      //     //   MaterialPageRoute(
-                      //     //       builder: (context) => const ChatSelect()),
-                      //     // );
-                      //   },
-                      // ),
-                      TextButton.icon(
-                        style: TextButton.styleFrom(
-                          textStyle: const TextStyle(color: Colors.blue),
-                          backgroundColor: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                        onPressed: () => {},
-                        icon: const Icon(
-                          Icons.send_rounded,
-                        ),
-                        label: const Text(
-                          'Messages',
-                        ),
-                      ),
-                      /* TextButton.icon(
-                        style: TextButton.styleFrom(
-                          textStyle: const TextStyle(color: Colors.blue),
-                          backgroundColor: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                        onPressed: () => {},
-                        icon: const Icon(
-                          Icons.send_rounded,
-                        ),
-                        label: const Text(
-                          'Attendances',
-                        ),
-                      ), */
-                      TextButton.icon(
-                        style: TextButton.styleFrom(
-                          textStyle: const TextStyle(color: Colors.blue),
-                          backgroundColor: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                        onPressed: () => {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const ExamsScreen()),
-                          )
-                        },
-                        icon: const Icon(
-                          Icons.history_edu,
-                        ),
-                        label: const Text(
-                          'Exams',
-                        ),
-                      ),
-                      // SizedBox(
-                      //     width: size.width *
-                      //         0.029), //Spacing between tile don't change
-                      // TileLink(
-                      //   label: "Exams",
-                      //   image: "assets/images/exam.png",
-                      //   onClick: () {
-                      //     Navigator.push(
-                      //       context,
-                      //       MaterialPageRoute(
-                      //           builder: (context) => const ExamsScreen()),
-                      //     );
-                      //   },
-                      // ),
-                      // SizedBox(
-                      //     width: size.width *
-                      //         0.029), //Spacing between tile don't change
-                      // SizedBox(
-                      //   width: size.width * 0.21,
-                      // ),
-                    ],
-                  ),
-                ),
+                // SizedBox(
+                //     width: size.width *
+                //         0.029), //Spacing between tile don't change
+                // TileLink(
+                //   label: "Exams",
+                //   image: "assets/images/exam.png",
+                //   onClick: () {
+                //     Navigator.push(
+                //       context,
+                //       MaterialPageRoute(
+                //           builder: (context) => const ExamsScreen()),
+                //     );
+                //   },
+                // ),
+                // SizedBox(
+                //     width: size.width *
+                //         0.029), //Spacing between tile don't change
+                // SizedBox(
+                //   width: size.width * 0.21,
+                // ),
               ],
-            )),
+            ),
+              ],
+            ),
             SizedBox(height: size.width * 0.030),
             Container(
               height: 50,

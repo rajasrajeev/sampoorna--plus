@@ -10,6 +10,7 @@ import '../../constants.dart';
 import '../../services/api_services.dart';
 import '../../services/database_helper.dart';
 import '../../services/jwt_token_parser.dart';
+import '../broadcast/broadcast_detail.dart';
 import '../main_screen/main_screen.dart';
 import 'chat_detail.dart';
 
@@ -129,7 +130,7 @@ class _ChatSelectState extends State<ChatSelect> {
               //                 index]
               //             ['student_code']
               //         .toString())
-              ChatDetail(
+              BroadcastDetail(
                   studentName: selectedGrade,
                   studentCode: studentsClassList //Class List from dropdown
                   )),
