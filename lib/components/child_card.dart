@@ -47,7 +47,7 @@ class _ChildCardState extends State<ChildCard> {
     );
     Size size = MediaQuery.of(context).size;
     return Container(
-        height: size.height * 0.75,
+        height: size.height * 0.8,
         width: MediaQuery.of(context).size.width,
         constraints: BoxConstraints(maxWidth: size.width * 0.9),
         margin: const EdgeInsets.fromLTRB(5, 5, 5, 5),
@@ -87,22 +87,24 @@ class _ChildCardState extends State<ChildCard> {
                     child: Row(
                       children: [
                         CircleAvatar(
-                            radius: 50,
-                            backgroundColor: primaryColor,
-                            // ignore: unnecessary_null_comparison
-                            backgroundImage: (widget.imageURL ==null)
-                            ? AssetImage(base64Decode(widget.imageURL).toString())
-                            : const AssetImage('assets/images/studentProfile.png'),
-                            // child:(widget.imageURL =="")
-                            //                       ? Image.memory(base64Decode(
-                            //                           widget.imageURL))
-                            //                       : Image.asset(
-                            //                           "assets/images/studentProfile.png",
-                            //                           fit: BoxFit.contain,
-                            //                            height:100,
-                            //                            width:100,
-                            //                           ),
-                          ),
+                          radius: 50,
+                          backgroundColor: primaryColor,
+                          // ignore: unnecessary_null_comparison
+                          backgroundImage: (widget.imageURL == null)
+                              ? AssetImage(
+                                  base64Decode(widget.imageURL).toString())
+                              : const AssetImage(
+                                  'assets/images/studentProfile.png'),
+                          // child:(widget.imageURL =="")
+                          //                       ? Image.memory(base64Decode(
+                          //                           widget.imageURL))
+                          //                       : Image.asset(
+                          //                           "assets/images/studentProfile.png",
+                          //                           fit: BoxFit.contain,
+                          //                            height:100,
+                          //                            width:100,
+                          //                           ),
+                        ),
                         const SizedBox(width: 20),
                         SizedBox(
                           width: size.width * 0.5,
@@ -145,115 +147,115 @@ class _ChildCardState extends State<ChildCard> {
               // mainAxisAlignment: MainAxisAlignment.start,
               // crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-            Container(
-              margin: const EdgeInsets.all(0.0),
-              child: Text(
-                widget.school,
-                style: buildMontserrat(
-                  const Color(0xFF000000),
-                  fontWeight: FontWeight.w600,
-                ),
-                overflow: TextOverflow.clip,
-              ),
-            ),
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 16, vertical: 30),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "School Id",
-                        style: montserrat,
-                      ),
-                      const SizedBox(height: 16),
-                      Text(
-                        "Student Id",
-                        style: montserrat,
-                      ),
-                      const SizedBox(height: 16),
-                      Text(
-                        "Admission Number",
-                        style: montserrat,
-                      ),
-                      const SizedBox(height: 16),
-                      Text(
-                        "Class",
-                        style: montserrat,
-                      ),
-                    ],
-                  ),
-                  const SizedBox(width: 5),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        ":${widget.schoolId.toString()}",
-                        style: montserrat,
-                      ),
-                      const SizedBox(height: 16),
-                      Text(
-                        ":${widget.studentCode.toString()}",
-                        style: montserrat,
-                      ),
-                      const SizedBox(height: 16),
-                      Text(
-                        ":${widget.admissionNo.toString()}",
-                        style: montserrat,
-                      ),
-                      const SizedBox(height: 16),
-                      Text(
-                        ":${widget.grade.toString()}${widget.division.toString()}",
-                        style: montserrat,
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                // SizedBox(
-                //     width: size.width *
-                //         0.029),
-                // TileLink(
-                //   label: "Broadcast Messages",
-                //   image: "assets/images/config.png",
-                //   onClick: () {
-                //     // Navigator.push(
-                //     //   context,
-                //     //   MaterialPageRoute(
-                //     //       builder: (context) => const ChatSelect()),
-                //     // );
-                //   },
-                // ),
-                TextButton.icon(
-                  style: TextButton.styleFrom(
-                    textStyle: const TextStyle(color: Colors.blue),
-                    backgroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
+                Container(
+                  margin: const EdgeInsets.all(0.0),
+                  child: Text(
+                    widget.school,
+                    style: buildMontserrat(
+                      const Color(0xFF000000),
+                      fontWeight: FontWeight.w600,
                     ),
-                  ),
-                  onPressed: () => {
-                     Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const ChatSelect()),
-                    )
-                  },
-                  icon: const Icon(
-                    Icons.send_rounded,
-                  ),
-                  label: const Text(
-                    'Messages',
+                    overflow: TextOverflow.clip,
                   ),
                 ),
-                /* TextButton.icon(
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 30),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "School Id",
+                            style: montserrat,
+                          ),
+                          const SizedBox(height: 16),
+                          Text(
+                            "Student Id",
+                            style: montserrat,
+                          ),
+                          const SizedBox(height: 16),
+                          Text(
+                            "Admission Number",
+                            style: montserrat,
+                          ),
+                          const SizedBox(height: 16),
+                          Text(
+                            "Class",
+                            style: montserrat,
+                          ),
+                        ],
+                      ),
+                      const SizedBox(width: 5),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            ":${widget.schoolId.toString()}",
+                            style: montserrat,
+                          ),
+                          const SizedBox(height: 16),
+                          Text(
+                            ":${widget.studentCode.toString()}",
+                            style: montserrat,
+                          ),
+                          const SizedBox(height: 16),
+                          Text(
+                            ":${widget.admissionNo.toString()}",
+                            style: montserrat,
+                          ),
+                          const SizedBox(height: 16),
+                          Text(
+                            ":${widget.grade.toString()}${widget.division.toString()}",
+                            style: montserrat,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    // SizedBox(
+                    //     width: size.width *
+                    //         0.029),
+                    // TileLink(
+                    //   label: "Broadcast Messages",
+                    //   image: "assets/images/config.png",
+                    //   onClick: () {
+                    //     // Navigator.push(
+                    //     //   context,
+                    //     //   MaterialPageRoute(
+                    //     //       builder: (context) => const ChatSelect()),
+                    //     // );
+                    //   },
+                    // ),
+                    TextButton.icon(
+                      style: TextButton.styleFrom(
+                        textStyle: const TextStyle(color: Colors.blue),
+                        backgroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      onPressed: () => {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const ChatSelect()),
+                        )
+                      },
+                      icon: const Icon(
+                        Icons.send_rounded,
+                      ),
+                      label: const Text(
+                        'Messages',
+                      ),
+                    ),
+                    /* TextButton.icon(
                   style: TextButton.styleFrom(
                     textStyle: const TextStyle(color: Colors.blue),
                     backgroundColor: Colors.white,
@@ -269,55 +271,55 @@ class _ChildCardState extends State<ChildCard> {
                     'Attendances',
                   ),
                 ), */
-                TextButton.icon(
-                  style: TextButton.styleFrom(
-                    textStyle: const TextStyle(color: Colors.blue),
-                    backgroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
+                    TextButton.icon(
+                      style: TextButton.styleFrom(
+                        textStyle: const TextStyle(color: Colors.blue),
+                        backgroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      onPressed: () => {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const ExamsScreen()),
+                        )
+                      },
+                      icon: const Icon(
+                        Icons.history_edu,
+                      ),
+                      label: const Text(
+                        'Exams',
+                      ),
                     ),
-                  ),
-                  onPressed: () => {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const ExamsScreen()),
-                    )
-                  },
-                  icon: const Icon(
-                    Icons.history_edu,
-                  ),
-                  label: const Text(
-                    'Exams',
-                  ),
+                    // SizedBox(
+                    //     width: size.width *
+                    //         0.029), //Spacing between tile don't change
+                    // TileLink(
+                    //   label: "Exams",
+                    //   image: "assets/images/exam.png",
+                    //   onClick: () {
+                    //     Navigator.push(
+                    //       context,
+                    //       MaterialPageRoute(
+                    //           builder: (context) => const ExamsScreen()),
+                    //     );
+                    //   },
+                    // ),
+                    // SizedBox(
+                    //     width: size.width *
+                    //         0.029), //Spacing between tile don't change
+                    // SizedBox(
+                    //   width: size.width * 0.21,
+                    // ),
+                  ],
                 ),
-                // SizedBox(
-                //     width: size.width *
-                //         0.029), //Spacing between tile don't change
-                // TileLink(
-                //   label: "Exams",
-                //   image: "assets/images/exam.png",
-                //   onClick: () {
-                //     Navigator.push(
-                //       context,
-                //       MaterialPageRoute(
-                //           builder: (context) => const ExamsScreen()),
-                //     );
-                //   },
-                // ),
-                // SizedBox(
-                //     width: size.width *
-                //         0.029), //Spacing between tile don't change
-                // SizedBox(
-                //   width: size.width * 0.21,
-                // ),
               ],
             ),
-              ],
-            ),
-            SizedBox(height: size.width * 0.030),
+            SizedBox(height: size.height * 0.030),
             Container(
-              height: 50,
+              height:  size.height * 0.15,
               width: MediaQuery.of(context).size.width - 79,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(5),
@@ -325,8 +327,8 @@ class _ChildCardState extends State<ChildCard> {
               child: Row(children: [
                 Expanded(
                   child: SizedBox(
-                    height: 50,
-                    width: (MediaQuery.of(context).size.width - 80) / 7,
+                    height: 100,
+                    width: (MediaQuery.of(context).size.width - 100) / 7,
                     child: ListView.builder(
                         scrollDirection: Axis.horizontal,
                         // reverse: true,
@@ -334,7 +336,7 @@ class _ChildCardState extends State<ChildCard> {
                         shrinkWrap: true,
                         itemBuilder: (context, index) {
                           return Container(
-                            height: 50,
+                            height:  size.height * 0.30,
                             width: (MediaQuery.of(context).size.width - 80) / 7,
                             decoration: BoxDecoration(
                                 border: Border(
@@ -347,7 +349,7 @@ class _ChildCardState extends State<ChildCard> {
                             )),
                             child: Column(children: [
                               Container(
-                                height: 24,
+                                height:  size.height * 0.030,
                                 decoration: const BoxDecoration(
                                     border: Border(
                                         bottom: BorderSide(
@@ -360,6 +362,27 @@ class _ChildCardState extends State<ChildCard> {
                                   color: primaryColor,
                                   borderRadius: BorderRadius.only(
                                     bottomLeft: index == 0
+                                        ? const Radius.circular(0)
+                                        : Radius.zero,
+                                    bottomRight: index == widget.day.length - 1
+                                        ? const Radius.circular(0)
+                                        : Radius.zero,
+                                  ),
+                                ),
+                                height:size.height * 0.060,
+                                child: Center(
+                                  child: Text(
+                                    widget.date[index].toString(),
+                                    style: const TextStyle(color: Colors.white),
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                height: 24,
+                                 decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.only(
+                                    bottomLeft: index == 0
                                         ? const Radius.circular(5)
                                         : Radius.zero,
                                     bottomRight: index == widget.day.length - 1
@@ -367,40 +390,28 @@ class _ChildCardState extends State<ChildCard> {
                                         : Radius.zero,
                                   ),
                                 ),
-                                height: 25,
-                                child: Row(
-                                    children:[
-                                      
-                                Padding(
-                                  padding: const EdgeInsets.only(left:2.0,top:10.0 ),
-                                  child: Container(
-                                    width: size.width*0.025,
-                                     height: size.height*0.015,
-                                    decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(50
-                                      
-                                    ),
-                                  ),
-                                  child:const Center(
-                                    child: Text("ab",
-                                     style:  TextStyle(
-                                       color: Colors.black54,
-                                       fontSize: 8,
-                                       fontWeight: FontWeight.w900
-                                       ),
-                                    ),
-                                  ),
+                                child: Center(
+                                  child: Row(
+                                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    children: const [
+                                      Text(
+                                        "FN",
+                                        style: TextStyle(
+                                            color: Colors.green,
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.w900),
+                                      ),
+                                      Text(
+                                        "AN",
+                                        style: TextStyle(
+                                            color: Colors.redAccent,
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.w900),
+                                      ),
+                                    ],
                                   ),
                                 ),
-                                Text(
-                                  widget.date[index].toString(),
-                                  style: const TextStyle(color: Colors.white),
-                                ),
-                                  ]
-                                ),
-                                    
-                              )
+                              ),
                             ]),
                           );
                         }),
@@ -408,7 +419,7 @@ class _ChildCardState extends State<ChildCard> {
                 ),
               ]),
             ),
-            SizedBox(height: size.height * 0.030),
+            // SizedBox(height: size.height * 0.030),
           ],
         ));
   }

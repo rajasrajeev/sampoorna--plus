@@ -100,12 +100,12 @@ debugPrint("$data");
                               schoolId:childDetails[index]['school_id'],
                               imageURL:(childDetails[index]['photo_url'].toString()),
                             ),
-                            SizedBox(height: size.height * 0.030),
+                           SizedBox(height: size.height * 0.030),
                           ],
                         );
                       }),
                 ),
-               
+                
               ],
             ),
             
