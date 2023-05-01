@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../constants.dart';
+import '../main_screen/main_screen.dart';
+import '../parents/dashboard/parents_dashboard_screen.dart';
 
 class BroadcastDetail extends StatefulWidget {
   final String? studentCode;
@@ -30,8 +33,20 @@ class _BroadcastDetailState extends State<BroadcastDetail> {
     ChatMessage(
         messageContent: "k Thank you will check now", messageType: "sender"),
   ];
+    String? userType = "";
+
+  @override
+  void initState() {
+    super.initState();
+    getToken();
+  }
+    getToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    userType = prefs.getString('user_type');
+    }
   @override
   Widget build(BuildContext context) {
+     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -44,7 +59,14 @@ class _BroadcastDetailState extends State<BroadcastDetail> {
               children: <Widget>[
                 IconButton(
                   onPressed: () {
-                    Navigator.pop(context);
+                   Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => userType == "PARENT"
+                          ? const ParentsDashboardScreen()
+                          : const MainScreen(),
+                    ),
+                  );
                   },
                   icon: const Icon(
                     Icons.arrow_back,
@@ -72,8 +94,8 @@ class _BroadcastDetailState extends State<BroadcastDetail> {
                         style: const TextStyle(
                             fontSize: 16, fontWeight: FontWeight.w600),
                       ),
-                      const SizedBox(
-                        height: 6,
+                       SizedBox(
+                        height: size.height*0.003,
                       ),
                       Text(
                         "sampoorna",

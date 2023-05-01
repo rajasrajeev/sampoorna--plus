@@ -8,6 +8,7 @@ import 'package:student_management/components/tile_link.dart';
 import 'package:student_management/constants.dart';
 import 'package:student_management/screens/exams/exams.dart';
 
+import '../screens/broadcast/broadcast_detail.dart';
 import '../screens/message/chat_select.dart';
 
 class ChildCard extends StatefulWidget {
@@ -245,7 +246,10 @@ class _ChildCardState extends State<ChildCard> {
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const ChatSelect()),
+                              builder: (context) => BroadcastDetail(
+                  studentName: widget.grade+widget.division,
+                  studentCode: widget.school //Class List from dropdown
+                  )),
                         )
                       },
                       icon: const Icon(
