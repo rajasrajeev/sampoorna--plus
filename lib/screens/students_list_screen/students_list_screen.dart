@@ -98,7 +98,8 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
       setState(() {
         studentsList = data['token'];
       });
- debugPrint("==================> $studentsList");
+//       debugPrint("==================> studentsList");
+//  debugPrint("==================> $studentsList");
       //To insert Value into database
       await syncStudentsList();
     } else {
@@ -327,8 +328,18 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
                                                             BorderRadius
                                                                 .circular(15)),
                                                     alignment: Alignment.center,
-                                                    child: Image.asset(
-                                                        "assets/images/studentProfile.png")),
+                                                    child: (studentsList[index]
+                                                          ["photo_url"] ==
+                                                      null)||(studentsList[index]
+                                                          ["photo_url"] ==
+                                                      "")
+                                                  ? Image.asset(
+                                                      "assets/images/studentProfile.png")
+                                                  : Image.memory(base64Decode(
+                                                      studentsList[index]
+                                                          ["photo_url"])
+                                                          ),
+                                                 ),
                                                 const SizedBox(width: 30),
                                                 Column(
                                                   crossAxisAlignment:

@@ -35,7 +35,7 @@ class _ParentsDashboardScreenState extends State<ParentsDashboardScreen> {
     final prefs = await SharedPreferences.getInstance();
     var details = prefs.getString('childDetails');
     dynamic data = json.decode(details!);
-
+debugPrint("$data");
     setState(() {
       childDetails = data;
     });
@@ -86,19 +86,31 @@ class _ParentsDashboardScreenState extends State<ParentsDashboardScreen> {
                       itemCount: childDetails.length,
                       //shrinkWrap: true,
                       itemBuilder: (context, index) {
-                        return ChildCard(
-                          day: day,
-                          date: date,
-                          fullName: childDetails[index]['full_name'],
-                          grade: childDetails[index]['class'],
-                          division: childDetails[index]['name'],
-                          school: childDetails[index]['school_name'],
+                        return Column(
+                          children: [
+                            ChildCard(
+                              day: day,
+                              date: date,
+                              fullName: childDetails[index]['full_name'],
+                              grade: childDetails[index]['class'],
+                              division: childDetails[index]['name'],
+                              school: childDetails[index]['school_name'],
+                              studentCode:childDetails[index]['student_code'],
+                              admissionNo:childDetails[index]['admission_no'],
+                              schoolId:childDetails[index]['school_id'],
+                              imageURL:(childDetails[index]['photo_url'].toString()),
+                            ),
+                           SizedBox(height: size.height * 0.030),
+                          ],
                         );
                       }),
                 ),
+                
               ],
             ),
+            
           ),
+          
         ),
         backgroundColor: Colors.white,
       ),

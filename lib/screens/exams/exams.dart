@@ -77,6 +77,22 @@ class _ExamsScreenState extends State<ExamsScreen> {
       appBar: AppBar(
         title: const Text("Exams"),
         elevation: 0,
+        leading: InkWell(
+          onTap: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => userType == "PARENT"
+                    ? const ParentsDashboardScreen()
+                    : const MainScreen(),
+              ),
+            );
+          },
+          child: const Icon(
+            Icons.arrow_back,
+            color: Colors.white,
+          ),
+        ),
         actions: <Widget>[
           Padding(
               padding: const EdgeInsets.only(right: 20.0),
@@ -92,7 +108,7 @@ class _ExamsScreenState extends State<ExamsScreen> {
                   );
                 },
                 child: const Icon(
-                  Icons.home_filled,
+                  Icons.home,
                   size: 26.0,
                 ),
               )),

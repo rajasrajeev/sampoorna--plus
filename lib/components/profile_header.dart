@@ -36,13 +36,13 @@ class _ProfileHeaderState extends State<ProfileHeader> {
                     child: Image.asset(
                       widget.imageUrl,
                       fit: BoxFit.fill,
-                      height:size.height*0.4,
-                      width:size.width*0.4,
+                      height:100,
+                      width:100,
                     ),
                   ),
                 // Image.asset(widget.imageUrl)
                 ),
-                SizedBox(height:10),
+                const SizedBox(height:10),
             Text(widget.name),
             
             Text(widget.grade)

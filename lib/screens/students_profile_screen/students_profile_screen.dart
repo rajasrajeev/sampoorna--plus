@@ -492,13 +492,15 @@ Future<Uint8List> compressImage(List<int> imageData, int targetSizeKB) async {
                               color: Color.fromARGB(214, 242, 242, 242)),
                           child: (_selectedFile == null)
                               ? ProfileHeader(
-                                  imageUrl: (studentDetail['personal_details']
+                                  imageUrl:
+                                  (studentDetail['personal_details']['photo_url']==null||studentDetail['personal_details']['photo_url']=="")
+                                  ?((studentDetail['personal_details']
                                               ['gender'] ==
                                           "Male")
                                       ? "assets/images/boy.png"
-                                      : "assets/images/girl.png",
-                                  name: studentDetail['personal_details']
-                                      ['full_name'],
+                                      : "assets/images/girl.png")
+                                      : (base64Decode(studentDetail['personal_details']['photo_url']).toString()),
+                                        name: studentDetail['personal_details']['full_name'],
                                   grade: studentDetail['current_details']
                                           ['class'] +
                                       studentDetail['current_details']

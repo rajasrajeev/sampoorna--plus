@@ -185,7 +185,7 @@ class _IndividualAttendanceScreenState
       top: true,
       child: Scaffold(
         key: key,
-        appBar: AppBar(title: const Text("Profile")),
+        appBar: AppBar(title: const Text("Individual Attendance")),
         body: Column(
           // ignore: prefer_const_literals_to_create_immutables
           children: <Widget>[
@@ -222,8 +222,9 @@ class _IndividualAttendanceScreenState
                               child: Padding(
                                   padding: const EdgeInsets.all(10),
                                   child: Row(
+                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
-                                      const SizedBox(width: 30),
+                                      //const SizedBox(width: 30),
                                       SizedBox(
                                         width: 90,
                                         height: 40,
@@ -237,7 +238,7 @@ class _IndividualAttendanceScreenState
                                           attendanceDates[index]["absent_FN"],
                                           "FN",
                                           attendanceDates[index]["marked"]),
-                                      const SizedBox(width: 5),
+                                     // const SizedBox(width: 5),
                                       forenoonOrAfternoon(
                                           attendanceDates[index]["absent_AN"],
                                           'AN',
