@@ -171,7 +171,7 @@ Future getDivisionList(payload) async {
 Future parentLogin(data) async {
   final prefs = await SharedPreferences.getInstance();
   final response = await http.post(
-    Uri.parse('$parentApiUrl/parentLogin/format/json/'),
+    Uri.parse('$parentApiUrl/SampoornaParent/parentLogin/format/json/'),
     body: data,
   );
   if (response.statusCode == 200) {
@@ -231,8 +231,9 @@ Future parentRegistration(data, token) async {
 }
 
 //API TO POST LOGIN
-Future lastWeekAttendance(data, token) async {
-  // final prefs = await SharedPreferences.getInstance();
+Future lastWeekAttendance(data) async {
+  final prefs = await SharedPreferences.getInstance();
+  var token = await prefs.getString('token');
   final response = await http.post(
     Uri.parse(
         '$parentApiUrl/SampoornaParent/parentLastWeekAttendence/format/json/'),
@@ -242,8 +243,6 @@ Future lastWeekAttendance(data, token) async {
       // 'Content-type': 'application/json'
     },
   );
-  if (response.statusCode == 200) {
-  } else {}
   return response;
 }
 

@@ -247,9 +247,10 @@ class _ChildCardState extends State<ChildCard> {
                           context,
                           MaterialPageRoute(
                               builder: (context) => BroadcastDetail(
-                  studentName: widget.grade+widget.division,
-                  studentCode: widget.school //Class List from dropdown
-                  )),
+                                  studentName: widget.grade + widget.division,
+                                  studentCode:
+                                      widget.school //Class List from dropdown
+                                  )),
                         )
                       },
                       icon: const Icon(
@@ -323,7 +324,7 @@ class _ChildCardState extends State<ChildCard> {
             ),
             SizedBox(height: size.height * 0.030),
             Container(
-              height:  size.height * 0.15,
+              height: size.height * 0.15,
               width: MediaQuery.of(context).size.width - 79,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(5),
@@ -340,7 +341,7 @@ class _ChildCardState extends State<ChildCard> {
                         shrinkWrap: true,
                         itemBuilder: (context, index) {
                           return Container(
-                            height:  size.height * 0.30,
+                            height: size.height * 0.30,
                             width: (MediaQuery.of(context).size.width - 80) / 7,
                             decoration: BoxDecoration(
                                 border: Border(
@@ -353,7 +354,7 @@ class _ChildCardState extends State<ChildCard> {
                             )),
                             child: Column(children: [
                               Container(
-                                height:  size.height * 0.030,
+                                height: size.height * 0.030,
                                 decoration: const BoxDecoration(
                                     border: Border(
                                         bottom: BorderSide(
@@ -373,7 +374,7 @@ class _ChildCardState extends State<ChildCard> {
                                         : Radius.zero,
                                   ),
                                 ),
-                                height:size.height * 0.060,
+                                height: size.height * 0.070,
                                 child: Center(
                                   child: Text(
                                     widget.date[index].toString(),
@@ -382,8 +383,8 @@ class _ChildCardState extends State<ChildCard> {
                                 ),
                               ),
                               Container(
-                                height: 24,
-                                 decoration: BoxDecoration(
+                                height: 25,
+                                decoration: BoxDecoration(
                                   color: Colors.white,
                                   borderRadius: BorderRadius.only(
                                     bottomLeft: index == 0
@@ -396,7 +397,8 @@ class _ChildCardState extends State<ChildCard> {
                                 ),
                                 child: Center(
                                   child: Row(
-                                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
                                     children: const [
                                       Text(
                                         "FN",

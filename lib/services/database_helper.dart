@@ -21,6 +21,7 @@ class DatabaseHelper {
   static final schoolID = 'school_id';
   static final batchName = 'batch_name';
   static final batchId = 'batch_id';
+  static final photoUrl = 'photo_url';
 
   DatabaseHelper._privateConstructor();
   static final DatabaseHelper instance = DatabaseHelper._privateConstructor();
@@ -51,7 +52,7 @@ class DatabaseHelper {
         $schoolID TEXT NOT NULL,
         $studentCode TEXT NOT NULL UNIQUE,
         $batchId TEXT NOT NULL,
-        $batchName TEXT)''');
+        $batchName TEXT, $photoUrl TEXT)''');
   }
 
   Future<int> insertStudent(Map<String, dynamic> row) async {

@@ -129,6 +129,7 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
           "school_id": studentsList[i]['school_id'],
           "batch_name": studentsList[i]['batch_name'],
           "batch_id": dropdownvalue,
+          "photo_url": studentsList[i]['photo_url']
         });
       } catch (e) {
         continue;
@@ -321,25 +322,27 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
                                             child: Row(
                                               children: [
                                                 Container(
-                                                    width: 70,
-                                                    height: 70,
-                                                    decoration: BoxDecoration(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(15)),
-                                                    alignment: Alignment.center,
-                                                    child: (studentsList[index]
-                                                          ["photo_url"] ==
-                                                      null)||(studentsList[index]
-                                                          ["photo_url"] ==
-                                                      "")
-                                                  ? Image.asset(
-                                                      "assets/images/studentProfile.png")
-                                                  : Image.memory(base64Decode(
-                                                      studentsList[index]
-                                                          ["photo_url"])
-                                                          ),
-                                                 ),
+                                                  width: 70,
+                                                  height: 70,
+                                                  decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              15)),
+                                                  alignment: Alignment.center,
+                                                  child: (studentsList[index][
+                                                                  "photo_url"] ==
+                                                              null) ||
+                                                          (studentsList[index][
+                                                                  "photo_url"] ==
+                                                              "")
+                                                      ? Image.asset(
+                                                          "assets/images/studentProfile.png")
+                                                      : Image.memory(
+                                                          base64Decode(
+                                                              studentsList[
+                                                                      index][
+                                                                  "photo_url"])),
+                                                ),
                                                 const SizedBox(width: 30),
                                                 Column(
                                                   crossAxisAlignment:
