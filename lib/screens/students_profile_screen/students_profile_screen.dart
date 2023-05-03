@@ -51,6 +51,9 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
 
   getStudentDetails() async {
     final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _inProcess = true;
+    });
 
     showDialog(
         // The user CANNOT close this dialog  by pressing outsite it
@@ -83,21 +86,23 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
     if (res.statusCode == 200) {
       //await Future.delayed(const Duration(seconds: 3));
       Navigator.of(context).pop();
+
       // print("-=-===-=-=-=-=-=-=---=> ${responseData['data']}");
       var data = parseJwtAndSave(responseData['data']);
       // print(data);
       setState(() {
         studentDetail = data;
-        if(studentDetail['personal_details']==null){
+
+        if (studentDetail['personal_details'] == null) {
           _inProcess = true;
         }
-         _inProcess = false;
+        _inProcess = false;
       });
       debugPrint("==================> $studentDetail");
     } else {
-       setState(() {
-      _inProcess = true;
-    });
+      setState(() {
+        _inProcess = false;
+      });
       Navigator.of(context).pop();
       Fluttertoast.showToast(
         msg: "Unable to Sync Students List Now",
@@ -170,8 +175,8 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
       if (cropped != null) {
         final File newFile = File(cropped.path);
         final bytes = await newFile.readAsBytes();
-       // final compressedImage = await compressImage(bytes, targetSizeKB);
-       // final compressedImage = await compressImage(bytes, 30, 150, 200);
+        // final compressedImage = await compressImage(bytes, targetSizeKB);
+        // final compressedImage = await compressImage(bytes, 30, 150, 200);
         final compressedImage = await compressImage(bytes, 30);
         final compressedSize = compressedImage.length;
         debugPrint("********");
@@ -186,16 +191,16 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
         //  tempFile = await File('${tempDir.path}/temp.jpg').create();
         // await tempFile!.writeAsBytes(compressedImage);
 
-          // Resize the image to 150x200 pixels
+        // Resize the image to 150x200 pixels
 
-    //   final resizedImage = img.copyResize(image, width: 150, height: 200);
-    // final resizedWidth = resizedImage.width;
-    // final resizedHeight = resizedImage.height;
-    // debugPrint('Resized image width: $resizedWidth');
-    // debugPrint('Resized image height: $resizedHeight');
-    // var compressedImageData = img.encodeJpg(resizedImage, quality: 100);
-    // var size = compressedImageData.length;
-    // debugPrint('Resized image size: $size bytes');
+        //   final resizedImage = img.copyResize(image, width: 150, height: 200);
+        // final resizedWidth = resizedImage.width;
+        // final resizedHeight = resizedImage.height;
+        // debugPrint('Resized image width: $resizedWidth');
+        // debugPrint('Resized image height: $resizedHeight');
+        // var compressedImageData = img.encodeJpg(resizedImage, quality: 100);
+        // var size = compressedImageData.length;
+        // debugPrint('Resized image size: $size bytes');
 
         base64Image = base64.encode(compressedImage);
         setState(() {
@@ -271,7 +276,7 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
 
   //   debugPrint("***** ***** $size ******");
   //   while (size > maxFileSizeB && quality > 10) {
-  //     image = img.copyResize(image, width: 150, height: 200); 
+  //     image = img.copyResize(image, width: 150, height: 200);
   //     quality = (quality - (quality * 0.1)).toInt();
   //     compressedImageData = img.encodeJpg(image, quality: quality);
   //   }
@@ -330,7 +335,6 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
 //     return Uint8List.fromList(compressedImageData);
 // }
 
-
 //*******Don't Delete this code *******//
 
 // Future<Uint8List> compressImage(List<int> imageData, int targetSizeKB) async {
@@ -376,45 +380,47 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
 //   return Uint8List.fromList(compressedImageData);
 // }
 
-Future<Uint8List> compressImage(List<int> imageData, int targetSizeKB) async {
-  // converted to list
-  var image = img.decodeImage(imageData.toList())!;
+  Future<Uint8List> compressImage(List<int> imageData, int targetSizeKB) async {
+    // converted to list
+    var image = img.decodeImage(imageData.toList())!;
 
-  // resize image to 150 x 200
-  image = img.copyResize(image, width: 150, height: 200);
+    // resize image to 150 x 200
+    image = img.copyResize(image, width: 150, height: 200);
 
-  // encode to jpg with 100% quality
-  var quality = 100;
-  var compressedImageData = img.encodeJpg(image, quality: quality);
-
-  // find current image size
-  int size = compressedImageData.length;
-
-  while (size > (targetSizeKB * 1024) && quality > 10) {
-    // reduce image quality by 10%
-    quality -= 10;
-
-    compressedImageData = img.encodeJpg(image, quality: quality);
+    // encode to jpg with 100% quality
+    var quality = 100;
+    var compressedImageData = img.encodeJpg(image, quality: quality);
 
     // find current image size
-    int ts = compressedImageData.length;
-    debugPrint("***** while ***** $ts ******");
+    int size = compressedImageData.length;
+
+    while (size > (targetSizeKB * 1024) && quality > 10) {
+      // reduce image quality by 10%
+      quality -= 10;
+
+      compressedImageData = img.encodeJpg(image, quality: quality);
+
+      // find current image size
+      int ts = compressedImageData.length;
+      debugPrint("***** while ***** $ts ******");
+    }
+
+    return Uint8List.fromList(compressedImageData);
   }
 
-  return Uint8List.fromList(compressedImageData);
-}
-Future<File> base64ToFile(String base64Data, String filePath) async {
-  List<int> bytes = base64Decode(base64Data);
-  File file = File(filePath);
-  await file.writeAsBytes(bytes);
-  return file;
-}
-  Future<dynamic> imageupload() async {
-String base64Data =base64Image;
-final directory = await getApplicationDocumentsDirectory();
-final filePath = '${directory.path}/temps.jpg';
+  Future<File> base64ToFile(String base64Data, String filePath) async {
+    List<int> bytes = base64Decode(base64Data);
+    File file = File(filePath);
+    await file.writeAsBytes(bytes);
+    return file;
+  }
 
-File file = await base64ToFile(base64Data, filePath);
+  Future<dynamic> imageupload() async {
+    String base64Data = base64Image;
+    final directory = await getApplicationDocumentsDirectory();
+    final filePath = '${directory.path}/temps.jpg';
+
+    File file = await base64ToFile(base64Data, filePath);
     dynamic dataToSubmit = {
       "image_data": file,
       "student_code": widget.studentCode,
@@ -426,13 +432,13 @@ File file = await base64ToFile(base64Data, filePath);
     debugPrint((res).toString());
 //res.statusCode=200;
     if (res.statusCode == 200) {
-     // final responseData = jsonDecode(res.body);
-    //  debugPrint("***********responsedata message********");
+      // final responseData = jsonDecode(res.body);
+      //  debugPrint("***********responsedata message********");
       //debugPrint(responseData["message"].toString());
       //Navigator.pop(context);
       Fluttertoast.showToast(
         //msg: "Image Uploaded Succesfully",
-        msg:"Image Uploaded Succesfully",
+        msg: "Image Uploaded Succesfully",
         gravity: ToastGravity.TOP,
         timeInSecForIosWeb: 10,
         backgroundColor: Colors.green,
@@ -441,7 +447,7 @@ File file = await base64ToFile(base64Data, filePath);
       );
     } else if (res.statusCode == 202) {
       final responseData = jsonDecode(res.body);
-     // Navigator.pop(context);
+      // Navigator.pop(context);
       Fluttertoast.showToast(
         msg: responseData["message"],
         gravity: ToastGravity.TOP,
@@ -496,333 +502,342 @@ File file = await base64ToFile(base64Data, filePath);
         ),
         body: Stack(
           children: [
-            SingleChildScrollView(
-              child: Column(
-                children: <Widget>[
-                  Stack(
-                    children: [
-                      ClipPath(
-                        clipper: CurveImage(),
-                        child: Container(
-                          width: size.width,
-                          decoration: const BoxDecoration(
-                              color: Color.fromARGB(214, 242, 242, 242)),
-                          child: (_selectedFile == null)
-                              ? ProfileHeader(
-                                  imageUrl:
-                                  (studentDetail['personal_details']['photo_url']==null||studentDetail['personal_details']['photo_url']=="")
-                                  ?((studentDetail['personal_details']
-                                              ['gender'] ==
-                                          "Male")
-                                      ? "assets/images/boy.png"
-                                      : "assets/images/girl.png")
-                                      : (base64Decode(studentDetail['personal_details']['photo_url']).toString()),
-                                        name: studentDetail['personal_details']['full_name'],
-                                  grade: studentDetail['current_details']
-                                          ['class'] +
-                                      studentDetail['current_details']
-                                          ['division'])
-                              : ProfileHeaderImageFile(
-                                  imageUrl: _selectedFile!,
-                                  name: studentDetail['personal_details']
-                                      ['full_name'].toString(),
-                                  grade: studentDetail['current_details']
-                                          ['class'].toString() +
-                                      studentDetail['current_details']
-                                          ['division'].toString()),
-                          //   : Image.file(_selectedFile!, width: targetWidth, height: targetHeight, fit: BoxFit.cover),
-                        ),
-                      ),
-                      Positioned(
-                          bottom: 20,
-                          right: 20,
-                          child: IconButton(
-                            onPressed: () {
-                              showModalBottomSheet(
-                                  context: context,
-                                  builder: ((builder) => bottosmheet(context)));
-                              //  Navigator.push(
-                              //             context,
-                              //             MaterialPageRoute(
-                              //                 builder: (context) =>
-                              //                    ProfilePicturePicker(source: ImageSource.gallery)
-                              //                             ),
-                              //           );
-                            },
-                            icon: const Icon(Icons.camera_alt),
-                          )),
-                    ],
-                  ),
-                  SizedBox(height: size.height * 0.05),
-                  Center(
-                    child: Column(
-                      children: <Widget>[
-                        ProfileDetails(
-                            title: "Full Name",
-                            value: studentDetail['personal_details']
-                                    ['full_name']
-                                .toString()),
-                        ProfileDetails(
-                            title: "Admission No",
-                            value: studentDetail['personal_details']
-                                    ['admission_no']
-                                .toString()),
-                        ProfileDetails(
-                            title: "Gender",
-                            value: studentDetail['personal_details']['gender']
-                                .toString()),
-                        ProfileDetails(
-                            title: "School Name",
-                            value: studentDetail['personal_details']
-                                    ['school_name']
-                                .toString()),
-                        ProfileDetails(
-                            title: "Student Code",
-                            value: studentDetail['personal_details']
-                                    ['student_code']
-                                .toString()),
-                        ProfileDetails(
-                            title: "Nationality",
-                            value: studentDetail['personal_details']
-                                    ['nationality']
-                                .toString()),
-                        ProfileDetails(
-                            title: ("Hostelite"), //.toUpperCase(),
-                            value: studentDetail['personal_details']
-                                    ['hostelite']
-                                .toString()),
-                        SizedBox(height: size.height * 0.05),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.all(size.height * 0.03),
-                              child: Text(
-                                ("parent details").toUpperCase(),
-                              ),
-                            ),
-                          ],
-                        ),
-                        const Divider(
-                          height: 10,
-                          thickness: 1,
-                          indent: 20,
-                          endIndent: 20,
-                          color: Colors.grey,
-                        ),
-                        SizedBox(height: size.height * 0.05),
-                        ProfileDetails(
-                            title: ("Mothers Name"), //.toUpperCase(),
-                            value: studentDetail['parent_details']
-                                    ['mother_full_name']
-                                .toString()),
-                        ProfileDetails(
-                            title: ("Fathers Name"), //.toUpperCase(),
-                            value: studentDetail['parent_details']
-                                    ['father_full_name']
-                                .toString()),
-                        ProfileDetails(
-                            title: ("Guardian Name"), //.toUpperCase(),
-                            value: studentDetail['parent_details']
-                                    ['guardian_name']
-                                .toString()),
-                        ProfileDetails(
-                            title: ("Guardian Relation"), //.toUpperCase(),
-                            value: studentDetail['parent_details']
-                                    ['guardian_relation'] ??
-                                "No Data Available"),
-                        ProfileDetails(
-                            title: ("Guardian Occupation"), //.toUpperCase(),
-                            value: studentDetail['parent_details']
-                                    ['guardian_occupation'] ??
-                                "No Data Available"),
-                        ProfileDetails(
-                            title: ("Guardian Income"), //.toUpperCase(),
-                            value: studentDetail['parent_details']
-                                    ['guardian_income'] ??
-                                "No Data Available"),
-                        ProfileDetails(
-                            title: ("APL/BPL").toUpperCase(),
-                            value: studentDetail['parent_details']['apl']),
-                        SizedBox(height: size.height * 0.05),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.all(size.height * 0.03),
-                              child: Text(
-                                ("current details").toUpperCase(),
-                              ),
-                            ),
-                          ],
-                        ),
-                        const Divider(
-                          height: 10,
-                          thickness: 1,
-                          indent: 20,
-                          endIndent: 20,
-                          color: Colors.grey,
-                        ),
-                        SizedBox(height: size.height * 0.05),
-                        ProfileDetails(
-                            title: ("Class"), //.toUpperCase(),
-                            value: studentDetail['current_details']['class']
-                                .toString()),
-                        ProfileDetails(
-                            title: ("Division"), //.toUpperCase(),
-                            value: studentDetail['current_details']['division']
-                                .toString()),
-                        ProfileDetails(
-                            title: ("Physically Challenged"), //.toUpperCase(),
-                            value: studentDetail['current_details']
-                                    ['physical_challenge']
-                                .toString()),
-                        ProfileDetails(
-                            title: ("Medium Name"), //.toUpperCase(),
-                            value: studentDetail['current_details']
-                                    ['medium_name']
-                                .toString()),
-                        ProfileDetails(
-                            title: ("First Language "), //.toUpperCase(),
-                            value: studentDetail['current_details']
-                                    ['first_language']
-                                .toString()),
-                        ProfileDetails(
-                            title: ("Second Language"), //.toUpperCase(),
-                            value: studentDetail['current_details']
-                                    ['second_language']
-                                .toString()),
-                        ProfileDetails(
-                            title: ("Third Language"), //.toUpperCase(),
-                            value: studentDetail['current_details']
-                                    ['third_language']
-                                .toString()),
-                        ProfileDetails(
-                            title: ("Additional Language"), //.toUpperCase(),
-                            value: studentDetail['current_details']
-                                    ['additional_language']
-                                .toString()),
-                        ProfileDetails(
-                            title: ("Midday Meal"), //.toUpperCase(),
-                            value: studentDetail['current_details']
-                                    ['middaymeal']
-                                .toString()),
-                        SizedBox(height: size.height * 0.05),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.all(size.height * 0.03),
-                              child: Text(
-                                ("vaccination details").toUpperCase(),
-                              ),
-                            ),
-                          ],
-                        ),
-                        const Divider(
-                          height: 10,
-                          thickness: 1,
-                          indent: 20,
-                          endIndent: 20,
-                          color: Colors.grey,
-                        ),
-                        SizedBox(height: size.height * 0.05),
-                        ProfileDetails(
-                            title: ("Vaccinated"), //.toUpperCase(),
-                            value: studentDetail['vaccination_details']
-                                    ['vaccinated']
-                                .toString()),
-                        SizedBox(height: size.height * 0.05),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.all(size.height * 0.03),
-                              child: Text(
-                                ("additional details").toUpperCase(),
-                              ),
-                            ),
-                          ],
-                        ),
-                        const Divider(
-                          height: 10,
-                          thickness: 1,
-                          indent: 20,
-                          endIndent: 20,
-                          color: Colors.grey,
-                        ),
-                        SizedBox(height: size.height * 0.05),
-                        ProfileDetails(
-                            title: ("Mother Tongue"), //.toUpperCase(),
-                            value: studentDetail['additional_details']
-                                    ['mother_tongue']
-                                .toString()),
-                        ProfileDetails(
-                            title: ("Homeless"), //.toUpperCase(),
-                            value: studentDetail['additional_details']
-                                    ['homeless']
-                                .toString()),
-                        ProfileDetails(
-                            title: ("Habitation"), //.toUpperCase(),
-                            value: studentDetail['additional_details']
-                                    ['habitation']
-                                .toString()),
-                        ProfileDetails(
-                            title: ("Uniform Sets"), //.toUpperCase(),
-                            value: studentDetail['additional_details']
-                                    ['uniform_sets']
-                                .toString()),
-                        ProfileDetails(
-                            title: ("free texts").toUpperCase(),
-                            value: studentDetail['additional_details']
-                                    ['free_texts']
-                                .toString()),
-                        ProfileDetails(
-                            title: ("Transport"), //.toUpperCase(),
-                            value: studentDetail['additional_details']
-                                    ['transport']
-                                .toString()),
-                        ProfileDetails(
-                            title: ("Escort"), //.toUpperCase(),
-                            value: studentDetail['additional_details']['escort']
-                                .toString()),
-                        ProfileDetails(
-                            title: ("Hostel Facility"), //.toUpperCase(),
-                            value: studentDetail['additional_details']
-                                    ['hostel_facility']
-                                .toString()),
-                        ProfileDetails(
-                            title: ("Special Facility"), //.toUpperCase(),
-                            value: studentDetail['additional_details']
-                                    ['special_facility']
-                                .toString()),
-                        ProfileDetails(
-                            title: ("Identification Mark 1"), //.toUpperCase(),
-                            value: studentDetail['additional_details']
-                                    ['identification_mark_1'] ??
-                                "No Data Available"),
-                        ProfileDetails(
-                            title: ("Identification Mark 2"), //.toUpperCase(),
-                            value: studentDetail['additional_details']
-                                    ['identification_mark_2'] ??
-                                "No Data Available"),
-                        SizedBox(height: size.height * 0.05),
-                        SizedBox(height: size.height * 0.05),
-                      ],
-                    ),
-                  ),
-                  const Center()
-                ],
-              ),
-            ),
-            (_inProcess)
+            (_inProcess || studentDetail == null)
                 ? SizedBox(
                     height: MediaQuery.of(context).size.height * 0.95,
                     child: const Center(
                       child: CircularProgressIndicator(color: primaryColor),
                     ),
                   )
-                : Container()
+                : SingleChildScrollView(
+                    child: Column(
+                      children: <Widget>[
+                        Stack(
+                          children: [
+                            ClipPath(
+                              clipper: CurveImage(),
+                              child: Container(
+                                width: size.width,
+                                decoration: const BoxDecoration(
+                                    color: Color.fromARGB(214, 242, 242, 242)),
+                                child: (_selectedFile == null)
+                                    ? ProfileHeader(
+                                        imageUrl: (studentDetail['personal_details']['photo_url'] == null ||
+                                                studentDetail['personal_details']
+                                                        ['photo_url'] ==
+                                                    "")
+                                            ? ((studentDetail['personal_details']['gender'] == "Male")
+                                                ? "assets/images/boy.png"
+                                                : "assets/images/girl.png")
+                                            : (base64Decode(studentDetail['personal_details']['photo_url'])
+                                                .toString()),
+                                        name: studentDetail['personal_details']
+                                            ['full_name'],
+                                        grade: studentDetail['current_details']
+                                                ['class'] +
+                                            studentDetail['current_details']
+                                                ['division'])
+                                    : ProfileHeaderImageFile(
+                                        imageUrl: _selectedFile!,
+                                        name: studentDetail['personal_details']['full_name'].toString(),
+                                        grade: studentDetail['current_details']['class'].toString() + studentDetail['current_details']['division'].toString()),
+                                //   : Image.file(_selectedFile!, width: targetWidth, height: targetHeight, fit: BoxFit.cover),
+                              ),
+                            ),
+                            Positioned(
+                                bottom: 20,
+                                right: 20,
+                                child: IconButton(
+                                  onPressed: () {
+                                    showModalBottomSheet(
+                                        context: context,
+                                        builder: ((builder) =>
+                                            bottosmheet(context)));
+                                    //  Navigator.push(
+                                    //             context,
+                                    //             MaterialPageRoute(
+                                    //                 builder: (context) =>
+                                    //                    ProfilePicturePicker(source: ImageSource.gallery)
+                                    //                             ),
+                                    //           );
+                                  },
+                                  icon: const Icon(Icons.camera_alt),
+                                )),
+                          ],
+                        ),
+                        SizedBox(height: size.height * 0.05),
+                        Center(
+                          child: Column(
+                            children: <Widget>[
+                              ProfileDetails(
+                                  title: "Full Name",
+                                  value: studentDetail['personal_details']
+                                          ['full_name']
+                                      .toString()),
+                              ProfileDetails(
+                                  title: "Admission No",
+                                  value: studentDetail['personal_details']
+                                          ['admission_no']
+                                      .toString()),
+                              ProfileDetails(
+                                  title: "Gender",
+                                  value: studentDetail['personal_details']
+                                          ['gender']
+                                      .toString()),
+                              ProfileDetails(
+                                  title: "School Name",
+                                  value: studentDetail['personal_details']
+                                          ['school_name']
+                                      .toString()),
+                              ProfileDetails(
+                                  title: "Student Code",
+                                  value: studentDetail['personal_details']
+                                          ['student_code']
+                                      .toString()),
+                              ProfileDetails(
+                                  title: "Nationality",
+                                  value: studentDetail['personal_details']
+                                          ['nationality']
+                                      .toString()),
+                              ProfileDetails(
+                                  title: ("Hostelite"), //.toUpperCase(),
+                                  value: studentDetail['personal_details']
+                                          ['hostelite']
+                                      .toString()),
+                              SizedBox(height: size.height * 0.05),
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.all(size.height * 0.03),
+                                    child: Text(
+                                      ("parent details").toUpperCase(),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const Divider(
+                                height: 10,
+                                thickness: 1,
+                                indent: 20,
+                                endIndent: 20,
+                                color: Colors.grey,
+                              ),
+                              SizedBox(height: size.height * 0.05),
+                              ProfileDetails(
+                                  title: ("Mothers Name"), //.toUpperCase(),
+                                  value: studentDetail['parent_details']
+                                          ['mother_full_name']
+                                      .toString()),
+                              ProfileDetails(
+                                  title: ("Fathers Name"), //.toUpperCase(),
+                                  value: studentDetail['parent_details']
+                                          ['father_full_name']
+                                      .toString()),
+                              ProfileDetails(
+                                  title: ("Guardian Name"), //.toUpperCase(),
+                                  value: studentDetail['parent_details']
+                                          ['guardian_name']
+                                      .toString()),
+                              ProfileDetails(
+                                  title:
+                                      ("Guardian Relation"), //.toUpperCase(),
+                                  value: studentDetail['parent_details']
+                                          ['guardian_relation'] ??
+                                      "No Data Available"),
+                              ProfileDetails(
+                                  title:
+                                      ("Guardian Occupation"), //.toUpperCase(),
+                                  value: studentDetail['parent_details']
+                                          ['guardian_occupation'] ??
+                                      "No Data Available"),
+                              ProfileDetails(
+                                  title: ("Guardian Income"), //.toUpperCase(),
+                                  value: studentDetail['parent_details']
+                                          ['guardian_income'] ??
+                                      "No Data Available"),
+                              ProfileDetails(
+                                  title: ("APL/BPL").toUpperCase(),
+                                  value: studentDetail['parent_details']
+                                      ['apl']),
+                              SizedBox(height: size.height * 0.05),
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.all(size.height * 0.03),
+                                    child: Text(
+                                      ("current details").toUpperCase(),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const Divider(
+                                height: 10,
+                                thickness: 1,
+                                indent: 20,
+                                endIndent: 20,
+                                color: Colors.grey,
+                              ),
+                              SizedBox(height: size.height * 0.05),
+                              ProfileDetails(
+                                  title: ("Class"), //.toUpperCase(),
+                                  value: studentDetail['current_details']
+                                          ['class']
+                                      .toString()),
+                              ProfileDetails(
+                                  title: ("Division"), //.toUpperCase(),
+                                  value: studentDetail['current_details']
+                                          ['division']
+                                      .toString()),
+                              ProfileDetails(
+                                  title:
+                                      ("Physically Challenged"), //.toUpperCase(),
+                                  value: studentDetail['current_details']
+                                          ['physical_challenge']
+                                      .toString()),
+                              ProfileDetails(
+                                  title: ("Medium Name"), //.toUpperCase(),
+                                  value: studentDetail['current_details']
+                                          ['medium_name']
+                                      .toString()),
+                              ProfileDetails(
+                                  title: ("First Language "), //.toUpperCase(),
+                                  value: studentDetail['current_details']
+                                          ['first_language']
+                                      .toString()),
+                              ProfileDetails(
+                                  title: ("Second Language"), //.toUpperCase(),
+                                  value: studentDetail['current_details']
+                                          ['second_language']
+                                      .toString()),
+                              ProfileDetails(
+                                  title: ("Third Language"), //.toUpperCase(),
+                                  value: studentDetail['current_details']
+                                          ['third_language']
+                                      .toString()),
+                              ProfileDetails(
+                                  title:
+                                      ("Additional Language"), //.toUpperCase(),
+                                  value: studentDetail['current_details']
+                                          ['additional_language']
+                                      .toString()),
+                              ProfileDetails(
+                                  title: ("Midday Meal"), //.toUpperCase(),
+                                  value: studentDetail['current_details']
+                                          ['middaymeal']
+                                      .toString()),
+                              SizedBox(height: size.height * 0.05),
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.all(size.height * 0.03),
+                                    child: Text(
+                                      ("vaccination details").toUpperCase(),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const Divider(
+                                height: 10,
+                                thickness: 1,
+                                indent: 20,
+                                endIndent: 20,
+                                color: Colors.grey,
+                              ),
+                              SizedBox(height: size.height * 0.05),
+                              ProfileDetails(
+                                  title: ("Vaccinated"), //.toUpperCase(),
+                                  value: studentDetail['vaccination_details']
+                                          ['vaccinated']
+                                      .toString()),
+                              SizedBox(height: size.height * 0.05),
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.all(size.height * 0.03),
+                                    child: Text(
+                                      ("additional details").toUpperCase(),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const Divider(
+                                height: 10,
+                                thickness: 1,
+                                indent: 20,
+                                endIndent: 20,
+                                color: Colors.grey,
+                              ),
+                              SizedBox(height: size.height * 0.05),
+                              ProfileDetails(
+                                  title: ("Mother Tongue"), //.toUpperCase(),
+                                  value: studentDetail['additional_details']
+                                          ['mother_tongue']
+                                      .toString()),
+                              ProfileDetails(
+                                  title: ("Homeless"), //.toUpperCase(),
+                                  value: studentDetail['additional_details']
+                                          ['homeless']
+                                      .toString()),
+                              ProfileDetails(
+                                  title: ("Habitation"), //.toUpperCase(),
+                                  value: studentDetail['additional_details']
+                                          ['habitation']
+                                      .toString()),
+                              ProfileDetails(
+                                  title: ("Uniform Sets"), //.toUpperCase(),
+                                  value: studentDetail['additional_details']
+                                          ['uniform_sets']
+                                      .toString()),
+                              ProfileDetails(
+                                  title: ("free texts").toUpperCase(),
+                                  value: studentDetail['additional_details']
+                                          ['free_texts']
+                                      .toString()),
+                              ProfileDetails(
+                                  title: ("Transport"), //.toUpperCase(),
+                                  value: studentDetail['additional_details']
+                                          ['transport']
+                                      .toString()),
+                              ProfileDetails(
+                                  title: ("Escort"), //.toUpperCase(),
+                                  value: studentDetail['additional_details']
+                                          ['escort']
+                                      .toString()),
+                              ProfileDetails(
+                                  title: ("Hostel Facility"), //.toUpperCase(),
+                                  value: studentDetail['additional_details']
+                                          ['hostel_facility']
+                                      .toString()),
+                              ProfileDetails(
+                                  title: ("Special Facility"), //.toUpperCase(),
+                                  value: studentDetail['additional_details']
+                                          ['special_facility']
+                                      .toString()),
+                              ProfileDetails(
+                                  title:
+                                      ("Identification Mark 1"), //.toUpperCase(),
+                                  value: studentDetail['additional_details']
+                                          ['identification_mark_1'] ??
+                                      "No Data Available"),
+                              ProfileDetails(
+                                  title:
+                                      ("Identification Mark 2"), //.toUpperCase(),
+                                  value: studentDetail['additional_details']
+                                          ['identification_mark_2'] ??
+                                      "No Data Available"),
+                              SizedBox(height: size.height * 0.05),
+                              SizedBox(height: size.height * 0.05),
+                            ],
+                          ),
+                        ),
+                        const Center()
+                      ],
+                    ),
+                  )
           ],
         ),
         backgroundColor: Colors.white,
