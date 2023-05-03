@@ -428,10 +428,10 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
       "student_code": widget.studentCode,
     };
     var studencode=widget.studentCode;
-    final res = await uploadPhoto(compressedImage,studencode!);
+    final res = await uploadPhoto(file,studencode!);
     //var responsedata = parseJwtAndSave(res);
     debugPrint("***********responsedata");
-    debugPrint((res).toString());
+    debugPrint("$res");
 //res.statusCode=200;
     if (res.statusCode == 200) {
       // final responseData = jsonDecode(res.body);
