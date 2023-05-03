@@ -38,6 +38,7 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
   final GlobalKey<ScaffoldState> key = GlobalKey();
 
   dynamic base64Image;
+  dynamic compressedImage;
   dynamic studentDetail;
   Uint8List? _selectedFile;
   bool _inProcess = false;
@@ -177,7 +178,7 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
         final bytes = await newFile.readAsBytes();
         // final compressedImage = await compressImage(bytes, targetSizeKB);
         // final compressedImage = await compressImage(bytes, 30, 150, 200);
-        final compressedImage = await compressImage(bytes, 30);
+        compressedImage = await compressImage(bytes, 30);
         final compressedSize = compressedImage.length;
         debugPrint("********");
         debugPrint('Compressed image size: $compressedSize bytes');
@@ -380,7 +381,7 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
 //   return Uint8List.fromList(compressedImageData);
 // }
 
-  Future<Uint8List> compressImage(List<int> imageData, int targetSizeKB) async {
+  Future<List<int>> compressImage(List<int> imageData, int targetSizeKB) async {
     // converted to list
     var image = img.decodeImage(imageData.toList())!;
 
@@ -405,7 +406,8 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
       debugPrint("***** while ***** $ts ******");
     }
 
-    return Uint8List.fromList(compressedImageData);
+    //return Uint8List.fromList(compressedImageData);
+     return compressedImageData;
   }
 
   Future<File> base64ToFile(String base64Data, String filePath) async {
@@ -422,11 +424,11 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
 
     File file = await base64ToFile(base64Data, filePath);
     dynamic dataToSubmit = {
-      "image_data": file,
+      "image_data": compressedImage,
       "student_code": widget.studentCode,
     };
-
-    final res = await uploadPhoto(dataToSubmit);
+    var studencode=widget.studentCode;
+    final res = await uploadPhoto(compressedImage,studencode!);
     //var responsedata = parseJwtAndSave(res);
     debugPrint("***********responsedata");
     debugPrint((res).toString());

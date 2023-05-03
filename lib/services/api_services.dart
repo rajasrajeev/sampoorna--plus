@@ -264,20 +264,54 @@ Future individualAttendanceForStudent(data, token) async {
 }
 
 //API TO UPLOAD IMAGE
-Future uploadPhoto(payload) async {
+// Future uploadPhoto(payload) async {
+//   final prefs = await SharedPreferences.getInstance();
+//   var token = await prefs.getString('token');
+//   debugPrint(
+//       "**************Image upload function called************************");
+
+//   final response = await http.post(
+//       Uri.parse('$apiUrl/SampoornaApp/upload_image_sampoorna/format/json/'),
+//       headers: {
+//         'Authorization': 'Bearer $token',
+//         'Content-type': 'application/json'
+//       },
+//       body: json.encode(payload));
+//   return response;
+// }
+
+Future uploadPhoto(List<int> imageBytes, String studentCode) async {
+  
   final prefs = await SharedPreferences.getInstance();
   var token = await prefs.getString('token');
-  debugPrint(
-      "**************Image upload function called************************");
 
-  final response = await http.post(
-      Uri.parse('$apiUrl/SampoornaApp/upload_image_sampoorna/format/json/'),
-      headers: {
-        'Authorization': 'Bearer $token',
-        'Content-type': 'application/json'
-      },
-      body: json.encode(payload));
-  return response;
+  try {
+    var request = http.MultipartRequest('POST', Uri.parse('$apiUrl/SampoornaApp/upload_image_sampoorna/format/json/'));
+    
+    request.headers.addAll({
+      "Authorization": 'Bearer $token'
+    });
+    
+    request.files.add(
+      http.MultipartFile.fromBytes(
+        'image_data',
+        imageBytes,
+        filename: "dummy.jpg"
+      )
+    );
+        
+    request.fields['student_code'] = studentCode;
+    
+
+    
+    final response = await request.send();
+    return response;
+  
+  } catch (e) {
+    debugPrint("************exception*********");
+    debugPrint(e.toString());
+  }
+  
 }
 
 Future getWebViewURL() async {
