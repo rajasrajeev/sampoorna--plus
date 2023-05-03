@@ -12,7 +12,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:student_management/components/profile_details.dart';
 import 'package:student_management/components/profile_header.dart';
-import 'package:student_management/components/profile_picture_picker.dart';
 import 'package:student_management/constants.dart';
 import 'package:student_management/screens/main_screen/main_screen.dart';
 import 'package:student_management/services/api_services.dart';
@@ -89,9 +88,16 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
       // print(data);
       setState(() {
         studentDetail = data;
+        if(studentDetail['personal_details']==null){
+          _inProcess = true;
+        }
+         _inProcess = false;
       });
       debugPrint("==================> $studentDetail");
     } else {
+       setState(() {
+      _inProcess = true;
+    });
       Navigator.of(context).pop();
       Fluttertoast.showToast(
         msg: "Unable to Sync Students List Now",
@@ -397,9 +403,20 @@ Future<Uint8List> compressImage(List<int> imageData, int targetSizeKB) async {
 
   return Uint8List.fromList(compressedImageData);
 }
+Future<File> base64ToFile(String base64Data, String filePath) async {
+  List<int> bytes = base64Decode(base64Data);
+  File file = File(filePath);
+  await file.writeAsBytes(bytes);
+  return file;
+}
   Future<dynamic> imageupload() async {
+String base64Data =base64Image;
+final directory = await getApplicationDocumentsDirectory();
+final filePath = '${directory.path}/temps.jpg';
+
+File file = await base64ToFile(base64Data, filePath);
     dynamic dataToSubmit = {
-      "image_data": base64Image,
+      "image_data": file,
       "student_code": widget.studentCode,
     };
 
@@ -508,11 +525,11 @@ Future<Uint8List> compressImage(List<int> imageData, int targetSizeKB) async {
                               : ProfileHeaderImageFile(
                                   imageUrl: _selectedFile!,
                                   name: studentDetail['personal_details']
-                                      ['full_name'],
+                                      ['full_name'].toString(),
                                   grade: studentDetail['current_details']
-                                          ['class'] +
+                                          ['class'].toString() +
                                       studentDetail['current_details']
-                                          ['division']),
+                                          ['division'].toString()),
                           //   : Image.file(_selectedFile!, width: targetWidth, height: targetHeight, fit: BoxFit.cover),
                         ),
                       ),
