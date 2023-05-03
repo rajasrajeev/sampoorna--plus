@@ -11,7 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 Future postLogin(data) async {
   final prefs = await SharedPreferences.getInstance();
   final response = await http.post(
-    Uri.parse('$apiUrl/authenticateUser/format/json'),
+    Uri.parse('$apiUrl/SampoornaApp/authenticateUser/format/json'),
     body: data,
   );
   if (response.statusCode == 200) {
@@ -37,7 +37,7 @@ Future studentList(data) async {
   final prefs = await SharedPreferences.getInstance();
   var token = prefs.getString('token');
   final response = await http.post(
-    Uri.parse('$apiUrl/student_list_all/format/json/'),
+    Uri.parse('$apiUrl/SampoornaApp/student_list_all/format/json/'),
     headers: {
       'Authorization': 'Bearer $token',
     },
@@ -50,12 +50,14 @@ Future studentList(data) async {
 Future studentDetails(studentCode) async {
   final prefs = await SharedPreferences.getInstance();
   var token = prefs.getString('token');
-  final response = await http
-      .post(Uri.parse('$apiUrl/getStudentDetailsById/format/json/'), headers: {
-    'Authorization': 'Bearer $token',
-  }, body: {
-    "studentCode": studentCode
-  });
+  final response = await http.post(
+      Uri.parse('$apiUrl/SampoornaApp/getStudentDetailsById/format/json/'),
+      headers: {
+        'Authorization': 'Bearer $token',
+      },
+      body: {
+        "studentCode": studentCode
+      });
   return response;
 }
 
@@ -63,12 +65,14 @@ Future studentDetails(studentCode) async {
 Future teacherProfile(user_id) async {
   final prefs = await SharedPreferences.getInstance();
   var token = prefs.getString('token');
-  final response = await http
-      .post(Uri.parse('$apiUrl/teacherProfileById/format/json/'), headers: {
-    'Authorization': 'Bearer $token',
-  }, body: {
-    "user_id": user_id
-  });
+  final response = await http.post(
+      Uri.parse('$apiUrl/SampoornaApp/teacherProfileById/format/json/'),
+      headers: {
+        'Authorization': 'Bearer $token',
+      },
+      body: {
+        "user_id": user_id
+      });
   return response;
 }
 
@@ -76,15 +80,17 @@ Future teacherProfile(user_id) async {
 Future attendanceBetweenDates(date1, date2, school_id, batch_id) async {
   final prefs = await SharedPreferences.getInstance();
   var token = prefs.getString('token');
-  final response = await http
-      .post(Uri.parse('$apiUrl/attendenceCountByDates/format/json/'), headers: {
-    'Authorization': 'Bearer $token',
-  }, body: {
-    "date1": date1,
-    "date2": date2,
-    "school_id": school_id,
-    "batch_id": batch_id
-  });
+  final response = await http.post(
+      Uri.parse('$apiUrl/SampoornaApp/attendenceCountByDates/format/json/'),
+      headers: {
+        'Authorization': 'Bearer $token',
+      },
+      body: {
+        "date1": date1,
+        "date2": date2,
+        "school_id": school_id,
+        "batch_id": batch_id
+      });
   return response;
 }
 
@@ -92,14 +98,16 @@ Future attendanceBetweenDates(date1, date2, school_id, batch_id) async {
 Future attendanceOnDate(date, school_id, batch_id) async {
   final prefs = await SharedPreferences.getInstance();
   var token = prefs.getString('token');
-  final response = await http
-      .post(Uri.parse('$apiUrl/student_list_absentee/format/json/'), headers: {
-    'Authorization': 'Bearer $token',
-  }, body: {
-    "date": date,
-    "school_id": school_id,
-    "batch_id": batch_id
-  });
+  final response = await http.post(
+      Uri.parse('$apiUrl/SampoornaApp/student_list_absentee/format/json/'),
+      headers: {
+        'Authorization': 'Bearer $token',
+      },
+      body: {
+        "date": date,
+        "school_id": school_id,
+        "batch_id": batch_id
+      });
 
   return response;
 }
@@ -108,7 +116,35 @@ Future attendanceOnDate(date, school_id, batch_id) async {
 Future addAttendance(payload) async {
   final prefs = await SharedPreferences.getInstance();
   var token = await prefs.getString('token');
-  final response = await http.post(Uri.parse('$apiUrl/entry_form/format/json/'),
+  final response = await http.post(
+      Uri.parse('$apiUrl/SampoornaApp/entry_form/format/json/'),
+      headers: {
+        'Authorization': 'Bearer $token',
+        'Content-type': 'application/json'
+      },
+      body: json.encode(payload));
+  return response;
+}
+
+Future broadcastGet(payload) async {
+  final prefs = await SharedPreferences.getInstance();
+  var token = await prefs.getString('token');
+  final response = await http.post(
+      Uri.parse(
+          '$apiUrl/Broadcast/get_broadcast_messages_by_sender/format/json/'),
+      headers: {
+        'Authorization': 'Bearer $token',
+        'Content-type': 'application/json'
+      },
+      body: json.encode(payload));
+  return response;
+}
+
+Future broadcastSend(payload) async {
+  final prefs = await SharedPreferences.getInstance();
+  var token = await prefs.getString('token');
+  final response = await http.post(
+      Uri.parse('$apiUrl/Broadcast/broadcast_save/format/json/'),
       headers: {
         'Authorization': 'Bearer $token',
         'Content-type': 'application/json'
@@ -121,13 +157,13 @@ Future addAttendance(payload) async {
 Future getDivisionList(payload) async {
   final prefs = await SharedPreferences.getInstance();
   var token = await prefs.getString('token');
-  final response =
-      await http.post(Uri.parse('$apiUrl/getBatchesofSchool/format/json/'),
-          headers: {
-            'Authorization': 'Bearer $token',
-            // 'Content-type': 'application/json'
-          },
-          body: payload);
+  final response = await http.post(
+      Uri.parse('$apiUrl/SampoornaApp/getBatchesofSchool/format/json/'),
+      headers: {
+        'Authorization': 'Bearer $token',
+        // 'Content-type': 'application/json'
+      },
+      body: payload);
   return response;
 }
 
@@ -155,7 +191,7 @@ Future parentLogin(data) async {
 Future sendOTP(data) async {
   final prefs = await SharedPreferences.getInstance();
   final response = await http.post(
-      Uri.parse('$parentApiUrl/authenticateOTP/format/json/'),
+      Uri.parse('$parentApiUrl/SampoornaParent/authenticateOTP/format/json/'),
       body: data);
   if (response.statusCode == 200) {
   } else {}
@@ -166,7 +202,7 @@ Future sendOTP(data) async {
 Future validateOTP(data, token) async {
   // final prefs = await SharedPreferences.getInstance();
   final response = await http.post(
-    Uri.parse('$parentApiUrl/OTPValidation/format/json/'),
+    Uri.parse('$parentApiUrl/SampoornaParent/OTPValidation/format/json/'),
     body: data,
     headers: {
       'Authorization': 'Bearer $token',
@@ -182,7 +218,7 @@ Future validateOTP(data, token) async {
 Future parentRegistration(data, token) async {
   // final prefs = await SharedPreferences.getInstance();
   final response = await http.post(
-    Uri.parse('$parentApiUrl/ParentRegistration/format/json/'),
+    Uri.parse('$parentApiUrl/SampoornaParent/ParentRegistration/format/json/'),
     body: data,
     headers: {
       'Authorization': 'Bearer $token',
@@ -198,7 +234,8 @@ Future parentRegistration(data, token) async {
 Future lastWeekAttendance(data, token) async {
   // final prefs = await SharedPreferences.getInstance();
   final response = await http.post(
-    Uri.parse('$parentApiUrl/parentLastWeekAttendence/format/json/'),
+    Uri.parse(
+        '$parentApiUrl/SampoornaParent/parentLastWeekAttendence/format/json/'),
     body: data,
     headers: {
       'authorization': 'Bearer $token',
@@ -214,7 +251,8 @@ Future lastWeekAttendance(data, token) async {
 Future individualAttendanceForStudent(data, token) async {
   // final prefs = await SharedPreferences.getInstance();
   final response = await http.post(
-    Uri.parse('$parentApiUrl/parentStudentAbsenteeIndividual/format/json/'),
+    Uri.parse(
+        '$parentApiUrl/SampoornaParent/parentStudentAbsenteeIndividual/format/json/'),
     body: data,
     headers: {
       'authorization': 'Bearer $token',
@@ -234,7 +272,7 @@ Future uploadPhoto(payload) async {
       "**************Image upload function called************************");
 
   final response = await http.post(
-      Uri.parse('$apiUrl/upload_image_sampoorna/format/json/'),
+      Uri.parse('$apiUrl/SampoornaApp/upload_image_sampoorna/format/json/'),
       headers: {
         'Authorization': 'Bearer $token',
         'Content-type': 'application/json'
@@ -245,7 +283,7 @@ Future uploadPhoto(payload) async {
 
 Future getWebViewURL() async {
   final response = await http.post(
-      Uri.parse('$apiUrl/getwebviewURL/format/json/'),
+      Uri.parse('$apiUrl/SampoornaApp/getwebviewURL/format/json/'),
       headers: {},
       body: {});
 

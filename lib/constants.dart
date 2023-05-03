@@ -7,6 +7,6 @@ const secondaryColor = Color.fromRGBO(231, 45, 12, 0.693);
 const cardColor = Color(0xFFE6E6FA);
 
 //base api
-const apiUrl = "https://sampoornaapi.kite.kerala.gov.in/index.php/SampoornaApp";
+const apiUrl = "https://sampoornaapi.kite.kerala.gov.in/index.php";
 const parentApiUrl =
-    "https://sampoornaapi.kite.kerala.gov.in/index.php/SampoornaParent";
+    "https://sampoornaapi.kite.kerala.gov.in/index.php";
