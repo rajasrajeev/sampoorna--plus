@@ -156,7 +156,7 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
     try {
       CroppedFile? cropped = await ImageCropper().cropImage(
         sourcePath: image.path,
-        aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
+        aspectRatio: const CropAspectRatio(ratioX: 3, ratioY: 4),
         compressQuality: quality,
         // maxWidth: 800,
         // maxHeight: 800,
@@ -338,7 +338,7 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
 
 //*******Don't Delete this code *******//
 
-// Future<Uint8List> compressImage(List<int> imageData, int targetSizeKB) async {
+// Future<List<int>> compressImage(List<int> imageData, int targetSizeKB) async {
 //   // converted to list
 //   var image = img.decodeImage(imageData.toList())!;
 
@@ -377,8 +377,8 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
 //       size = compressedImageData.length;
 //     }
 //   }
-
-//   return Uint8List.fromList(compressedImageData);
+// return compressedImageData;
+// //  return Uint8List.fromList(compressedImageData);
 // }
 
   Future<List<int>> compressImage(List<int> imageData, int targetSizeKB) async {
@@ -394,16 +394,17 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
 
     // find current image size
     int size = compressedImageData.length;
-
-    while (size > (targetSizeKB * 1024) && quality > 10) {
+    debugPrint("CompressedImage Size *************$size");
+    debugPrint("CompressedImage targetSizeKB *************${targetSizeKB * 1024}");
+    while (size > 30000 && quality > 30) {
       // reduce image quality by 10%
-      quality -= 10;
+      quality -= 3;
 
       compressedImageData = img.encodeJpg(image, quality: quality);
 
       // find current image size
-      int ts = compressedImageData.length;
-      debugPrint("***** while ***** $ts ******");
+      size = compressedImageData.length;
+      debugPrint("***** while ***** $size ******");
     }
 
     //return Uint8List.fromList(compressedImageData);
