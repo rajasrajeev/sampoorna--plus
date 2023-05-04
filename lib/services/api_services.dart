@@ -324,7 +324,8 @@ Future uploadPhoto(File imageFile, String studentCode) async {
   stream.cast();
 
   var length = await imageFile.length();
-
+debugPrint("**API image Length*** $length");
+debugPrint("**API image image format*** ${imageFile.path.split('/').last}");
   var multipartFile = http.MultipartFile(
     'image_data', 
     stream, 

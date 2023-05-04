@@ -419,15 +419,19 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
   }
 
   Future<dynamic> imageupload() async {
-    String base64Data = base64Image;
+   // String base64Data = base64Image;
     final directory = await getApplicationDocumentsDirectory();
     final filePath = '${directory.path}/temps.jpg';
 
-    File file = await base64ToFile(base64Data, filePath);
-    dynamic dataToSubmit = {
-      "image_data": compressedImage,
-      "student_code": widget.studentCode,
-    };
+    //File file = await base64ToFile(base64Data, filePath);
+    
+    File files = File(filePath);
+    
+    File file =await files.writeAsBytes(compressedImage);
+    // dynamic dataToSubmit = {
+    //   "image_data": compressedImage,
+    //   "student_code": widget.studentCode,
+    // };
     var studencode=widget.studentCode;
     final res = await uploadPhoto(file,studencode!);
     //var responsedata = parseJwtAndSave(res);
