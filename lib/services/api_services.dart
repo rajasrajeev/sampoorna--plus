@@ -235,6 +235,7 @@ Future parentRegistration(data, token) async {
 
 //API TO POST LOGIN
 Future lastWeekAttendance(data) async {
+  debugPrint("***Lastweek API*");
   final prefs = await SharedPreferences.getInstance();
   var token = await prefs.getString('token');
   final response = await http.post(
@@ -318,30 +319,17 @@ Future<File> changeFileNameOnly(File file, String newFileName) {
 Future uploadPhoto(File imageFile, String studentCode) async {
   final prefs = await SharedPreferences.getInstance();
   var token = prefs.getString('token');
-debugPrint("**uploadPhoto API ***");
+
   http.MultipartRequest request = http.MultipartRequest("POST", Uri.parse('$apiUrl/SampoornaApp/upload_image_sampoorna/format/json/'));
 
   Map<String, String> headers = {
-    'Content-Type': 'multipart/form-data',
     'Authorization': 'Bearer $token'
   };
 
-   var stream = http.ByteStream(imageFile.openRead());
-  stream.cast();
-
-  var length = await imageFile.length();
-  //var newName=await changeFileNameOnly(imageFile,studentCode);
-  //imageFile=await changeFileNameOnly(imageFile,'$studentCode.jpg');
-  //debugPrint("**API image Name*** $newName");
-debugPrint("**API image Length*** $length");
-debugPrint("**API image image format*** ${imageFile.path.split('/').last}");
-  var multipartFile = http.MultipartFile(
+  request.files.add(await http.MultipartFile.fromPath(
     'image_data', 
-    stream, 
-    length,
-    filename: imageFile.path.split('/').last);
-
-  request.files.add(multipartFile);
+    imageFile.path,
+    contentType: MediaType('image', 'jpeg')));
 
   request.headers.addAll(headers);
 
