@@ -182,9 +182,14 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
 
         final File newFile = File(cropped.path);
         final bytes = await newFile.readAsBytes();
-
-        //compressedImage = await compressImage(bytes, 30);
-        compressedImage=bytes;
+        if(bytes.length<30000){
+          compressedImage=bytes;
+        }
+        else{
+            compressedImage = await compressImage(bytes, 30);
+        }
+       
+        
         final compressedSize = compressedImage.length;
 
         debugPrint("********");
@@ -265,7 +270,8 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
 // //  return Uint8List.fromList(compressedImageData);
 // }
 
-  Future<List<int>> compressImage(List<int> imageData, int targetSizeKB) async {
+  Future<List<int>> compressImage(List<int> imageData, int targetSizeKB) async {  
+    debugPrint("List Size *************${imageData.length}");
     // converted to list
     var image = img.decodeImage(imageData.toList())!;
 
@@ -274,22 +280,22 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
 
     // encode to jpg with 100% quality
     var quality = 100;
-    var compressedImageData = img.encodeJpg(image, quality: quality);
+    var compressedImageData = img.encodeJpg(image,quality: quality);
 
     // find current image size
     int size = compressedImageData.length;
     debugPrint("CompressedImage Size *************$size");
-    debugPrint("CompressedImage targetSizeKB *************${targetSizeKB * 1024}");
-    // while (size > 30000 && quality > 30) {
-    //   // reduce image quality by 10%
-    //   quality -= 3;
+   // debugPrint("CompressedImage targetSizeKB *************${targetSizeKB * 1024}");
+    while (size > 30000 && quality > 50) {
+      // reduce image quality by 10%
+      quality -= 1;
 
-    //   compressedImageData = img.encodeJpg(image, quality: quality);
+      compressedImageData = img.encodeJpg(image, quality: quality);
 
-    //   // find current image size
-    //   size = compressedImageData.length;
-    //   debugPrint("***** while ***** $size ******");
-    // }
+      // find current image size
+      size = compressedImageData.length;
+      debugPrint("***** while ***** $size ******");
+    }
 
     //return Uint8List.fromList(compressedImageData);
      return compressedImageData;
@@ -315,8 +321,9 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
     debugPrint("$res");
 
     if (res.statusCode == 200) {
+      final responseData = jsonDecode(res.body);
       Fluttertoast.showToast(
-        msg: "Image Uploaded Succesfully",
+        msg: responseData["message"],
         gravity: ToastGravity.TOP,
         timeInSecForIosWeb: 10,
         backgroundColor: Colors.green,
