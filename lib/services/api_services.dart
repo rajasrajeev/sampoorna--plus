@@ -309,6 +309,12 @@ Future individualAttendanceForStudent(data, token) async {
 //     debugPrint(e.toString());
 //   }
 // }
+Future<File> changeFileNameOnly(File file, String newFileName) {
+  var path = file.path;
+  var lastSeparator = path.lastIndexOf(Platform.pathSeparator);
+  var newPath = path.substring(0, lastSeparator + 1) + newFileName;
+  return file.rename(newPath);
+}
 Future uploadPhoto(File imageFile, String studentCode) async {
   final prefs = await SharedPreferences.getInstance();
   var token = prefs.getString('token');
@@ -324,6 +330,9 @@ debugPrint("**uploadPhoto API ***");
   stream.cast();
 
   var length = await imageFile.length();
+  //var newName=await changeFileNameOnly(imageFile,studentCode);
+  //imageFile=await changeFileNameOnly(imageFile,'$studentCode.jpg');
+  //debugPrint("**API image Name*** $newName");
 debugPrint("**API image Length*** $length");
 debugPrint("**API image image format*** ${imageFile.path.split('/').last}");
   var multipartFile = http.MultipartFile(

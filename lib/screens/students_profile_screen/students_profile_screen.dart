@@ -142,25 +142,29 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
     }
   }
 
-  getImage(ImageSource source) async {
+ getImage(ImageSource source) async {
     setState(() {
       _inProcess = true;
     });
+
     XFile? image = await ImagePicker().pickImage(source: source);
+
     if (image == null) {
       setState(() {
         _inProcess = false;
       });
       return;
     }
+
     try {
+
       CroppedFile? cropped = await ImageCropper().cropImage(
+
         sourcePath: image.path,
         aspectRatio: const CropAspectRatio(ratioX: 3, ratioY: 4),
         compressQuality: quality,
-        // maxWidth: 800,
-        // maxHeight: 800,
         compressFormat: ImageCompressFormat.jpg,
+
         uiSettings: [
           AndroidUiSettings(
             toolbarTitle: 'Cropper',
@@ -173,52 +177,40 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
           WebUiSettings(context: context),
         ],
       );
+
       if (cropped != null) {
+
         final File newFile = File(cropped.path);
         final bytes = await newFile.readAsBytes();
-        // final compressedImage = await compressImage(bytes, targetSizeKB);
-        // final compressedImage = await compressImage(bytes, 30, 150, 200);
-        compressedImage = await compressImage(bytes, 30);
+
+        //compressedImage = await compressImage(bytes, 30);
+        compressedImage=bytes;
         final compressedSize = compressedImage.length;
+
         debugPrint("********");
         debugPrint('Compressed image size: $compressedSize bytes');
-        final image = img.decodeImage(compressedImage)!;
-        final width = image.width;
-        final height = image.height;
-        debugPrint('Image width: $width');
-        debugPrint('Image height: $height');
-
-        // final tempDir = await getTemporaryDirectory();
-        //  tempFile = await File('${tempDir.path}/temp.jpg').create();
-        // await tempFile!.writeAsBytes(compressedImage);
-
-        // Resize the image to 150x200 pixels
-
-        //   final resizedImage = img.copyResize(image, width: 150, height: 200);
-        // final resizedWidth = resizedImage.width;
-        // final resizedHeight = resizedImage.height;
-        // debugPrint('Resized image width: $resizedWidth');
-        // debugPrint('Resized image height: $resizedHeight');
-        // var compressedImageData = img.encodeJpg(resizedImage, quality: 100);
-        // var size = compressedImageData.length;
-        // debugPrint('Resized image size: $size bytes');
+       final image = img.decodeImage(compressedImage)!;
+       final width = image.width;
+       final height = image.height;
+       debugPrint('Image width: $width');
+       debugPrint('Image height: $height');
 
         base64Image = base64.encode(compressedImage);
+
         setState(() {
           _selectedFile = base64Decode(base64Image);
-          //  _selectedFile =File.fromRawPath(Uint8List.fromList(compressedImage));
-          // _selectedFile = tempFile;
-          // _selectedFile = newFile ;
           _inProcess = false;
         });
-        imageupload();
+
+        imageupload(base64Image);
       } else {
         setState(() {
           _inProcess = false;
         });
       }
+
     } catch (e) {
-      // Handle error
+      
       setState(() {
         _inProcess = false;
       });
@@ -288,54 +280,42 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
     int size = compressedImageData.length;
     debugPrint("CompressedImage Size *************$size");
     debugPrint("CompressedImage targetSizeKB *************${targetSizeKB * 1024}");
-    while (size > 30000 && quality > 30) {
-      // reduce image quality by 10%
-      quality -= 3;
+    // while (size > 30000 && quality > 30) {
+    //   // reduce image quality by 10%
+    //   quality -= 3;
 
-      compressedImageData = img.encodeJpg(image, quality: quality);
+    //   compressedImageData = img.encodeJpg(image, quality: quality);
 
-      // find current image size
-      size = compressedImageData.length;
-      debugPrint("***** while ***** $size ******");
-    }
+    //   // find current image size
+    //   size = compressedImageData.length;
+    //   debugPrint("***** while ***** $size ******");
+    // }
 
     //return Uint8List.fromList(compressedImageData);
      return compressedImageData;
   }
 
-  // Future<File> base64ToFile(String base64Data, String filePath) async {
-  //   List<int> bytes = base64Decode(base64Data);
-  //   File file = File(filePath);
-  //   await file.writeAsBytes(bytes);
-  //   return file;
-  // }
+  Future<File> base64ToFile(String base64Data, String filePath) async {
+    List<int> bytes = base64Decode(base64Data);
+    File file = File(filePath);
+    await file.writeAsBytes(bytes);
+    return file;
+  }
 
-  Future<dynamic> imageupload() async {
-   // String base64Data = base64Image;
-   // final directory = await getApplicationDocumentsDirectory();
-   // final filePath = '${directory.path}/temps.jpg';
-    //File file = await base64ToFile(base64Data, filePath);
-    //File files = File(filePath);
-    //File file =await files.writeAsBytes(compressedImage);
-    // dynamic dataToSubmit = {
-    //   "image_data": compressedImage,
-    //   "student_code": widget.studentCode,
-    // };
-    File file =compressedImage;
- debugPrint("***********responsedata");
-    var studencode=widget.studentCode;
-    final res = await uploadPhoto(file,studencode!);
-    //var responsedata = parseJwtAndSave(res);
+  Future<dynamic> imageupload(dynamic base64Image) async {
+
+    final directory = await getApplicationDocumentsDirectory();
+    final filePath = '${directory.path}/temps.jpg';
+    File file = await base64ToFile(base64Image, filePath);
+    
+    var studencode = widget.studentCode;
+    final res = await uploadPhoto(file, studencode!);
+
     debugPrint("***********responsedata");
     debugPrint("$res");
-//res.statusCode=200;
+
     if (res.statusCode == 200) {
-      // final responseData = jsonDecode(res.body);
-      //  debugPrint("***********responsedata message********");
-      //debugPrint(responseData["message"].toString());
-      //Navigator.pop(context);
       Fluttertoast.showToast(
-        //msg: "Image Uploaded Succesfully",
         msg: "Image Uploaded Succesfully",
         gravity: ToastGravity.TOP,
         timeInSecForIosWeb: 10,
@@ -343,9 +323,9 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
         textColor: Colors.white,
         fontSize: 15.0,
       );
+
     } else if (res.statusCode == 202) {
       final responseData = jsonDecode(res.body);
-      // Navigator.pop(context);
       Fluttertoast.showToast(
         msg: responseData["message"],
         gravity: ToastGravity.TOP,
@@ -354,9 +334,8 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
         textColor: Colors.white,
         fontSize: 15.0,
       );
+
     } else {
-      // ignore: use_build_context_synchronously
-      //Navigator.pop(context);
       Fluttertoast.showToast(
         msg: "Something went wrong!!!",
         gravity: ToastGravity.TOP,
@@ -364,6 +343,7 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
         backgroundColor: Colors.red,
         textColor: Colors.white,
         fontSize: 15.0,
+
       );
     }
   }
