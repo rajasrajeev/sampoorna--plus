@@ -45,6 +45,7 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
   File? tempFile;
   @override
   void initState() {
+    // ignore: todo
     // TODO: implement initState
     getStudentDetails();
     super.initState();
@@ -99,7 +100,7 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
         }
         _inProcess = false;
       });
-      debugPrint("==================> $studentDetail");
+    //  debugPrint("==================> $studentDetail");
     } else {
       setState(() {
         _inProcess = false;
@@ -194,11 +195,11 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
 
         debugPrint("********");
         debugPrint('Compressed image size: $compressedSize bytes');
-       final image = img.decodeImage(compressedImage)!;
-       final width = image.width;
-       final height = image.height;
-       debugPrint('Image width: $width');
-       debugPrint('Image height: $height');
+      // final image = img.decodeImage(compressedImage)!;
+      //  final width = image.width;
+      //  final height = image.height;
+      //  debugPrint('Image width: $width');
+      //  debugPrint('Image height: $height');
 
         base64Image = base64.encode(compressedImage);
 
@@ -225,51 +226,6 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
 
 
 
-//*******Don't Delete this code *******//
-
-// Future<List<int>> compressImage(List<int> imageData, int targetSizeKB) async {
-//   // converted to list
-//   var image = img.decodeImage(imageData.toList())!;
-
-//   // encode to jpg with 100% quality
-//   var quality = 100;
-//   var compressedImageData = img.encodeJpg(image, quality: quality);
-
-//   // find current image size
-//   int size = compressedImageData.length;
-
-//   debugPrint("***** ***** $size ******");
-//   while (size > targetSizeKB * 1024 && quality > 10) {
-//     // reduce image quality by 10%
-//     quality -= 10;
-//     compressedImageData = img.encodeJpg(image, quality: quality);
-
-//     // find current image size
-//     size = compressedImageData.length;
-//   }
-
-//   // resize image if it is still larger than target size
-//   if (size > targetSizeKB * 1024) {
-//     image = img.copyResize(image, width: 150, height: 200);
-//     quality = 100;
-//     compressedImageData = img.encodeJpg(image, quality: quality);
-
-//     // find current image size
-//     size = compressedImageData.length;
-
-//     while (size > targetSizeKB * 1024 && quality > 10) {
-//       // reduce image quality by 10%
-//       quality -= 10;
-//       compressedImageData = img.encodeJpg(image, quality: quality);
-
-//       // find current image size
-//       size = compressedImageData.length;
-//     }
-//   }
-// return compressedImageData;
-// //  return Uint8List.fromList(compressedImageData);
-// }
-
   Future<List<int>> compressImage(List<int> imageData, int targetSizeKB) async {  
     debugPrint("List Size *************${imageData.length}");
     // converted to list
@@ -284,7 +240,7 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
 
     // find current image size
     int size = compressedImageData.length;
-    debugPrint("CompressedImage Size *************$size");
+    //debugPrint("CompressedImage Size *************$size");
    // debugPrint("CompressedImage targetSizeKB *************${targetSizeKB * 1024}");
     while (size > 30000 && quality > 50) {
       // reduce image quality by 10%
@@ -317,8 +273,8 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
     var studencode = widget.studentCode;
     final res = await uploadPhoto(file, studencode!);
 
-    debugPrint("***********responsedata");
-    debugPrint("$res");
+    //debugPrint("***********responsedata");
+   //debugPrint("$res");
 
     if (res.statusCode == 200) {
       final responseData = jsonDecode(res.body);
