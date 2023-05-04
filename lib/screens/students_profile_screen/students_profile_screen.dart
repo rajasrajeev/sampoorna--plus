@@ -226,115 +226,7 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
     }
   }
 
-  // Future<Uint8List> compressImage(List<int> imageData, int maxFileSizeKB) async {
-  //      bool imagevalid=true;
-  //   var image = img.decodeImage(imageData.toList())!;
-  //   var quality = 90;
-  //   var compressedImageData = img.encodeJpg(image, quality: quality);
-  //   // if(compressedImageData.length < minFileSizeB){
-  //   //    imagevalid=false;
-  //   //   Fluttertoast.showToast(
-  //   //     msg: " lessthan 20 kb!!!",
-  //   //     gravity: ToastGravity.TOP,
-  //   //     timeInSecForIosWeb: 1,
-  //   //     backgroundColor: Colors.red,
-  //   //     textColor: Colors.white,
-  //   //     fontSize: 15.0,
-  //   //   );
 
-  //   // }
-  //   // while ((compressedImageData.length > maxFileSizeB) ) {
-  //   //   // if(compressedImageData.length < minFileSizeB){
-  //   //   //   break;
-  //   //   // }
-  //   //   // image = img.copyResize(image,
-  //   //   //     width: image.width ~/ 2, height: image.height ~/ 2);
-  //   //   compressedImageData = img.encodeJpg(image, quality: quality);
-
-  //   // }
-  //     while (compressedImageData.length > 30000) {
-  //   quality -= 10;
-  //   compressedImageData = img.encodeJpg(image, quality: quality);
-  // }
-  // while (compressedImageData.length < 20000) {
-  //   quality += 5;
-  //   compressedImageData = img.encodeJpg(image, quality: quality);
-  // }
-  //   return Uint8List.fromList(compressedImageData);
-  // }
-
-  // Future<Uint8List> compressImage(
-  //     List<int> imageData, int maxFileSizeKB) async {
-  //   // converted to list
-  //   var image = img.decodeImage(imageData.toList())!;
-
-  //   // encode to jpg with 100% quality
-  //   var quality = 100;
-  //   var compressedImageData = img.encodeJpg(image, quality: quality);
-
-  //   // find current image size
-  //   int size = await compressedImageData.length;
-
-  //   debugPrint("***** ***** $size ******");
-  //   while (size > maxFileSizeB && quality > 10) {
-  //     image = img.copyResize(image, width: 150, height: 200);
-  //     quality = (quality - (quality * 0.1)).toInt();
-  //     compressedImageData = img.encodeJpg(image, quality: quality);
-  //   }
-
-  //   return Uint8List.fromList(compressedImageData);
-  // }
-
-//   Future<Uint8List> compressImage(
-//   List<int> imageData, int targetSizeKB, int targetWidth, int targetHeight) async {
-
-//   // decode the image
-//   var image = img.decodeImage(imageData.toList())!;
-
-//   // resize the image to the target width and height
-//   image = img.copyResize(image, width: targetWidth, height: targetHeight);
-
-//   // encode to jpg with 100% quality
-//   var quality = 100;
-//   var compressedImageData = img.encodeJpg(image, quality: quality);
-
-//   // find current image size
-//   int size = await compressedImageData.length;
-
-//   debugPrint("***** ***** $size ******");
-
-//   // reduce the quality until the target size is reached
-//   while (size > targetSizeKB * 1024 && quality > 10) {
-//     quality = (quality - (quality * 0.1)).toInt();
-//     compressedImageData = img.encodeJpg(image, quality: quality);
-//     size = compressedImageData.length;
-//   }
-
-//   return Uint8List.fromList(compressedImageData);
-// }
-
-// Future<Uint8List> compressImage(
-//   List<int> imageData, int targetSizeKB) async {
-//     var image = img.decodeImage(imageData.toList())!;
-//     var quality = 100;
-//     var compressedImageData = img.encodeJpg(image, quality: quality);
-//     int size = compressedImageData.length;
-
-//     debugPrint("***** ***** $size ******");
-//     while (size > targetSizeKB * 1024 && quality > 10) {
-//       image = img.copyResize(image, width: 150, height: 200);
-//       quality = (quality - (quality * 0.1)).toInt();
-//       compressedImageData = img.encodeJpg(image, quality: quality);
-//       size = compressedImageData.length;
-//     }
-//     while (size < targetSizeKB * 1024 && quality <= 100) {
-//       quality = (quality + (quality * 0.1)).toInt();
-//       compressedImageData = img.encodeJpg(image, quality: quality);
-//       size = compressedImageData.length;
-//     }
-
-//     return Uint8List.fromList(compressedImageData);
-// }
 
 //*******Don't Delete this code *******//
 
@@ -411,27 +303,26 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
      return compressedImageData;
   }
 
-  Future<File> base64ToFile(String base64Data, String filePath) async {
-    List<int> bytes = base64Decode(base64Data);
-    File file = File(filePath);
-    await file.writeAsBytes(bytes);
-    return file;
-  }
+  // Future<File> base64ToFile(String base64Data, String filePath) async {
+  //   List<int> bytes = base64Decode(base64Data);
+  //   File file = File(filePath);
+  //   await file.writeAsBytes(bytes);
+  //   return file;
+  // }
 
   Future<dynamic> imageupload() async {
    // String base64Data = base64Image;
-    final directory = await getApplicationDocumentsDirectory();
-    final filePath = '${directory.path}/temps.jpg';
-
+   // final directory = await getApplicationDocumentsDirectory();
+   // final filePath = '${directory.path}/temps.jpg';
     //File file = await base64ToFile(base64Data, filePath);
-    
-    File files = File(filePath);
-    
-    File file =await files.writeAsBytes(compressedImage);
+    //File files = File(filePath);
+    //File file =await files.writeAsBytes(compressedImage);
     // dynamic dataToSubmit = {
     //   "image_data": compressedImage,
     //   "student_code": widget.studentCode,
     // };
+    File file =compressedImage;
+ debugPrint("***********responsedata");
     var studencode=widget.studentCode;
     final res = await uploadPhoto(file,studencode!);
     //var responsedata = parseJwtAndSave(res);

@@ -311,16 +311,16 @@ Future individualAttendanceForStudent(data, token) async {
 // }
 Future uploadPhoto(File imageFile, String studentCode) async {
   final prefs = await SharedPreferences.getInstance();
-  var token = await prefs.getString('token');
-
-  http.MultipartRequest request = new http.MultipartRequest("POST", Uri.parse('$apiUrl/SampoornaApp/upload_image_sampoorna/format/json/'));
+  var token = prefs.getString('token');
+debugPrint("**uploadPhoto API ***");
+  http.MultipartRequest request = http.MultipartRequest("POST", Uri.parse('$apiUrl/SampoornaApp/upload_image_sampoorna/format/json/'));
 
   Map<String, String> headers = {
     'Content-Type': 'multipart/form-data',
     'Authorization': 'Bearer $token'
   };
 
-   var stream = new http.ByteStream(imageFile.openRead());
+   var stream = http.ByteStream(imageFile.openRead());
   stream.cast();
 
   var length = await imageFile.length();
