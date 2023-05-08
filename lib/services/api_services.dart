@@ -284,6 +284,76 @@ Future getPhotoOfStudent(data) async {
   return response;
 }
 
+//API TO POST LOGIN
+Future sendBroadcastMessage(String batchId, String body, String subject) async {
+  final prefs = await SharedPreferences.getInstance();
+  var token = await prefs.getString('token');
+  final response = await http.post(
+    Uri.parse('$parentApiUrl/Broadcast/broadcast_save/format/json/'),
+    body: {'batch_id': batchId, 'body': body, 'subject': subject},
+    headers: {
+      'authorization': 'Bearer $token',
+      // 'Content-type': 'application/json'
+    },
+  );
+  if (response.statusCode == 200) {
+  } else {}
+  return response;
+}
+
+//API TO POST LOGIN
+Future getBroadcastMessage(String batchId) async {
+  final prefs = await SharedPreferences.getInstance();
+  var token = await prefs.getString('token');
+  final response = await http.post(
+    Uri.parse(
+        '$parentApiUrl//Broadcast/get_broadcast_messages_by_sender/format/json/'),
+    body: {'batch_id': batchId},
+    headers: {
+      'authorization': 'Bearer $token',
+      // 'Content-type': 'application/json'
+    },
+  );
+  if (response.statusCode == 200) {
+  } else {}
+  return response;
+}
+
+//API TO POST LOGIN
+Future sendMessage(String body, String studentCode) async {
+  final prefs = await SharedPreferences.getInstance();
+  var token = await prefs.getString('token');
+  final response = await http.post(
+    Uri.parse('$parentApiUrl/Broadcast/individual_save/format/json/'),
+    body: {'student_code': studentCode, 'body': body},
+    headers: {
+      'authorization': 'Bearer $token',
+      // 'Content-type': 'application/json'
+    },
+  );
+  if (response.statusCode == 200) {
+  } else {}
+  return response;
+}
+
+//API TO POST LOGIN
+Future getPersonalMessage(String studentCode) async {
+  final prefs = await SharedPreferences.getInstance();
+  var token = await prefs.getString('token');
+  final response = await http.post(
+    Uri.parse(
+        '$parentApiUrl/Broadcast/get_individual_message_by_sender/format/json/'),
+    body: {'student_code': studentCode},
+    headers: {
+      'authorization': 'Bearer $token',
+      // 'Content-type': 'application/json'
+    },
+  );
+  if (response.statusCode == 200) {
+  } else {}
+  return response;
+}
+
 //API TO UPLOAD IMAGE
 // Future uploadPhoto(payload) async {
 //   final prefs = await SharedPreferences.getInstance();
