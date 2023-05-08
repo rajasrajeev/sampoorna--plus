@@ -280,6 +280,8 @@ Future getPhotoOfStudent(data) async {
     },
   );
   if (response.statusCode == 200) {
+      debugPrint(
+      "**************Image Get  function called $response************************");
   } else {}
   return response;
 }

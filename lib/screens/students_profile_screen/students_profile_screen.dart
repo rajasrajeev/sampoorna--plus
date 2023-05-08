@@ -21,7 +21,9 @@ import 'package:image/image.dart' as img;
 
 class StudentsProfileScreen extends StatefulWidget {
   final String? studentCode;
-  const StudentsProfileScreen({required this.studentCode, super.key});
+  final String? schoolId;
+  const StudentsProfileScreen(
+      {required this.studentCode, required this.schoolId, super.key});
 
   @override
   State<StudentsProfileScreen> createState() => _StudentsProfileScreenState();
@@ -40,6 +42,7 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
   dynamic base64Image;
   dynamic compressedImage;
   dynamic studentDetail;
+  dynamic photoData;
   Uint8List? _selectedFile;
   bool _inProcess = false;
   File? tempFile;
@@ -82,9 +85,9 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
             ),
           );
         });
+
     final res = await studentDetails(widget.studentCode);
     final responseData = jsonDecode(res.body);
-
     if (res.statusCode == 200) {
       //await Future.delayed(const Duration(seconds: 3));
       Navigator.of(context).pop();
@@ -92,15 +95,19 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
       // print("-=-===-=-=-=-=-=-=---=> ${responseData['data']}");
       var data = parseJwtAndSave(responseData['data']);
       // print(data);
+
+      //Get Photo URL
+      getPhotoFromAPI();
       setState(() {
         studentDetail = data;
 
         if (studentDetail['personal_details'] == null) {
+           
           _inProcess = true;
         }
         _inProcess = false;
       });
-    //  debugPrint("==================> $studentDetail");
+      //  debugPrint("==================> $studentDetail");
     } else {
       setState(() {
         _inProcess = false;
@@ -115,8 +122,45 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
         fontSize: 15.0,
       );
     }
-  }
 
+
+    
+  }
+getPhotoFromAPI() async {
+      final prefs = await SharedPreferences.getInstance();
+  var dataForphoto = {
+      "student_code": widget.studentCode,
+      "school_id": prefs.getString('school_id'),
+    };
+    final photoResponse = await getPhotoOfStudent(dataForphoto);
+    final photoResponseData = jsonDecode(photoResponse.body);
+    // debugPrint("========photoData photo_url==========> ${photoResponseData['photo_url']}");
+    if (photoResponse.statusCode == 200) {
+      //  var data = parseJwtAndSave(photoResponseData['data']);
+      setState(() {
+        photoData = photoResponseData['photo_url'];
+
+         if (photoData== null) {
+           _inProcess = true;
+         }
+        _inProcess = false;
+      });
+      debugPrint("========photoData==========> $photoData");
+    } else {
+      setState(() {
+        _inProcess = false;
+      });
+      Navigator.of(context).pop();
+      Fluttertoast.showToast(
+        msg: "Unable to Sync Student photo",
+        gravity: ToastGravity.TOP,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 15.0,
+      );
+    }
+}
   void _handleError(dynamic error) {
     setState(() {
       _inProcess = false;
@@ -143,7 +187,7 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
     }
   }
 
- getImage(ImageSource source) async {
+  getImage(ImageSource source) async {
     setState(() {
       _inProcess = true;
     });
@@ -158,14 +202,11 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
     }
 
     try {
-
       CroppedFile? cropped = await ImageCropper().cropImage(
-
         sourcePath: image.path,
         aspectRatio: const CropAspectRatio(ratioX: 3, ratioY: 4),
         compressQuality: quality,
         compressFormat: ImageCompressFormat.jpg,
-
         uiSettings: [
           AndroidUiSettings(
             toolbarTitle: 'Cropper',
@@ -180,26 +221,23 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
       );
 
       if (cropped != null) {
-
         final File newFile = File(cropped.path);
         final bytes = await newFile.readAsBytes();
-        if(bytes.length<30000){
-          compressedImage=bytes;
+        if (bytes.length < 30000) {
+          compressedImage = bytes;
+        } else {
+          compressedImage = await compressImage(bytes, 30);
         }
-        else{
-            compressedImage = await compressImage(bytes, 30);
-        }
-       
-        
+
         final compressedSize = compressedImage.length;
 
         debugPrint("********");
         debugPrint('Compressed image size: $compressedSize bytes');
-      // final image = img.decodeImage(compressedImage)!;
-      //  final width = image.width;
-      //  final height = image.height;
-      //  debugPrint('Image width: $width');
-      //  debugPrint('Image height: $height');
+        // final image = img.decodeImage(compressedImage)!;
+        //  final width = image.width;
+        //  final height = image.height;
+        //  debugPrint('Image width: $width');
+        //  debugPrint('Image height: $height');
 
         base64Image = base64.encode(compressedImage);
 
@@ -214,9 +252,7 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
           _inProcess = false;
         });
       }
-
     } catch (e) {
-      
       setState(() {
         _inProcess = false;
       });
@@ -224,9 +260,7 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
     }
   }
 
-
-
-  Future<List<int>> compressImage(List<int> imageData, int targetSizeKB) async {  
+  Future<List<int>> compressImage(List<int> imageData, int targetSizeKB) async {
     debugPrint("List Size *************${imageData.length}");
     // converted to list
     var image = img.decodeImage(imageData.toList())!;
@@ -236,12 +270,12 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
 
     // encode to jpg with 100% quality
     var quality = 100;
-    var compressedImageData = img.encodeJpg(image,quality: quality);
+    var compressedImageData = img.encodeJpg(image, quality: quality);
 
     // find current image size
     int size = compressedImageData.length;
     //debugPrint("CompressedImage Size *************$size");
-   // debugPrint("CompressedImage targetSizeKB *************${targetSizeKB * 1024}");
+    // debugPrint("CompressedImage targetSizeKB *************${targetSizeKB * 1024}");
     while (size > 30000 && quality > 50) {
       // reduce image quality by 10%
       quality -= 1;
@@ -254,7 +288,7 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
     }
 
     //return Uint8List.fromList(compressedImageData);
-     return compressedImageData;
+    return compressedImageData;
   }
 
   Future<File> base64ToFile(String base64Data, String filePath) async {
@@ -265,16 +299,15 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
   }
 
   Future<dynamic> imageupload(dynamic base64Image) async {
-
     final directory = await getApplicationDocumentsDirectory();
     final filePath = '${directory.path}/temps.jpg';
     File file = await base64ToFile(base64Image, filePath);
-    
+
     var studencode = widget.studentCode;
     final res = await uploadPhoto(file, studencode!);
 
     //debugPrint("***********responsedata");
-   //debugPrint("$res");
+    //debugPrint("$res");
 
     if (res.statusCode == 200) {
       final responseData = jsonDecode(res.body);
@@ -286,7 +319,6 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
         textColor: Colors.white,
         fontSize: 15.0,
       );
-
     } else if (res.statusCode == 202) {
       final responseData = jsonDecode(res.body);
       Fluttertoast.showToast(
@@ -297,7 +329,6 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
         textColor: Colors.white,
         fontSize: 15.0,
       );
-
     } else {
       Fluttertoast.showToast(
         msg: "Something went wrong!!!",
@@ -306,7 +337,6 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
         backgroundColor: Colors.red,
         textColor: Colors.white,
         fontSize: 15.0,
-
       );
     }
   }
@@ -362,26 +392,36 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
                                 decoration: const BoxDecoration(
                                     color: Color.fromARGB(214, 242, 242, 242)),
                                 child: (_selectedFile == null)
-                                    ? ProfileHeader(
-                                        imageUrl: (studentDetail['personal_details']['photo_url'] == null ||
-                                                studentDetail['personal_details']
-                                                        ['photo_url'] ==
-                                                    "")
-                                            ? ((studentDetail['personal_details']['gender'] == "Male")
+                                    ? ( (photoData == null || photoData== "")
+                                       ?
+                                       ProfileHeader(
+                                        imageUrl: 
+                                             ((studentDetail['personal_details']['gender'] == "Male")
                                                 ? "assets/images/boy.png"
-                                                : "assets/images/girl.png")
-                                            : (base64Decode(studentDetail['personal_details']['photo_url'])
-                                                .toString()),
+                                                : "assets/images/girl.png"),
+                                             
                                         name: studentDetail['personal_details']
                                             ['full_name'],
                                         grade: studentDetail['current_details']
                                                 ['class'] +
                                             studentDetail['current_details']
-                                                ['division'])
+                                                ['division']):
+                                        ProfileHeaderImageFile(
+                                        imageUrl:base64Decode(photoData!) ,
+                                        name: studentDetail['personal_details']
+                                                ['full_name']
+                                            .toString(),
+                                        grade: studentDetail['current_details']['class'].toString() +
+                                            studentDetail['current_details']['division'].toString())
+                                        
+                                      )
                                     : ProfileHeaderImageFile(
                                         imageUrl: _selectedFile!,
-                                        name: studentDetail['personal_details']['full_name'].toString(),
-                                        grade: studentDetail['current_details']['class'].toString() + studentDetail['current_details']['division'].toString()),
+                                        name: studentDetail['personal_details']
+                                                ['full_name']
+                                            .toString(),
+                                        grade: studentDetail['current_details']['class'].toString() +
+                                            studentDetail['current_details']['division'].toString()),
                                 //   : Image.file(_selectedFile!, width: targetWidth, height: targetHeight, fit: BoxFit.cover),
                               ),
                             ),
