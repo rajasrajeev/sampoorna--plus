@@ -267,6 +267,23 @@ Future individualAttendanceForStudent(data, token) async {
   return response;
 }
 
+//API TO POST LOGIN
+Future getPhotoOfStudent(data) async {
+  final prefs = await SharedPreferences.getInstance();
+  var token = await prefs.getString('token');
+  final response = await http.post(
+    Uri.parse('$parentApiUrl/SampoornaApp/get_photo/format/json/'),
+    body: data,
+    headers: {
+      'authorization': 'Bearer $token',
+      // 'Content-type': 'application/json'
+    },
+  );
+  if (response.statusCode == 200) {
+  } else {}
+  return response;
+}
+
 //API TO UPLOAD IMAGE
 // Future uploadPhoto(payload) async {
 //   final prefs = await SharedPreferences.getInstance();
@@ -316,20 +333,19 @@ Future<File> changeFileNameOnly(File file, String newFileName) {
   var newPath = path.substring(0, lastSeparator + 1) + newFileName;
   return file.rename(newPath);
 }
+
 Future uploadPhoto(File imageFile, String studentCode) async {
   final prefs = await SharedPreferences.getInstance();
   var token = prefs.getString('token');
 
-  http.MultipartRequest request = http.MultipartRequest("POST", Uri.parse('$apiUrl/SampoornaApp/upload_image_sampoorna/format/json/'));
+  http.MultipartRequest request = http.MultipartRequest("POST",
+      Uri.parse('$apiUrl/SampoornaApp/upload_image_sampoorna/format/json/'));
 
-  Map<String, String> headers = {
-    'Authorization': 'Bearer $token'
-  };
+  Map<String, String> headers = {'Authorization': 'Bearer $token'};
 
   request.files.add(await http.MultipartFile.fromPath(
-    'image_data', 
-    imageFile.path,
-    contentType: MediaType('image', 'jpeg')));
+      'image_data', imageFile.path,
+      contentType: MediaType('image', 'jpeg')));
 
   request.headers.addAll(headers);
 
@@ -340,7 +356,6 @@ Future uploadPhoto(File imageFile, String studentCode) async {
   var response = await http.Response.fromStream(streamedResponse);
   return response;
 }
-
 
 Future getWebViewURL() async {
   final response = await http.post(
