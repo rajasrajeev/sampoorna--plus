@@ -32,12 +32,11 @@ class AttendanceListCalender extends StatefulWidget {
 class _AttendanceListCalenderState extends State<AttendanceListCalender> {
   late final ValueNotifier<List<Event>> _selectedEvents;
   CalendarFormat _calendarFormat = CalendarFormat.month;
-  RangeSelectionMode _rangeSelectionMode = RangeSelectionMode
-      .toggledOff; // Can be toggled on/off by longpressing a date
+ // RangeSelectionMode _rangeSelectionMode = RangeSelectionMode .toggledOff; // Can be toggled on/off by longpressing a date
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
-  DateTime? _rangeStart;
-  DateTime? _rangeEnd;
+ // DateTime? _rangeStart;
+  //DateTime? _rangeEnd;
 
   @override
   void initState() {
@@ -72,9 +71,9 @@ class _AttendanceListCalenderState extends State<AttendanceListCalender> {
       setState(() {
         _selectedDay = selectedDay;
         _focusedDay = focusedDay;
-        _rangeStart = null; // Important to clean those
-        _rangeEnd = null;
-        _rangeSelectionMode = RangeSelectionMode.toggledOff;
+       // _rangeStart = null; // Important to clean those
+       // _rangeEnd = null;
+       // _rangeSelectionMode = RangeSelectionMode.toggledOff;
       });
 
       _selectedEvents.value = _getEventsForDay(selectedDay);
@@ -94,37 +93,38 @@ class _AttendanceListCalenderState extends State<AttendanceListCalender> {
     }
   }
 
-  void _onRangeSelected(DateTime? start, DateTime? end, DateTime focusedDay) {
-    setState(() {
-      _selectedDay = null;
-      _focusedDay = focusedDay;
-      _rangeStart = start;
-      _rangeEnd = end;
-      _rangeSelectionMode = RangeSelectionMode.toggledOn;
-    });
+  // void _onRangeSelected(DateTime? start, DateTime? end, DateTime focusedDay) {
+  //   setState(() {
+  //     _selectedDay = null;
+  //     _focusedDay = focusedDay;
+  //    // _rangeStart = start;
+  //    // _rangeEnd = end;
+  //    // _rangeSelectionMode = RangeSelectionMode.toggledOff;
+  //   });
 
-    // `start` or `end` could be null
-    if (start != null && end != null) {
-      _selectedEvents.value = _getEventsForRange(start, end);
-    } else if (start != null) {
-      _selectedEvents.value = _getEventsForDay(start);
-    } else if (end != null) {
-      _selectedEvents.value = _getEventsForDay(end);
-    }
-  }
+  //   // `start` or `end` could be null
+  //   if (start != null && end != null) {
+  //     _selectedEvents.value = _getEventsForRange(start, end);
+  //   } else if (start != null) {
+  //     _selectedEvents.value = _getEventsForDay(start);
+  //   } else if (end != null) {
+  //     _selectedEvents.value = _getEventsForDay(end);
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
     return TableCalendar<Event>(
+        availableGestures: AvailableGestures.none,
         firstDay: kFirstDay,
         lastDay: kLastDay,
         focusedDay: _focusedDay,
         selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
-        rangeStartDay: _rangeStart,
-        rangeEndDay: _rangeEnd,
+       // rangeStartDay: _rangeStart,
+       // rangeEndDay: _rangeEnd,
         rowHeight: 75,
         calendarFormat: _calendarFormat,
-        rangeSelectionMode: _rangeSelectionMode,
+       // rangeSelectionMode: _rangeSelectionMode,
         eventLoader: _getEventsForDay,
         daysOfWeekStyle: DaysOfWeekStyle(
           weekendStyle: const TextStyle().copyWith(color: primaryColor),
@@ -142,24 +142,32 @@ class _AttendanceListCalenderState extends State<AttendanceListCalender> {
           rightChevronVisible: _focusedDay.month != DateTime.now().month,
           /* headerPadding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 00) */
         ),
-        calendarStyle: const CalendarStyle(
+        calendarStyle:  CalendarStyle(
           // Use `CalendarStyle` to customize the UI
           outsideDaysVisible: false,
           isTodayHighlighted: true,
           tableBorder:
-              TableBorder(borderRadius: BorderRadius.all(Radius.circular(15))),
-          cellMargin: EdgeInsets.all(9),
-          todayDecoration: BoxDecoration(
+              const TableBorder(borderRadius: BorderRadius.all(Radius.circular(15),)),
+          cellMargin: const EdgeInsets.all(1),
+          todayDecoration: const BoxDecoration(
             color: secondaryColor,
             shape: BoxShape.rectangle,
           ),
-          selectedDecoration: BoxDecoration(
+          selectedDecoration: const BoxDecoration(
             color: primaryColor,
             shape: BoxShape.rectangle,
           ),
+          defaultDecoration: BoxDecoration(
+                  color: Colors.transparent,
+                  shape: BoxShape.rectangle,
+                  borderRadius: BorderRadius.circular(5),
+                  border: Border.all(
+                    color: Color.fromARGB(95, 181, 180, 180),
+                  ),
+                ),
         ),
         onDaySelected: _onDaySelected,
-        onRangeSelected: _onRangeSelected,
+        //onRangeSelected: _onRangeSelected,
         onFormatChanged: (format) {
           if (_calendarFormat != format) {
             setState(() {
@@ -188,8 +196,8 @@ class _AttendanceListCalenderState extends State<AttendanceListCalender> {
                   height: 20,
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-                    color: Color.fromARGB(112, 92, 92, 92),
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                    color: const Color.fromARGB(112, 92, 92, 92),
+                    borderRadius: const BorderRadius.all(Radius.circular(10)),
                     border: Border.all(
                       style: BorderStyle.solid,
                       width: 1.0,

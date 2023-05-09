@@ -9,6 +9,7 @@ import 'package:student_management/components/submit_button.dart';
 import 'package:student_management/constants.dart';
 import 'package:student_management/services/database_helper.dart';
 
+import '../../components/live_title.dart';
 import '../../services/api_services.dart';
 import '../../services/jwt_token_parser.dart';
 import 'package:intl/intl.dart';
@@ -41,7 +42,8 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
   DateTime selectedDate = DateTime.now();
   String markedStatus = "";
   bool disabledArea = false;
-
+  String currentProgram = '';
+  
   @override
   void initState() {
     getData();
@@ -304,6 +306,8 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                 ],
               ),
             ),
+            LiveTitle(
+              title: currentProgram == '' ? 'loading...' : currentProgram),
             const SizedBox(height: 20),
             Expanded(
               child: SingleChildScrollView(

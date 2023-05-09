@@ -84,6 +84,7 @@ class _SingleDayAttendanceScreenState extends State<SingleDayAttendanceScreen> {
 
       Navigator.of(context).pop();
       var data = parseJwtAndSave(responseData['data']);
+        debugPrint("attendanceOnDate Data ********* $data");
       setState(() {
         attendanceDates = data['token'];
         markedStatus = data['markedStatus'];

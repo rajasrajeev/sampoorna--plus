@@ -13,6 +13,8 @@ import 'package:student_management/services/api_services.dart';
 import 'package:student_management/services/jwt_token_parser.dart';
 import 'package:student_management/services/utils.dart';
 
+import '../../components/live_title.dart';
+
 class AttendanceList extends StatefulWidget {
   const AttendanceList({super.key});
 
@@ -31,7 +33,8 @@ class _AttendanceListState extends State<AttendanceList> {
   List items = [];
   String date1 = "";
   String date2 = "";
-
+  String currentProgram = '';
+  
   @override
   void initState() {
     super.initState();
@@ -219,6 +222,8 @@ class _AttendanceListState extends State<AttendanceList> {
                   const Spacer()
                 ],
               ),
+              LiveTitle(
+              title: currentProgram == '' ? 'loading...' : currentProgram),
               const SizedBox(height: 10),
               AttendanceListCalender(
                 batchId: dropdownvalue,
