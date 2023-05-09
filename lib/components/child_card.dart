@@ -2,11 +2,16 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shimmer_animation/shimmer_animation.dart';
 import 'package:student_management/components/student_profile_card.dart';
 import 'package:student_management/components/tile_link.dart';
 import 'package:student_management/constants.dart';
 import 'package:student_management/screens/exams/exams.dart';
+import 'package:student_management/screens/individual_attendance_screen/individual_attendance_screen.dart';
+import 'package:student_management/services/api_services.dart';
+import 'package:student_management/services/jwt_token_parser.dart';
 
 import '../screens/broadcast/broadcast_detail.dart';
 import '../screens/message/chat_select.dart';
@@ -41,6 +46,83 @@ class ChildCard extends StatefulWidget {
 }
 
 class _ChildCardState extends State<ChildCard> {
+  List attendanceData = [];
+  bool loading = false;
+  List status = [];
+
+  @override
+  void initState() {
+    super.initState();
+    getPastWeekAttendance();
+  }
+
+  getAttendanceStatus() {
+    for (var i = 0; i < attendanceData.length; i++) {
+      for (var j = 0;
+          j < attendanceData[i]['last_week_attendance'].length;
+          j++) {
+        status.add({
+          widget.studentCode: {
+            'date': attendanceData[i]['last_week_attendance'][j]['date']
+                        .split("-")[2] ==
+                    widget.date[j]
+                ? attendanceData[i]['last_week_attendance'][j]['date']
+                    .split("-")[2]
+                : widget.date[j],
+            'fn': attendanceData[i]['last_week_attendance'][j]['marked'] == "0"
+                ? const Color.fromARGB(255, 145, 149, 145)
+                : attendanceData[i]['last_week_attendance'][j]['marked'] == "1"
+                    ? const Color.fromARGB(255, 49, 115, 58)
+                    : primaryColor,
+            'an': attendanceData[i]['last_week_attendance'][j]['marked'] == "0"
+                ? const Color.fromARGB(255, 145, 149, 145)
+                : attendanceData[i]['last_week_attendance'][j]['marked'] == "2"
+                    ? const Color.fromARGB(255, 49, 115, 58)
+                    : primaryColor
+          }
+        });
+      }
+    }
+    setState(() {
+      loading = false;
+    });
+    print("=-=-==-=-=-=-> $status <-=-=-=-=-=-=-==-");
+  }
+
+  getPastWeekAttendance() async {
+    setState(() {
+      loading = true;
+    });
+    final prefs = await SharedPreferences.getInstance();
+
+    var data = {
+      "user_id": prefs.getString('user_id'),
+    };
+
+    final res = await lastWeekAttendance(data);
+
+    if (res.statusCode == 200) {
+      final responseData = jsonDecode(res.body);
+      dynamic data = parseJwtAndSave(responseData['token'].toString());
+      setState(() {
+        attendanceData = data['token'];
+      });
+      getAttendanceStatus();
+    } else {
+      setState(() {
+        loading = true;
+      });
+      Fluttertoast.showToast(
+        msg: "Unable to Sync Last Week Attendance!! Try again Later.",
+        gravity: ToastGravity.TOP,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 15.0,
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     var montserrat = const TextStyle(
@@ -48,7 +130,7 @@ class _ChildCardState extends State<ChildCard> {
     );
     Size size = MediaQuery.of(context).size;
     return Container(
-        height: size.height * 0.8,
+        height: size.height * 0.7,
         width: MediaQuery.of(context).size.width,
         constraints: BoxConstraints(maxWidth: size.width * 0.9),
         margin: const EdgeInsets.fromLTRB(5, 5, 5, 5),
@@ -168,11 +250,11 @@ class _ChildCardState extends State<ChildCard> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
+                          /* Text(
                             "School Id",
                             style: montserrat,
                           ),
-                          const SizedBox(height: 16),
+                          const SizedBox(height: 16), */
                           Text(
                             "Student Id",
                             style: montserrat,
@@ -182,36 +264,36 @@ class _ChildCardState extends State<ChildCard> {
                             "Admission Number",
                             style: montserrat,
                           ),
-                          const SizedBox(height: 16),
+                          /* const SizedBox(height: 16),
                           Text(
                             "Class",
                             style: montserrat,
-                          ),
+                          ), */
                         ],
                       ),
                       const SizedBox(width: 5),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
+                          /* Text(
                             ":${widget.schoolId.toString()}",
                             style: montserrat,
-                          ),
-                          const SizedBox(height: 16),
+                          ), */
+                          /* const SizedBox(height: 16), */
                           Text(
-                            ":${widget.studentCode.toString()}",
+                            ": ${widget.studentCode.toString()}",
                             style: montserrat,
                           ),
                           const SizedBox(height: 16),
                           Text(
-                            ":${widget.admissionNo.toString()}",
+                            ": ${widget.admissionNo.toString()}",
                             style: montserrat,
                           ),
-                          const SizedBox(height: 16),
+                          /* const SizedBox(height: 16),
                           Text(
                             ":${widget.grade.toString()}${widget.division.toString()}",
                             style: montserrat,
-                          ),
+                          ), */
                         ],
                       ),
                     ],
@@ -220,20 +302,6 @@ class _ChildCardState extends State<ChildCard> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    // SizedBox(
-                    //     width: size.width *
-                    //         0.029),
-                    // TileLink(
-                    //   label: "Broadcast Messages",
-                    //   image: "assets/images/config.png",
-                    //   onClick: () {
-                    //     // Navigator.push(
-                    //     //   context,
-                    //     //   MaterialPageRoute(
-                    //     //       builder: (context) => const ChatSelect()),
-                    //     // );
-                    //   },
-                    // ),
                     TextButton.icon(
                       style: TextButton.styleFrom(
                         textStyle: const TextStyle(color: Colors.blue),
@@ -260,22 +328,6 @@ class _ChildCardState extends State<ChildCard> {
                         'Messages',
                       ),
                     ),
-                    /* TextButton.icon(
-                  style: TextButton.styleFrom(
-                    textStyle: const TextStyle(color: Colors.blue),
-                    backgroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                  onPressed: () => {},
-                  icon: const Icon(
-                    Icons.send_rounded,
-                  ),
-                  label: const Text(
-                    'Attendances',
-                  ),
-                ), */
                     TextButton.icon(
                       style: TextButton.styleFrom(
                         textStyle: const TextStyle(color: Colors.blue),
@@ -298,133 +350,173 @@ class _ChildCardState extends State<ChildCard> {
                         'Exams',
                       ),
                     ),
-                    // SizedBox(
-                    //     width: size.width *
-                    //         0.029), //Spacing between tile don't change
-                    // TileLink(
-                    //   label: "Exams",
-                    //   image: "assets/images/exam.png",
-                    //   onClick: () {
-                    //     Navigator.push(
-                    //       context,
-                    //       MaterialPageRoute(
-                    //           builder: (context) => const ExamsScreen()),
-                    //     );
-                    //   },
-                    // ),
-                    // SizedBox(
-                    //     width: size.width *
-                    //         0.029), //Spacing between tile don't change
-                    // SizedBox(
-                    //   width: size.width * 0.21,
-                    // ),
+                    /* TextButton.icon(
+                      style: TextButton.styleFrom(
+                        textStyle: const TextStyle(color: Colors.blue),
+                        backgroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      onPressed: () => {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => IndividualAttendanceScreen(
+                                  studentCode: widget.studentCode,
+                                  date1: '01-02-2023',
+                                  date2: '28-02-2023')),
+                        )
+                      },
+                      icon: const Icon(
+                        Icons.my_library_books_rounded,
+                      ),
+                      label: const Text(
+                        'Attendance',
+                      ),
+                    ), */
                   ],
                 ),
               ],
             ),
             SizedBox(height: size.height * 0.030),
-            Container(
-              height: size.height * 0.15,
-              width: MediaQuery.of(context).size.width - 79,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(5),
-                  border: Border.all(color: Colors.black, width: 0.5)),
-              child: Row(children: [
-                Expanded(
-                  child: SizedBox(
-                    height: 100,
-                    width: (MediaQuery.of(context).size.width - 100) / 7,
-                    child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        // reverse: true,
-                        itemCount: 7,
-                        shrinkWrap: true,
-                        itemBuilder: (context, index) {
-                          return Container(
-                            height: size.height * 0.30,
-                            width: (MediaQuery.of(context).size.width - 80) / 7,
-                            decoration: BoxDecoration(
-                                border: Border(
-                              right: (index != 6)
-                                  ? const BorderSide(
-                                      color: Color.fromARGB(255, 105, 25, 25),
-                                      width: 0.5,
-                                    )
-                                  : BorderSide.none,
-                            )),
-                            child: Column(children: [
-                              Container(
-                                height: size.height * 0.030,
-                                decoration: const BoxDecoration(
-                                    border: Border(
-                                        bottom: BorderSide(
-                                            width: 0.5, color: Colors.black))),
-                                child: Center(
-                                    child: Text(widget.day[index].toString())),
-                              ),
-                              Container(
-                                decoration: BoxDecoration(
-                                  color: primaryColor,
-                                  borderRadius: BorderRadius.only(
-                                    bottomLeft: index == 0
-                                        ? const Radius.circular(0)
-                                        : Radius.zero,
-                                    bottomRight: index == widget.day.length - 1
-                                        ? const Radius.circular(0)
-                                        : Radius.zero,
-                                  ),
-                                ),
-                                height: size.height * 0.070,
-                                child: Center(
-                                  child: Text(
-                                    widget.date[index].toString(),
-                                    style: const TextStyle(color: Colors.white),
-                                  ),
-                                ),
-                              ),
-                              Container(
-                                height: 25,
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.only(
-                                    bottomLeft: index == 0
-                                        ? const Radius.circular(5)
-                                        : Radius.zero,
-                                    bottomRight: index == widget.day.length - 1
-                                        ? const Radius.circular(5)
-                                        : Radius.zero,
-                                  ),
-                                ),
-                                child: Center(
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: const [
-                                      Text(
-                                        "FN",
-                                        style: TextStyle(
-                                            color: Colors.green,
-                                            fontSize: 10,
-                                            fontWeight: FontWeight.w900),
+            loading == false
+                ? Container(
+                    height: size.height * 0.15,
+                    width: MediaQuery.of(context).size.width - 79,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        border: Border.all(color: Colors.black, width: 0.5)),
+                    child: Row(children: [
+                      Expanded(
+                        child: SizedBox(
+                          height: 100,
+                          width: (MediaQuery.of(context).size.width - 100) / 7,
+                          child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              // reverse: true,
+                              itemCount: 7,
+                              shrinkWrap: true,
+                              itemBuilder: (context, index) {
+                                return Container(
+                                  height: size.height * 0.30,
+                                  width:
+                                      (MediaQuery.of(context).size.width - 80) /
+                                          7,
+                                  decoration: BoxDecoration(
+                                      border: Border(
+                                    right: (index != 6)
+                                        ? const BorderSide(
+                                            color: Color.fromARGB(
+                                                255, 105, 25, 25),
+                                            width: 0.5,
+                                          )
+                                        : BorderSide.none,
+                                  )),
+                                  child: Column(children: [
+                                    Container(
+                                      height: size.height * 0.030,
+                                      decoration: const BoxDecoration(
+                                          border: Border(
+                                              bottom: BorderSide(
+                                                  width: 0.5,
+                                                  color: Colors.black))),
+                                      child: Center(
+                                          child: Text(
+                                              widget.day[index].toString())),
+                                    ),
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        color: primaryColor,
+                                        borderRadius: BorderRadius.only(
+                                          bottomLeft: index == 0
+                                              ? const Radius.circular(0)
+                                              : Radius.zero,
+                                          bottomRight:
+                                              index == widget.day.length - 1
+                                                  ? const Radius.circular(0)
+                                                  : Radius.zero,
+                                        ),
                                       ),
-                                      Text(
-                                        "AN",
-                                        style: TextStyle(
-                                            color: Colors.redAccent,
-                                            fontSize: 10,
-                                            fontWeight: FontWeight.w900),
+                                      height: size.height * 0.070,
+                                      child: Center(
+                                        child: Text(
+                                          widget.date[index].toString(),
+                                          style: const TextStyle(
+                                              color: Colors.white),
+                                        ),
                                       ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ]),
-                          );
-                        }),
+                                    ),
+                                    Container(
+                                      height: 25,
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.only(
+                                          bottomLeft: index == 0
+                                              ? const Radius.circular(5)
+                                              : Radius.zero,
+                                          bottomRight:
+                                              index == widget.day.length - 1
+                                                  ? const Radius.circular(5)
+                                                  : Radius.zero,
+                                        ),
+                                      ),
+                                      child: Center(
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                          children: [
+                                            Text(
+                                              "FN",
+                                              style: TextStyle(
+                                                  color: status[index]
+                                                          [widget.studentCode]
+                                                      ['fn'],
+                                                  fontSize: 10,
+                                                  fontWeight: FontWeight.w900),
+                                            ),
+                                            Text(
+                                              "AN",
+                                              style: TextStyle(
+                                                  color: status[index]
+                                                          [widget.studentCode]
+                                                      ['an'],
+                                                  fontSize: 10,
+                                                  fontWeight: FontWeight.w900),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ]),
+                                );
+                              }),
+                        ),
+                      ),
+                    ]),
+                  )
+                : Shimmer(
+                    duration: const Duration(seconds: 2),
+                    color: Color.fromARGB(255, 67, 67, 67),
+                    enabled: loading,
+                    child: Container(
+                      height: size.height * 0.15,
+                      width: MediaQuery.of(context).size.width - 79,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          border: Border.all(color: Colors.black, width: 0.5)),
+                      child: Row(children: [
+                        Expanded(
+                          child: SizedBox(
+                            height: 100,
+                            width:
+                                (MediaQuery.of(context).size.width - 100) / 7,
+                            child: Container(),
+                          ),
+                        ),
+                      ]),
+                    ),
                   ),
-                ),
-              ]),
-            ),
             // SizedBox(height: size.height * 0.030),
           ],
         ));

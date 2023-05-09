@@ -25,15 +25,15 @@ class _ParentsDashboardScreenState extends State<ParentsDashboardScreen> {
   List items = [];
   List date = [];
   List day = [];
+  List status = [];
   bool _loading = false;
-  List attendanceData = [];
 
   @override
   void initState() {
     super.initState();
     getData();
     getPastWeek();
-    getPastWeekAttendance();
+    // getPastWeekAttendance();
   }
 
   getData() async {
@@ -64,66 +64,6 @@ class _ParentsDashboardScreenState extends State<ParentsDashboardScreen> {
       day = workingDays.reversed.toList();
       date = dates.reversed.toList();
     });
-  }
-
-  getPastWeekAttendance() async {
-    final prefs = await SharedPreferences.getInstance();
-
-    var data = {
-      "user_id": prefs.getString('user_id'),
-    };
-    showDialogDisplay();
-
-    final res = await lastWeekAttendance(data);
-
-    if (res.statusCode == 200) {
-      final responseData = jsonDecode(res.body);
-      Navigator.of(context).pop();
-      debugPrint("=-=-=0=0=-=-0=-0=-0=-0=-0=0=-0=0=0=${responseData}");
-      dynamic data = parseJwtAndSave(responseData['token'].toString());
-
-      setState(() {
-        attendanceData = data;
-      });
-    } else {
-      Navigator.of(context).pop();
-      Fluttertoast.showToast(
-        msg: "Unable to Sync Last Week Attendance!! Try again Later.",
-        gravity: ToastGravity.TOP,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-        fontSize: 15.0,
-      );
-    }
-  }
-
-  showDialogDisplay() {
-    showDialog(
-        // The user CANNOT close this dialog  by pressing outsite it
-        barrierDismissible: true,
-        context: context,
-        builder: (_) {
-          return Dialog(
-            // The background color
-            backgroundColor: Colors.white,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 20),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: const [
-                  // The loading indicator
-                  CircularProgressIndicator(),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  // Some text
-                  Text('Loading...')
-                ],
-              ),
-            ),
-          );
-        });
   }
 
   @override

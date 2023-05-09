@@ -43,6 +43,7 @@ Future studentList(data) async {
     Uri.parse('$apiUrl/SampoornaApp/student_list_all/format/json/'),
     headers: {
       'Authorization': 'Bearer $token',
+      // 'Content-type': 'application/json'
     },
     body: data,
   );
