@@ -308,7 +308,12 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
                                                       studentCode: studentsList[
                                                                   index]
                                                               ['student_code']
-                                                          .toString())),
+                                                          .toString(),
+                                                          schoolId: studentsList[
+                                                                  index]
+                                                              ['school_id']
+                                                          .toString())
+                                                          ),
                                         );
                                       },
                                       child: Card(

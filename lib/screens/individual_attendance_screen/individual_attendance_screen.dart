@@ -92,6 +92,7 @@ class _IndividualAttendanceScreenState
 
       Navigator.of(context).pop();
       var data = parseJwtAndSave(responseData['token']);
+        debugPrint("individualAttendanceForStudent Data ********* $data");
       setState(() {
         attendanceDates = data['attendance_data'];
       });

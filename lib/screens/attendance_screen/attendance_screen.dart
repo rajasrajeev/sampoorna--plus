@@ -9,6 +9,7 @@ import 'package:student_management/components/submit_button.dart';
 import 'package:student_management/constants.dart';
 import 'package:student_management/services/database_helper.dart';
 
+import '../../components/live_title.dart';
 import '../../services/api_services.dart';
 import '../../services/jwt_token_parser.dart';
 import 'package:intl/intl.dart';
@@ -28,7 +29,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
   //database helper
   DatabaseHelper _db = DatabaseHelper.instance;
   // Initial Selected Value
-  String dropdownvalue = 'Class 1';
+  String dropdownvalue = '';
   dynamic batchid = "";
   // List of items in our dropdown menu
   // List of items in our dropdown menu
@@ -41,7 +42,8 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
   DateTime selectedDate = DateTime.now();
   String markedStatus = "";
   bool disabledArea = false;
-
+  dynamic currentMarkedAttendance = '';
+  
   @override
   void initState() {
     getData();
@@ -80,8 +82,51 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
     }
 
     getStudentsData(dropdownvalue);
+    getLastMarkedAttendance();
   }
+getLastMarkedAttendance() async {
+  final prefs = await SharedPreferences.getInstance();
+   var schoolId=prefs.getString('school_id');
+    final res = await lastMarkedDateApi(schoolId, dropdownvalue);
+    if (res.statusCode == 200) {
+      final responseData = jsonDecode(res.body);
+      //Navigator.of(context).pop();
+      var data = parseJwtAndSave(responseData['data']);
+      debugPrint("individualAttendanceForStudent Data ********* $data");
+      dynamic lastmarkedField = data['token']['lastmarked'];
 
+      if (lastmarkedField is List<dynamic>) {
+        List<dynamic> lastmarked = lastmarkedField;
+
+        if (lastmarked.isNotEmpty) {
+          // do something with the value of "lastmarked"
+          setState(() {
+            currentMarkedAttendance = lastmarked.toString();
+          });
+        } else {
+          // "lastmarked" is empty
+          setState(() {
+            currentMarkedAttendance = "";
+          });
+        }
+      } else {
+        // handle the case where "lastmarked" is not a list
+        setState(() {
+          currentMarkedAttendance = lastmarkedField;
+        });
+      }
+    } else {
+      // Navigator.of(context).pop();
+      Fluttertoast.showToast(
+        msg: "Unable to Sync Students List Now",
+        gravity: ToastGravity.TOP,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 15.0,
+      );
+    }
+  }
   getStudentsData(String batchId) async {
     final prefs = await SharedPreferences.getInstance();
     batchid = batchId;
@@ -255,6 +300,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                           dropdownvalue = newValue.toString();
                         });
                         getStudentsData(dropdownvalue);
+                        getLastMarkedAttendance();
                       },
                     ),
                   ),
@@ -304,6 +350,10 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                 ],
               ),
             ),
+              LiveTitle(
+                  title: currentMarkedAttendance == ''
+                      ? 'Last Marked Attendance Not Found...'
+                      : 'Last Marked Attendance $currentMarkedAttendance'),
             const SizedBox(height: 20),
             Expanded(
               child: SingleChildScrollView(

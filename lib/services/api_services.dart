@@ -116,6 +116,22 @@ Future attendanceOnDate(date, school_id, batch_id) async {
   return response;
 }
 
+//API TO Last Marked Date
+Future lastMarkedDateApi(school_id, batch_id) async {
+  final prefs = await SharedPreferences.getInstance();
+  var token = prefs.getString('token');
+  final response = await http.post(
+      Uri.parse('$apiUrl/SampoornaApp/last_marked_day/format/json/'),
+      headers: {
+        'Authorization': 'Bearer $token',
+      },
+      body: {
+        "school_id": school_id,
+        "batch_id": batch_id
+      });
+
+  return response;
+}
 //API TO POST Add Attendance
 Future addAttendance(payload) async {
   final prefs = await SharedPreferences.getInstance();
@@ -281,6 +297,8 @@ Future getPhotoOfStudent(data) async {
     },
   );
   if (response.statusCode == 200) {
+      debugPrint(
+      "**************Image Get  function called $response************************");
   } else {}
   return response;
 }

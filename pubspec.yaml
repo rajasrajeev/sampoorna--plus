@@ -54,6 +54,7 @@ dependencies:
   webview_flutter: ^3.0.4
   http_parser: ^4.0.2
   shimmer_animation: ^2.1.0+1
+  marquee: ^2.2.3
 
 dev_dependencies:
   test: ^1.5.1
