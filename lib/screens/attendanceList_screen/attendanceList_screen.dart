@@ -33,8 +33,8 @@ class _AttendanceListState extends State<AttendanceList> {
   List items = [];
   String date1 = "";
   String date2 = "";
-  String currentProgram = '';
-  
+  dynamic currentMarkedAttendance = '';
+
   @override
   void initState() {
     super.initState();
@@ -68,6 +68,48 @@ class _AttendanceListState extends State<AttendanceList> {
     getDataBetweenDates();
   }
 
+  getLastMarkedAttendance() async {
+    final res = await lastMarkedDateApi(schoolId, dropdownvalue);
+    if (res.statusCode == 200) {
+      final responseData = jsonDecode(res.body);
+      //Navigator.of(context).pop();
+      var data = parseJwtAndSave(responseData['data']);
+      debugPrint("individualAttendanceForStudent Data ********* $data");
+      dynamic lastmarkedField = data['token']['lastmarked'];
+
+      if (lastmarkedField is List<dynamic>) {
+        List<dynamic> lastmarked = lastmarkedField;
+
+        if (lastmarked.isNotEmpty) {
+          // do something with the value of "lastmarked"
+          setState(() {
+            currentMarkedAttendance = lastmarked.toString();
+          });
+        } else {
+          // "lastmarked" is empty
+          setState(() {
+            currentMarkedAttendance = "";
+          });
+        }
+      } else {
+        // handle the case where "lastmarked" is not a list
+        setState(() {
+          currentMarkedAttendance = lastmarkedField;
+        });
+      }
+    } else {
+      // Navigator.of(context).pop();
+      Fluttertoast.showToast(
+        msg: "Unable to Sync Students List Now",
+        gravity: ToastGravity.TOP,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 15.0,
+      );
+    }
+  }
+
   getDataBetweenDates() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
@@ -82,6 +124,7 @@ class _AttendanceListState extends State<AttendanceList> {
     });
     print("-=-=-=-=$date1 =-=-=-=-=$date2");
     getStudentsData(date1, date2, schoolId!, dropdownvalue);
+    getLastMarkedAttendance();
   }
 
   getStudentsData(
@@ -216,6 +259,7 @@ class _AttendanceListState extends State<AttendanceList> {
                           dropdownvalue = newValue.toString();
                         });
                         getStudentsData(date1, date2, schoolId!, dropdownvalue);
+                        getLastMarkedAttendance();
                       },
                     ),
                   ),
@@ -223,7 +267,9 @@ class _AttendanceListState extends State<AttendanceList> {
                 ],
               ),
               LiveTitle(
-              title: currentProgram == '' ? 'loading...' : currentProgram),
+                  title: currentMarkedAttendance == ''
+                      ? 'Last Marked Attendance Not Found...'
+                      : 'Last Marked Attendance $currentMarkedAttendance'),
               const SizedBox(height: 10),
               AttendanceListCalender(
                 batchId: dropdownvalue,
