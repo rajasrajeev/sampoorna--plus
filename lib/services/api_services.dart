@@ -147,33 +147,6 @@ Future addAttendance(payload) async {
   return response;
 }
 
-Future broadcastGet(payload) async {
-  final prefs = await SharedPreferences.getInstance();
-  var token = await prefs.getString('token');
-  final response = await http.post(
-      Uri.parse(
-          '$apiUrl/Broadcast/get_broadcast_messages_by_sender/format/json/'),
-      headers: {
-        'Authorization': 'Bearer $token',
-        'Content-type': 'application/json'
-      },
-      body: json.encode(payload));
-  return response;
-}
-
-Future broadcastSend(payload) async {
-  final prefs = await SharedPreferences.getInstance();
-  var token = await prefs.getString('token');
-  final response = await http.post(
-      Uri.parse('$apiUrl/Broadcast/broadcast_save/format/json/'),
-      headers: {
-        'Authorization': 'Bearer $token',
-        'Content-type': 'application/json'
-      },
-      body: json.encode(payload));
-  return response;
-}
-
 //API TO POST Add Attendance
 Future getDivisionList(payload) async {
   final prefs = await SharedPreferences.getInstance();
