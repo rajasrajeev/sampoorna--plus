@@ -26,6 +26,7 @@ class ChildCard extends StatefulWidget {
   final String studentCode;
   final String admissionNo;
   final String schoolId;
+  final String batchId;
   final String imageURL;
   const ChildCard({
     Key? key,
@@ -38,6 +39,7 @@ class ChildCard extends StatefulWidget {
     required this.studentCode,
     required this.admissionNo,
     required this.schoolId,
+    required this.batchId,
     required this.imageURL,
   }) : super(key: key);
 
@@ -317,7 +319,7 @@ class _ChildCardState extends State<ChildCard> {
                               builder: (context) => BroadcastDetail(
                                   studentName: widget.grade + widget.division,
                                   studentCode:
-                                      widget.school //Class List from dropdown
+                                      widget.batchId //Class List from dropdown
                                   )),
                         )
                       },

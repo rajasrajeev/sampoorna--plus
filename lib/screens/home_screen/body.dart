@@ -96,7 +96,7 @@ class _BodyState extends State<Body> {
                     SizedBox(width: size.width * 0.029),
                     userType == "HM"
                         ? Tile(
-                            label: "Broadcast Messages",
+                            label: "Messages",
                             image: "assets/images/config.png",
                             onClick: () {
                               Navigator.push(
@@ -194,7 +194,7 @@ class _BodyState extends State<Body> {
                     SizedBox(width: size.width * 0.029),
                     userType != "HM"
                         ? Tile(
-                            label: "Broadcast Messages",
+                            label: "Messages",
                             image: "assets/images/config.png",
                             onClick: () {
                               Navigator.push(

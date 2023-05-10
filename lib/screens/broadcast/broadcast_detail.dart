@@ -38,6 +38,7 @@ class ChatMessage {
 class _BroadcastDetailState extends State<BroadcastDetail> {
   List<ChatMessage> messages = [];
   String? userType = "";
+  String? userId = "";
   bool _loading = false;
   final TextEditingController searchController = TextEditingController();
 
@@ -51,6 +52,7 @@ class _BroadcastDetailState extends State<BroadcastDetail> {
   getToken() async {
     final prefs = await SharedPreferences.getInstance();
     userType = prefs.getString('user_type');
+    userId = prefs.getString('user_id');
   }
 
   getBroadcastMessages() async {
@@ -90,7 +92,8 @@ class _BroadcastDetailState extends State<BroadcastDetail> {
         setState(() {
           messages.add(ChatMessage(
               messageContent: data['token'][i]['body'],
-              messageType: 'sender',
+              messageType:
+                  userId == data['token'][i]['user_id'] ? 'sender' : 'receiver',
               timeOfMessage: data['token'][i]['created_at']));
         });
       }

@@ -103,6 +103,7 @@ class _ParentsDashboardScreenState extends State<ParentsDashboardScreen> {
                               studentCode: childDetails[index]['student_code'],
                               admissionNo: childDetails[index]['admission_no'],
                               schoolId: childDetails[index]['school_id'],
+                              batchId: childDetails[index]['batch_id'],
                               imageURL:
                                   (childDetails[index]['photo_url'].toString()),
                             ),
