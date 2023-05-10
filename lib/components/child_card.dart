@@ -495,27 +495,107 @@ class _ChildCardState extends State<ChildCard> {
                       ),
                     ]),
                   )
-                : Shimmer(
-                    duration: const Duration(seconds: 2),
-                    color: Color.fromARGB(255, 67, 67, 67),
-                    enabled: loading,
-                    child: Container(
-                      height: size.height * 0.15,
-                      width: MediaQuery.of(context).size.width - 79,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5),
-                          border: Border.all(color: Colors.black, width: 0.5)),
-                      child: Row(children: [
-                        Expanded(
-                          child: SizedBox(
-                            height: 100,
-                            width:
-                                (MediaQuery.of(context).size.width - 100) / 7,
-                            child: Container(),
-                          ),
+                : Container(
+                    height: size.height * 0.15,
+                    width: MediaQuery.of(context).size.width - 79,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        border: Border.all(color: Colors.black, width: 0.5)),
+                    child: Row(children: [
+                      Expanded(
+                        child: SizedBox(
+                          height: 100,
+                          width: (MediaQuery.of(context).size.width - 100) / 7,
+                          child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              // reverse: true,
+                              itemCount: 7,
+                              shrinkWrap: true,
+                              itemBuilder: (context, index) {
+                                return Container(
+                                  height: size.height * 0.30,
+                                  width:
+                                      (MediaQuery.of(context).size.width - 80) /
+                                          7,
+                                  decoration: BoxDecoration(
+                                      border: Border(
+                                    right: (index != 6)
+                                        ? const BorderSide(
+                                            color: Color.fromARGB(
+                                                255, 105, 25, 25),
+                                            width: 0.5,
+                                          )
+                                        : BorderSide.none,
+                                  )),
+                                  child: Column(children: [
+                                    Shimmer(
+                                      duration: const Duration(seconds: 2),
+                                      color: Color.fromARGB(255, 67, 67, 67),
+                                      enabled: loading,
+                                      child: Container(
+                                        height: size.height * 0.030,
+                                        decoration: const BoxDecoration(
+                                            border: Border(
+                                                bottom: BorderSide(
+                                                    width: 0.5,
+                                                    color: Colors.black))),
+                                        child: const Center(),
+                                      ),
+                                    ),
+                                    Shimmer(
+                                      duration: const Duration(seconds: 2),
+                                      color: Color.fromARGB(255, 170, 152, 152),
+                                      enabled: loading,
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          color: primaryColor,
+                                          borderRadius: BorderRadius.only(
+                                            bottomLeft: index == 0
+                                                ? const Radius.circular(0)
+                                                : Radius.zero,
+                                            bottomRight:
+                                                index == widget.day.length - 1
+                                                    ? const Radius.circular(0)
+                                                    : Radius.zero,
+                                          ),
+                                        ),
+                                        height: size.height * 0.070,
+                                        child: const Center(),
+                                      ),
+                                    ),
+                                    Shimmer(
+                                      duration: const Duration(seconds: 2),
+                                      color: Color.fromARGB(255, 67, 67, 67),
+                                      enabled: loading,
+                                      child: Container(
+                                        height: 25,
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius: BorderRadius.only(
+                                            bottomLeft: index == 0
+                                                ? const Radius.circular(5)
+                                                : Radius.zero,
+                                            bottomRight:
+                                                index == widget.day.length - 1
+                                                    ? const Radius.circular(5)
+                                                    : Radius.zero,
+                                          ),
+                                        ),
+                                        child: Center(
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                            children: const [],
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                  ]),
+                                );
+                              }),
                         ),
-                      ]),
-                    ),
+                      ),
+                    ]),
                   ),
             // SizedBox(height: size.height * 0.030),
           ],

@@ -10,19 +10,22 @@ import '../parents/dashboard/parents_dashboard_screen.dart';
 class BroadcastDetail extends StatefulWidget {
   final String? studentCode;
   final String? studentName;
-  const BroadcastDetail({required this.studentCode, this.studentName, super.key});
+  const BroadcastDetail(
+      {required this.studentCode, this.studentName, super.key});
 
   @override
   State<BroadcastDetail> createState() => _BroadcastDetailState();
 }
+
 //Model class for Chat
 class ChatMessage {
   String messageContent;
   String messageType;
   ChatMessage({required this.messageContent, required this.messageType});
 }
+
 class _BroadcastDetailState extends State<BroadcastDetail> {
-    List<ChatMessage> messages = [
+  List<ChatMessage> messages = [
     ChatMessage(messageContent: "Hello,", messageType: "receiver"),
     ChatMessage(
         messageContent: "Have you recieved Marklist?", messageType: "receiver"),
@@ -33,20 +36,22 @@ class _BroadcastDetailState extends State<BroadcastDetail> {
     ChatMessage(
         messageContent: "k Thank you will check now", messageType: "sender"),
   ];
-    String? userType = "";
+  String? userType = "";
 
   @override
   void initState() {
     super.initState();
     getToken();
   }
-    getToken() async {
+
+  getToken() async {
     final prefs = await SharedPreferences.getInstance();
     userType = prefs.getString('user_type');
-    }
+  }
+
   @override
   Widget build(BuildContext context) {
-     Size size = MediaQuery.of(context).size;
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -59,14 +64,14 @@ class _BroadcastDetailState extends State<BroadcastDetail> {
               children: <Widget>[
                 IconButton(
                   onPressed: () {
-                   Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => userType == "PARENT"
-                          ? const ParentsDashboardScreen()
-                          : const MainScreen(),
-                    ),
-                  );
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => userType == "PARENT"
+                            ? const ParentsDashboardScreen()
+                            : const MainScreen(),
+                      ),
+                    );
                   },
                   icon: const Icon(
                     Icons.arrow_back,
@@ -94,8 +99,8 @@ class _BroadcastDetailState extends State<BroadcastDetail> {
                         style: const TextStyle(
                             fontSize: 16, fontWeight: FontWeight.w600),
                       ),
-                       SizedBox(
-                        height: size.height*0.003,
+                      SizedBox(
+                        height: size.height * 0.003,
                       ),
                       Text(
                         "sampoorna",
@@ -136,7 +141,7 @@ class _BroadcastDetailState extends State<BroadcastDetail> {
                             left: 16, right: 16, top: 10, bottom: 10),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.end,
-                    mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
                               messages[index].messageContent,
@@ -147,11 +152,14 @@ class _BroadcastDetailState extends State<BroadcastDetail> {
                                     : const Color.fromARGB(255, 255, 255, 255)),
                               ),
                             ),
-                            const SizedBox(height: 10,),
+                            const SizedBox(
+                              height: 10,
+                            ),
                             const Text(
                               "1-2-23",
                               style: TextStyle(
-                                  color: Color.fromARGB(255, 180, 180, 180), fontSize: 10),
+                                  color: Color.fromARGB(255, 180, 180, 180),
+                                  fontSize: 10),
                             ),
                           ],
                         ),
