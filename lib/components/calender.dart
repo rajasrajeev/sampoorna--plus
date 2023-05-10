@@ -170,7 +170,7 @@ class _AttendanceListCalenderState extends State<AttendanceListCalender> {
               shape: BoxShape.rectangle,
               borderRadius: BorderRadius.circular(5),
               border: Border.all(
-                color: Color.fromARGB(95, 181, 180, 180),
+                color: const Color.fromARGB(95, 181, 180, 180),
               ),
             ),
             disabledDecoration: BoxDecoration(
@@ -178,7 +178,7 @@ class _AttendanceListCalenderState extends State<AttendanceListCalender> {
               shape: BoxShape.rectangle,
               borderRadius: BorderRadius.circular(5),
               border: Border.all(
-                color: Color.fromARGB(95, 181, 180, 180),
+                color: const Color.fromARGB(95, 181, 180, 180),
               ),
             ),
           ),
