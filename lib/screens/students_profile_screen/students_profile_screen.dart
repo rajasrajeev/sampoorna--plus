@@ -395,10 +395,7 @@ getPhotoFromAPI() async {
                                     ? ( (photoData == null || photoData== "")
                                        ?
                                        ProfileHeader(
-                                        imageUrl: 
-                                             ((studentDetail['personal_details']['gender'] == "Male")
-                                                ? "assets/images/boy.png"
-                                                : "assets/images/girl.png"),
+                                        imageUrl:"assets/images/studentProfile.png",
                                              
                                         name: studentDetail['personal_details']
                                             ['full_name'],
