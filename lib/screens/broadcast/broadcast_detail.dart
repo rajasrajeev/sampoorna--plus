@@ -56,28 +56,6 @@ class _BroadcastDetailState extends State<BroadcastDetail> {
   }
 
   getBroadcastMessages() async {
-    /* showDialog(
-        barrierDismissible: true,
-        context: context,
-        builder: (_) {
-          return Dialog(
-            backgroundColor: Colors.white,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 20),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: const [
-                  CircularProgressIndicator(),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  Text('Loading...')
-                ],
-              ),
-            ),
-          );
-        }); */
-
     final res = await getBroadcastMessage(widget.studentCode);
 
     if (res.statusCode == 200) {
@@ -114,28 +92,6 @@ class _BroadcastDetailState extends State<BroadcastDetail> {
   }
 
   postBroadcastMessages() async {
-    /* showDialog(
-        barrierDismissible: true,
-        context: context,
-        builder: (_) {
-          return Dialog(
-            backgroundColor: Colors.white,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 20),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: const [
-                  CircularProgressIndicator(),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  Text('Loading...')
-                ],
-              ),
-            ),
-          );
-        }); */
-
     final res = await sendBroadcastMessage(
         widget.studentCode, searchController.text, 'Broadcast');
 
@@ -183,7 +139,16 @@ class _BroadcastDetailState extends State<BroadcastDetail> {
               children: <Widget>[
                 IconButton(
                   onPressed: () {
-                    Navigator.of(context).pop();
+                    if (userType == "PARENT") {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                const ParentsDashboardScreen()),
+                      );
+                    } else {
+                      Navigator.of(context).pop();
+                    }
                   },
                   icon: const Icon(
                     Icons.arrow_back,
