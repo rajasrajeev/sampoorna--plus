@@ -194,54 +194,59 @@ class _BroadcastDetailState extends State<BroadcastDetail> {
       ),
       body: Stack(
         children: <Widget>[
-          ListView.builder(
-            itemCount: messages.length,
-            shrinkWrap: true,
-            padding: const EdgeInsets.only(top: 10, bottom: 10),
-            physics: const NeverScrollableScrollPhysics(),
-            itemBuilder: (context, index) {
-              return Container(
-                  padding: const EdgeInsets.only(
-                      left: 14, right: 14, top: 10, bottom: 10),
-                  child: Align(
-                      alignment: (messages[index].messageType == "receiver"
-                          ? Alignment.topLeft
-                          : Alignment.topRight),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: (messages[index].messageType == "receiver"
-                              ? Colors.grey.shade200
-                              : primaryColor),
-                        ),
-                        padding: const EdgeInsets.only(
-                            left: 16, right: 16, top: 10, bottom: 10),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              messages[index].messageContent,
-                              style: TextStyle(
-                                color: (messages[index].messageType ==
-                                        "receiver"
-                                    ? const Color.fromARGB(255, 0, 0, 0)
-                                    : const Color.fromARGB(255, 255, 255, 255)),
-                              ),
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.8,
+            child: SingleChildScrollView(
+              child: ListView.builder(
+                itemCount: messages.length,
+                shrinkWrap: true,
+                padding: const EdgeInsets.only(top: 10, bottom: 10),
+                physics: const NeverScrollableScrollPhysics(),
+                itemBuilder: (context, index) {
+                  return Container(
+                      padding: const EdgeInsets.only(
+                          left: 14, right: 14, top: 10, bottom: 10),
+                      child: Align(
+                          alignment: (messages[index].messageType == "receiver"
+                              ? Alignment.topLeft
+                              : Alignment.topRight),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              color: (messages[index].messageType == "receiver"
+                                  ? Colors.grey.shade200
+                                  : primaryColor),
                             ),
-                            const SizedBox(
-                              height: 10,
+                            padding: const EdgeInsets.only(
+                                left: 16, right: 16, top: 10, bottom: 10),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  messages[index].messageContent,
+                                  style: TextStyle(
+                                    color: (messages[index].messageType ==
+                                            "receiver"
+                                        ? const Color.fromARGB(255, 0, 0, 0)
+                                        : const Color.fromARGB(255, 255, 255, 255)),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                Text(
+                                  messages[index].timeOfMessage,
+                                  style: const TextStyle(
+                                      color: Color.fromARGB(255, 180, 180, 180),
+                                      fontSize: 10),
+                                ),
+                              ],
                             ),
-                            Text(
-                              messages[index].timeOfMessage,
-                              style: const TextStyle(
-                                  color: Color.fromARGB(255, 180, 180, 180),
-                                  fontSize: 10),
-                            ),
-                          ],
-                        ),
-                      )));
-            },
+                          )));
+                },
+              ),
+            ),
           ),
           Align(
             alignment: Alignment.bottomLeft,
