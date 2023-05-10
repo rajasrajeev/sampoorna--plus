@@ -132,6 +132,7 @@ Future lastMarkedDateApi(school_id, batch_id) async {
 
   return response;
 }
+
 //API TO POST Add Attendance
 Future addAttendance(payload) async {
   final prefs = await SharedPreferences.getInstance();
@@ -297,14 +298,15 @@ Future getPhotoOfStudent(data) async {
     },
   );
   if (response.statusCode == 200) {
-      debugPrint(
-      "**************Image Get  function called $response************************");
+    debugPrint(
+        "**************Image Get  function called $response************************");
   } else {}
   return response;
 }
 
 //API TO POST LOGIN
-Future sendBroadcastMessage(String batchId, String body, String subject) async {
+Future sendBroadcastMessage(
+    String? batchId, String body, String subject) async {
   final prefs = await SharedPreferences.getInstance();
   var token = await prefs.getString('token');
   final response = await http.post(
@@ -321,7 +323,7 @@ Future sendBroadcastMessage(String batchId, String body, String subject) async {
 }
 
 //API TO POST LOGIN
-Future getBroadcastMessage(String batchId) async {
+Future getBroadcastMessage(String? batchId) async {
   final prefs = await SharedPreferences.getInstance();
   var token = await prefs.getString('token');
   final response = await http.post(

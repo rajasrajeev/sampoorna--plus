@@ -1,7 +1,14 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:student_management/services/api_services.dart';
+import 'package:student_management/services/jwt_token_parser.dart';
 
 import '../../constants.dart';
 import '../main_screen/main_screen.dart';
@@ -21,32 +28,141 @@ class BroadcastDetail extends StatefulWidget {
 class ChatMessage {
   String messageContent;
   String messageType;
-  ChatMessage({required this.messageContent, required this.messageType});
+  String timeOfMessage;
+  ChatMessage(
+      {required this.messageContent,
+      required this.messageType,
+      required this.timeOfMessage});
 }
 
 class _BroadcastDetailState extends State<BroadcastDetail> {
-  List<ChatMessage> messages = [
-    ChatMessage(messageContent: "Hello,", messageType: "receiver"),
-    ChatMessage(
-        messageContent: "Have you recieved Marklist?", messageType: "receiver"),
-    ChatMessage(
-        messageContent: "Hey , I havent recieved", messageType: "sender"),
-    ChatMessage(
-        messageContent: "Marklist is updated ", messageType: "receiver"),
-    ChatMessage(
-        messageContent: "k Thank you will check now", messageType: "sender"),
-  ];
+  List<ChatMessage> messages = [];
   String? userType = "";
+  bool _loading = false;
+  final TextEditingController searchController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     getToken();
+    getBroadcastMessages();
   }
 
   getToken() async {
     final prefs = await SharedPreferences.getInstance();
     userType = prefs.getString('user_type');
+  }
+
+  getBroadcastMessages() async {
+    /* showDialog(
+        barrierDismissible: true,
+        context: context,
+        builder: (_) {
+          return Dialog(
+            backgroundColor: Colors.white,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 20),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: const [
+                  CircularProgressIndicator(),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  Text('Loading...')
+                ],
+              ),
+            ),
+          );
+        }); */
+
+    final res = await getBroadcastMessage(widget.studentCode);
+
+    if (res.statusCode == 200) {
+      setState(() {
+        _loading = false;
+      });
+      final responseData = jsonDecode(res.body);
+
+      // Navigator.of(context).pop();
+      var data = parseJwtAndSave(responseData['broadcast']);
+      for (var i = 0; i < data['token'].length; i++) {
+        setState(() {
+          messages.add(ChatMessage(
+              messageContent: data['token'][i]['body'],
+              messageType: 'sender',
+              timeOfMessage: data['token'][i]['created_at']));
+        });
+      }
+    } else {
+      setState(() {
+        _loading = false;
+      });
+      // Navigator.of(context).pop();
+      Fluttertoast.showToast(
+        msg: "Unable to Sync Students List Now",
+        gravity: ToastGravity.TOP,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 15.0,
+      );
+    }
+  }
+
+  postBroadcastMessages() async {
+    /* showDialog(
+        barrierDismissible: true,
+        context: context,
+        builder: (_) {
+          return Dialog(
+            backgroundColor: Colors.white,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 20),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: const [
+                  CircularProgressIndicator(),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  Text('Loading...')
+                ],
+              ),
+            ),
+          );
+        }); */
+
+    final res = await sendBroadcastMessage(
+        widget.studentCode, searchController.text, 'Broadcast');
+
+    if (res.statusCode == 200) {
+      setState(() {
+        _loading = false;
+      });
+      final responseData = jsonDecode(res.body);
+      searchController.clear();
+      // Navigator.of(context).pop();
+      var data = parseJwtAndSave(responseData['broadcast']);
+      debugPrint("individualAttendanceForStudent Data ********* $data");
+      getBroadcastMessages();
+      /* setState(() {
+        attendanceDates = data['attendance_data'];
+      }); */
+    } else {
+      setState(() {
+        _loading = false;
+      });
+      // Navigator.of(context).pop();
+      Fluttertoast.showToast(
+        msg: "Unable to Sync Students List Now",
+        gravity: ToastGravity.TOP,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 15.0,
+      );
+    }
   }
 
   @override
@@ -64,14 +180,7 @@ class _BroadcastDetailState extends State<BroadcastDetail> {
               children: <Widget>[
                 IconButton(
                   onPressed: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => userType == "PARENT"
-                            ? const ParentsDashboardScreen()
-                            : const MainScreen(),
-                      ),
-                    );
+                    Navigator.of(context).pop();
                   },
                   icon: const Icon(
                     Icons.arrow_back,
@@ -155,9 +264,9 @@ class _BroadcastDetailState extends State<BroadcastDetail> {
                             const SizedBox(
                               height: 10,
                             ),
-                            const Text(
-                              "1-2-23",
-                              style: TextStyle(
+                            Text(
+                              messages[index].timeOfMessage,
+                              style: const TextStyle(
                                   color: Color.fromARGB(255, 180, 180, 180),
                                   fontSize: 10),
                             ),
@@ -191,27 +300,38 @@ class _BroadcastDetailState extends State<BroadcastDetail> {
                   const SizedBox(
                     width: 15,
                   ),
-                  const Expanded(
-                    child: TextField(
-                      decoration: InputDecoration(
-                          hintText: "Write message...",
-                          hintStyle: TextStyle(color: Colors.black54),
-                          border: InputBorder.none),
-                    ),
-                  ),
+                  userType != 'PARENT'
+                      ? Expanded(
+                          child: TextField(
+                            controller: searchController,
+                            decoration: const InputDecoration(
+                                hintText: "Write message...",
+                                hintStyle: TextStyle(color: Colors.black54),
+                                border: InputBorder.none),
+                          ),
+                        )
+                      : const SizedBox(
+                          width: 0,
+                        ),
                   const SizedBox(
                     width: 15,
                   ),
-                  FloatingActionButton(
-                    onPressed: () {},
-                    backgroundColor: primaryColor,
-                    elevation: 0,
-                    child: const Icon(
-                      Icons.send,
-                      color: Colors.white,
-                      size: 18,
-                    ),
-                  ),
+                  userType != 'PARENT'
+                      ? FloatingActionButton(
+                          onPressed: () {
+                            postBroadcastMessages();
+                          },
+                          backgroundColor: primaryColor,
+                          elevation: 0,
+                          child: const Icon(
+                            Icons.send,
+                            color: Colors.white,
+                            size: 18,
+                          ),
+                        )
+                      : const SizedBox(
+                          width: 0,
+                        ),
                 ],
               ),
             ),
