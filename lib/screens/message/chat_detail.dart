@@ -1,10 +1,24 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:student_management/constants.dart';
+import 'package:student_management/screens/broadcast/broadcast_detail.dart';
+import 'package:student_management/services/api_services.dart';
+import 'package:student_management/services/jwt_token_parser.dart';
 
 class ChatDetail extends StatefulWidget {
   final String? studentCode;
   final String? studentName;
-  const ChatDetail({required this.studentCode, this.studentName, super.key});
+  final String? batchId;
+  final String? fullName;
+  const ChatDetail(
+      {required this.studentCode,
+      required this.studentName,
+      required this.batchId,
+      required this.fullName,
+      super.key});
 
   @override
   State<ChatDetail> createState() => _ChatDetailState();
@@ -14,21 +28,95 @@ class ChatDetail extends StatefulWidget {
 class ChatMessage {
   String messageContent;
   String messageType;
-  ChatMessage({required this.messageContent, required this.messageType});
+  String timeOfMessage;
+  ChatMessage(
+      {required this.messageContent,
+      required this.messageType,
+      required this.timeOfMessage});
 }
 
 class _ChatDetailState extends State<ChatDetail> {
-  List<ChatMessage> messages = [
-    ChatMessage(messageContent: "Hello,", messageType: "receiver"),
-    ChatMessage(
-        messageContent: "Have you recieved Marklist?", messageType: "receiver"),
-    ChatMessage(
-        messageContent: "Hey , I havent recieved", messageType: "sender"),
-    ChatMessage(
-        messageContent: "Marklist is updated ", messageType: "receiver"),
-    ChatMessage(
-        messageContent: "k Thank you will check now", messageType: "sender"),
-  ];
+  List<ChatMessage> messages = [];
+  String? userType = "";
+  String? userId = "";
+  bool _loading = false;
+  final TextEditingController searchController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    getToken();
+    getMessages();
+  }
+
+  getToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    userType = prefs.getString('user_type');
+    userId = prefs.getString('user_id');
+  }
+
+  getMessages() async {
+    final res = await getPersonalMessage(widget.studentCode);
+
+    if (res.statusCode == 200) {
+      setState(() {
+        _loading = false;
+      });
+      final responseData = jsonDecode(res.body);
+
+      // Navigator.of(context).pop();
+      var data = parseJwtAndSave(responseData['broadcast']);
+      for (var i = 0; i < data['token'].length; i++) {
+        setState(() {
+          messages.add(ChatMessage(
+              messageContent: data['token'][i]['body'],
+              messageType:
+                  userId == data['token'][i]['user_id'] ? 'sender' : 'receiver',
+              timeOfMessage: data['token'][i]['created_at']));
+        });
+      }
+    } else {
+      setState(() {
+        _loading = false;
+      });
+      // Navigator.of(context).pop();
+      Fluttertoast.showToast(
+        msg: "Unable to Sync Students List Now",
+        gravity: ToastGravity.TOP,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 15.0,
+      );
+    }
+  }
+
+  postMessages() async {
+    final res = await sendMessage(searchController.text, widget.studentCode);
+
+    if (res.statusCode == 200) {
+      // final responseData = jsonDecode(res.body);
+      setState(() {
+        _loading = false;
+      });
+      searchController.clear();
+      getMessages();
+    } else {
+      setState(() {
+        _loading = false;
+      });
+      // Navigator.of(context).pop();
+      Fluttertoast.showToast(
+        msg: "Unable to Sync Students List Now",
+        gravity: ToastGravity.TOP,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 15.0,
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -73,11 +161,11 @@ class _ChatDetailState extends State<ChatDetail> {
                       const SizedBox(
                         height: 6,
                       ),
-                      Text(
+                      /* Text(
                         "sampoorna",
                         style: TextStyle(
                             color: Colors.grey.shade600, fontSize: 13),
-                      ),
+                      ), */
                     ],
                   ),
                 ),
@@ -112,7 +200,7 @@ class _ChatDetailState extends State<ChatDetail> {
                             left: 16, right: 16, top: 10, bottom: 10),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.end,
-                    mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
                               messages[index].messageContent,
@@ -123,11 +211,14 @@ class _ChatDetailState extends State<ChatDetail> {
                                     : const Color.fromARGB(255, 255, 255, 255)),
                               ),
                             ),
-                            const SizedBox(height: 10,),
+                            const SizedBox(
+                              height: 10,
+                            ),
                             const Text(
                               "1-2-23",
                               style: TextStyle(
-                                  color: Color.fromARGB(255, 180, 180, 180), fontSize: 10),
+                                  color: Color.fromARGB(255, 180, 180, 180),
+                                  fontSize: 10),
                             ),
                           ],
                         ),
@@ -159,9 +250,10 @@ class _ChatDetailState extends State<ChatDetail> {
                   const SizedBox(
                     width: 15,
                   ),
-                  const Expanded(
+                  Expanded(
                     child: TextField(
-                      decoration: InputDecoration(
+                      controller: searchController,
+                      decoration: const InputDecoration(
                           hintText: "Write message...",
                           hintStyle: TextStyle(color: Colors.black54),
                           border: InputBorder.none),
@@ -171,7 +263,9 @@ class _ChatDetailState extends State<ChatDetail> {
                     width: 15,
                   ),
                   FloatingActionButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      postMessages();
+                    },
                     backgroundColor: primaryColor,
                     elevation: 0,
                     child: const Icon(
@@ -185,6 +279,22 @@ class _ChatDetailState extends State<ChatDetail> {
             ),
           ),
         ],
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.miniEndTop,
+      floatingActionButton: FloatingActionButton.extended(
+        backgroundColor: primaryColor,
+        label: const Text("Broadcast"),
+        icon: const Icon(Icons.sync),
+        onPressed: () async {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => BroadcastDetail(
+                    studentName: widget.fullName,
+                    studentCode: widget.batchId //Class List from dropdown
+                    )),
+          );
+        },
       ),
     );
   }

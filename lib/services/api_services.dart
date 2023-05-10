@@ -314,7 +314,7 @@ Future getBroadcastMessage(String? batchId) async {
 }
 
 //API TO POST LOGIN
-Future sendMessage(String body, String studentCode) async {
+Future sendMessage(String body, String? studentCode) async {
   final prefs = await SharedPreferences.getInstance();
   var token = await prefs.getString('token');
   final response = await http.post(
@@ -331,7 +331,7 @@ Future sendMessage(String body, String studentCode) async {
 }
 
 //API TO POST LOGIN
-Future getPersonalMessage(String studentCode) async {
+Future getPersonalMessage(String? studentCode) async {
   final prefs = await SharedPreferences.getInstance();
   var token = await prefs.getString('token');
   final response = await http.post(

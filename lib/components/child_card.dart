@@ -1,3 +1,5 @@
+// ignore_for_file: unrelated_type_equality_checks
+
 import 'dart:convert';
 import 'dart:typed_data';
 
@@ -10,11 +12,13 @@ import 'package:student_management/components/tile_link.dart';
 import 'package:student_management/constants.dart';
 import 'package:student_management/screens/exams/exams.dart';
 import 'package:student_management/screens/individual_attendance_screen/individual_attendance_screen.dart';
+import 'package:student_management/screens/message/chat_detail.dart';
 import 'package:student_management/services/api_services.dart';
 import 'package:student_management/services/jwt_token_parser.dart';
 
 import '../screens/broadcast/broadcast_detail.dart';
 import '../screens/message/chat_select.dart';
+import 'package:intl/intl.dart';
 
 class ChildCard extends StatefulWidget {
   final List day;
@@ -88,7 +92,6 @@ class _ChildCardState extends State<ChildCard> {
     setState(() {
       loading = false;
     });
-    print("=-=-==-=-=-=-> $status <-=-=-=-=-=-=-==-");
   }
 
   getPastWeekAttendance() async {
@@ -96,6 +99,18 @@ class _ChildCardState extends State<ChildCard> {
       loading = true;
     });
     final prefs = await SharedPreferences.getInstance();
+    String? pastData = prefs.getString('pastWeekAttendance');
+    // print("$pastData");
+
+    /* if (prefs.getString('currentDate') ==
+        DateFormat('dd-MM-yyyy').format(DateTime.now())) {
+      var pastWeekAttendance = json.decode(pastData!);
+      setState(() {
+        attendanceData = pastWeekAttendance;
+        loading = false;
+      });
+      return;
+    } */
 
     var data = {
       "user_id": prefs.getString('user_id'),
@@ -106,6 +121,9 @@ class _ChildCardState extends State<ChildCard> {
     if (res.statusCode == 200) {
       final responseData = jsonDecode(res.body);
       dynamic data = parseJwtAndSave(responseData['token'].toString());
+      prefs.setString('currentDate',
+          DateFormat('dd-MM-yyyy').format(DateTime.now()).toString());
+      prefs.setString('pastWeekAttendance', json.encode(data['token']));
       setState(() {
         attendanceData = data['token'];
       });
@@ -316,10 +334,12 @@ class _ChildCardState extends State<ChildCard> {
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => BroadcastDetail(
-                                  studentName: widget.grade + widget.division,
-                                  studentCode:
-                                      widget.batchId //Class List from dropdown
+                              builder: (context) => ChatDetail(
+                                    batchId: widget.batchId,
+                                    fullName:
+                                        "${widget.grade} ${widget.division}",
+                                    studentCode: widget.studentCode,
+                                    studentName: widget.fullName,
                                   )),
                         )
                       },

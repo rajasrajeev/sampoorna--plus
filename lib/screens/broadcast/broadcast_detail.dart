@@ -179,11 +179,11 @@ class _BroadcastDetailState extends State<BroadcastDetail> {
                       SizedBox(
                         height: size.height * 0.003,
                       ),
-                      Text(
+                      /* Text(
                         "sampoorna",
                         style: TextStyle(
                             color: Colors.grey.shade600, fontSize: 13),
-                      ),
+                      ), */
                     ],
                   ),
                 ),
@@ -229,7 +229,8 @@ class _BroadcastDetailState extends State<BroadcastDetail> {
                                     color: (messages[index].messageType ==
                                             "receiver"
                                         ? const Color.fromARGB(255, 0, 0, 0)
-                                        : const Color.fromARGB(255, 255, 255, 255)),
+                                        : const Color.fromARGB(
+                                            255, 255, 255, 255)),
                                   ),
                                 ),
                                 const SizedBox(

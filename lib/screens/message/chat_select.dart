@@ -319,6 +319,13 @@ class _ChatSelectState extends State<ChatSelect> {
                                                   //             ['student_code']
                                                   //         .toString())
                                                   ChatDetail(
+                                                    fullName:
+                                                        studentsList[index]
+                                                                ['full_name']
+                                                            .toString(),
+                                                    batchId: studentsList[index]
+                                                            ['batch_id']
+                                                        .toString(),
                                                     studentCode:
                                                         studentsList[index]
                                                                 ['student_code']
