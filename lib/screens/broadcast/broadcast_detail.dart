@@ -66,6 +66,7 @@ class _BroadcastDetailState extends State<BroadcastDetail> {
 
       // Navigator.of(context).pop();
       var data = parseJwtAndSave(responseData['broadcast']);
+      messages.clear();
       for (var i = 0; i < data['token'].length; i++) {
         setState(() {
           messages.add(ChatMessage(
