@@ -64,7 +64,7 @@ android {
         release {
             keyAlias "key"
             keyPassword "sampoornaplus"
-            storeFile file('C:\\Users\\USER\\Documents\\Flutter_APP\\sampoorna--plus\\android\\app\\key\\sampoornaplus.jks')
+            storeFile file('C:\\Users\\rajas\\sampoornaplus.jks')
             storePassword "sampoornaplus"
         }
     }

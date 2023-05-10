@@ -51,8 +51,10 @@ class _ChatDetailState extends State<ChatDetail> {
 
   getToken() async {
     final prefs = await SharedPreferences.getInstance();
-    userType = prefs.getString('user_type');
-    userId = prefs.getString('user_id');
+    setState(() {
+      userType = prefs.getString('user_type');
+      userId = prefs.getString('user_id');
+    });
   }
 
   getMessages() async {
@@ -263,6 +265,7 @@ class _ChatDetailState extends State<ChatDetail> {
                     width: 15,
                   ),
                   FloatingActionButton(
+                    heroTag: 'btn1',
                     onPressed: () {
                       postMessages();
                     },
@@ -281,21 +284,24 @@ class _ChatDetailState extends State<ChatDetail> {
         ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.miniEndTop,
-      floatingActionButton: FloatingActionButton.extended(
-        backgroundColor: primaryColor,
-        label: const Text("Broadcast"),
-        icon: const Icon(Icons.sync),
-        onPressed: () async {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => BroadcastDetail(
-                    studentName: widget.fullName,
-                    studentCode: widget.batchId //Class List from dropdown
-                    )),
-          );
-        },
-      ),
+      floatingActionButton: userType == 'PARENT'
+          ? FloatingActionButton.extended(
+              heroTag: 'btn2',
+              backgroundColor: primaryColor,
+              label: const Text("Broadcast"),
+              icon: const Icon(Icons.sync),
+              onPressed: () async {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => BroadcastDetail(
+                          studentName: widget.fullName,
+                          studentCode: widget.batchId //Class List from dropdown
+                          )),
+                );
+              },
+            )
+          : Container(),
     );
   }
 }
