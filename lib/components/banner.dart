@@ -27,6 +27,7 @@ class CommonBanner extends StatefulWidget {
 
 class _CommonBannerState extends State<CommonBanner> {
   List permittedBatches = [];
+  String? userType = "";
 
   @override
   void initState() {
@@ -36,7 +37,8 @@ class _CommonBannerState extends State<CommonBanner> {
 
   getData() async {
     final prefs = await SharedPreferences.getInstance();
-    var details = await prefs.getString('loginData');
+    var details = prefs.getString('loginData');
+    userType = prefs.getString('user_type');
     dynamic data = json.decode(details!);
     setState(() {
       permittedBatches = data['permittedBatches'];
@@ -102,8 +104,9 @@ class _CommonBannerState extends State<CommonBanner> {
                                   itemBuilder: (context, index) {
                                     return Container(
                                       width: size.width * 0.15,
-                                       height: size.height * 0.5,
-                                      margin:  EdgeInsets.all(size.width*0.005),
+                                      height: size.height * 0.5,
+                                      margin:
+                                          EdgeInsets.all(size.width * 0.005),
                                       //padding:const EdgeInsets.all(12),
                                       decoration: BoxDecoration(
                                           border: Border.all(
@@ -113,15 +116,17 @@ class _CommonBannerState extends State<CommonBanner> {
                                               BorderRadius.circular(10)),
                                       child: GestureDetector(
                                         onTap: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    AttendanceScreen(
-                                                      grade:
-                                                          "${permittedBatches[index]['class']} ${permittedBatches[index]['name']}",
-                                                    )),
-                                          );
+                                          if (userType == "TEACHER") {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      AttendanceScreen(
+                                                        grade:
+                                                            "${permittedBatches[index]['class']} ${permittedBatches[index]['name']}",
+                                                      )),
+                                            );
+                                          }
                                         },
                                         child: Padding(
                                           padding: const EdgeInsets.all(0),
