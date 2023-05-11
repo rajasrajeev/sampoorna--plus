@@ -5,6 +5,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:student_management/constants.dart';
 import 'package:student_management/screens/broadcast/broadcast_detail.dart';
+import 'package:student_management/screens/parents/dashboard/parents_dashboard_screen.dart';
 import 'package:student_management/services/api_services.dart';
 import 'package:student_management/services/jwt_token_parser.dart';
 
@@ -58,11 +59,15 @@ class _ChatDetailState extends State<ChatDetail> {
   }
 
   getMessages() async {
+    setState(() {
+      _loading = true;
+    });
     final res = await getPersonalMessage(widget.studentCode);
 
     if (res.statusCode == 200) {
       setState(() {
         _loading = false;
+        messages = [];
       });
       final responseData = jsonDecode(res.body);
 
@@ -71,15 +76,18 @@ class _ChatDetailState extends State<ChatDetail> {
       for (var i = 0; i < data['token'].length; i++) {
         setState(() {
           messages.add(ChatMessage(
-              messageContent: data['token'][i]['body'],
-              messageType:
-                  userId == data['token'][i]['user_id'] ? 'sender' : 'receiver',
+              messageContent: data['token'][i]['message_text'],
+              messageType: userId == data['token'][i]['sender_id']
+                  ? 'sender'
+                  : 'receiver',
               timeOfMessage: data['token'][i]['created_at']));
         });
       }
+      print("======================> $messages <==========================");
     } else {
       setState(() {
         _loading = false;
+        messages = [];
       });
       // Navigator.of(context).pop();
       Fluttertoast.showToast(
@@ -133,7 +141,16 @@ class _ChatDetailState extends State<ChatDetail> {
               children: <Widget>[
                 IconButton(
                   onPressed: () {
-                    Navigator.pop(context);
+                    if (userType == "PARENT") {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                const ParentsDashboardScreen()),
+                      );
+                    } else {
+                      Navigator.of(context).pop();
+                    }
                   },
                   icon: const Icon(
                     Icons.arrow_back,
@@ -178,55 +195,69 @@ class _ChatDetailState extends State<ChatDetail> {
       ),
       body: Stack(
         children: <Widget>[
-          ListView.builder(
-            itemCount: messages.length,
-            shrinkWrap: true,
-            padding: const EdgeInsets.only(top: 10, bottom: 10),
-            physics: const NeverScrollableScrollPhysics(),
-            itemBuilder: (context, index) {
-              return Container(
-                  padding: const EdgeInsets.only(
-                      left: 14, right: 14, top: 10, bottom: 10),
-                  child: Align(
-                      alignment: (messages[index].messageType == "receiver"
-                          ? Alignment.topLeft
-                          : Alignment.topRight),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: (messages[index].messageType == "receiver"
-                              ? Colors.grey.shade200
-                              : primaryColor),
-                        ),
-                        padding: const EdgeInsets.only(
-                            left: 16, right: 16, top: 10, bottom: 10),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              messages[index].messageContent,
-                              style: TextStyle(
-                                color: (messages[index].messageType ==
-                                        "receiver"
-                                    ? const Color.fromARGB(255, 0, 0, 0)
-                                    : const Color.fromARGB(255, 255, 255, 255)),
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            const Text(
-                              "1-2-23",
-                              style: TextStyle(
-                                  color: Color.fromARGB(255, 180, 180, 180),
-                                  fontSize: 10),
-                            ),
-                          ],
-                        ),
-                      )));
-            },
-          ),
+          messages.isNotEmpty
+              ? SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.8,
+                  child: SingleChildScrollView(
+                    child: ListView.builder(
+                      itemCount: messages.length,
+                      shrinkWrap: true,
+                      padding: const EdgeInsets.only(top: 10, bottom: 10),
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemBuilder: (context, index) {
+                        return Container(
+                            padding: const EdgeInsets.only(
+                                left: 14, right: 14, top: 10, bottom: 10),
+                            child: Align(
+                                alignment:
+                                    (messages[index].messageType == "receiver"
+                                        ? Alignment.topLeft
+                                        : Alignment.topRight),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    color: (messages[index].messageType ==
+                                            "receiver"
+                                        ? Colors.grey.shade200
+                                        : primaryColor),
+                                  ),
+                                  padding: const EdgeInsets.only(
+                                      left: 16, right: 16, top: 10, bottom: 10),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        messages[index].messageContent,
+                                        style: TextStyle(
+                                          color: (messages[index].messageType ==
+                                                  "receiver"
+                                              ? const Color.fromARGB(
+                                                  255, 0, 0, 0)
+                                              : const Color.fromARGB(
+                                                  255, 255, 255, 255)),
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                      Text(
+                                        messages[index].timeOfMessage,
+                                        style: const TextStyle(
+                                            color: Color.fromARGB(
+                                                255, 180, 180, 180),
+                                            fontSize: 10),
+                                      ),
+                                    ],
+                                  ),
+                                )));
+                      },
+                    ),
+                  ),
+                )
+              : SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.8,
+                ),
           Align(
             alignment: Alignment.bottomLeft,
             child: Container(

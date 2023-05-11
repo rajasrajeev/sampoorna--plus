@@ -43,7 +43,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
   String markedStatus = "";
   bool disabledArea = false;
   dynamic currentMarkedAttendance = '';
-  
+
   @override
   void initState() {
     getData();
@@ -84,9 +84,10 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
     getStudentsData(dropdownvalue);
     getLastMarkedAttendance();
   }
-getLastMarkedAttendance() async {
-  final prefs = await SharedPreferences.getInstance();
-   var schoolId=prefs.getString('school_id');
+
+  getLastMarkedAttendance() async {
+    final prefs = await SharedPreferences.getInstance();
+    var schoolId = prefs.getString('school_id');
     final res = await lastMarkedDateApi(schoolId, dropdownvalue);
     if (res.statusCode == 200) {
       final responseData = jsonDecode(res.body);
@@ -127,6 +128,7 @@ getLastMarkedAttendance() async {
       );
     }
   }
+
   getStudentsData(String batchId) async {
     final prefs = await SharedPreferences.getInstance();
     batchid = batchId;
@@ -178,6 +180,9 @@ getLastMarkedAttendance() async {
       await createCheckersList(data['token']);
     } else {
       Navigator.of(context).pop();
+      setState(() {
+        studentsList = [];
+      });
       Fluttertoast.showToast(
         msg: "Unable to Sync Students List Now",
         gravity: ToastGravity.TOP,
@@ -237,7 +242,7 @@ getLastMarkedAttendance() async {
         context: context,
         initialDate: selectedDate,
         firstDate: DateTime(2015, 8),
-        lastDate: DateTime(2101));
+        lastDate: DateTime.now());
     if (picked != null && picked != selectedDate) {
       setState(() {
         selectedDate = picked;
@@ -350,10 +355,10 @@ getLastMarkedAttendance() async {
                 ],
               ),
             ),
-              LiveTitle(
-                  title: currentMarkedAttendance == ''
-                      ? 'Last Marked Attendance Not Found...'
-                      : 'Last Marked Attendance $currentMarkedAttendance'),
+            LiveTitle(
+                title: currentMarkedAttendance == ''
+                    ? 'Last Marked Attendance Not Found...'
+                    : 'Last Marked Attendance $currentMarkedAttendance'),
             const SizedBox(height: 20),
             Expanded(
               child: SingleChildScrollView(
