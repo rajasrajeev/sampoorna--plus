@@ -282,7 +282,7 @@ class _SingleDayAttendanceScreenState extends State<SingleDayAttendanceScreen> {
                                                 child: Text(
                                                     "${attendanceDates[index]["full_name"]}",
                                                                             style: const TextStyle(
-                                                                              fontSize: 10,
+                                                                              fontSize: 12,
                                                                               color: Color.fromARGB(179, 0, 0, 0),
                                                                               fontWeight: FontWeight.w500,
                                                                             )),
