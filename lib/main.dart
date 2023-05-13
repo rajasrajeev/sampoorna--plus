@@ -8,7 +8,13 @@ import 'dart:async';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-void main() {
+void main() async {
+  // Initialize the Flutter framework
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Set the preferred orientation to portrait up
+  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+
   runApp(const MyApp());
 }
 
