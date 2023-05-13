@@ -40,8 +40,12 @@ class _PasswordFieldState extends State<PasswordField> {
         controller: widget.controller, 
         decoration: InputDecoration(
           suffixIcon: IconButton(
-            icon: const Icon(
+            icon: obscureText? const Icon(
               Icons.visibility_off,
+              color: primaryColor,
+            ):
+             const Icon(
+              Icons.visibility,
               color: primaryColor,
             ),
             onPressed: () {
