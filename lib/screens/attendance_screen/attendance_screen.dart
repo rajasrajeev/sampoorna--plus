@@ -268,8 +268,10 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
               child: Row(
                 children: <Widget>[
                   Container(
-                    padding: EdgeInsets.all(size.width * 0.03),
-                    height: size.height * 0.07,
+                    padding: const EdgeInsets.all(4),
+                    //padding: EdgeInsets.all(size.width * 0.03),
+                    height:50,
+                    //height: size.height * 0.07,
                     width: size.width * 0.40,
                     decoration: BoxDecoration(
                       color: Colors.white,
@@ -312,7 +314,8 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                   const Spacer(),
                   Container(
                     padding: EdgeInsets.all(size.width * 0.014),
-                    height: size.height * 0.07,
+                    //height: size.height * 0.07,
+                    height:50,
                     width: size.width * 0.50,
                     decoration: BoxDecoration(
                       borderRadius: const BorderRadius.all(Radius.circular(30)),

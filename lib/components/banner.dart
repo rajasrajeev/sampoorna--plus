@@ -82,7 +82,8 @@ class _CommonBannerState extends State<CommonBanner> {
                   const Spacer(),
                   // ignore: prefer_const_constructors
                   Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                   crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
                         widget.name,

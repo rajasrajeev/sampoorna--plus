@@ -280,7 +280,12 @@ class _SingleDayAttendanceScreenState extends State<SingleDayAttendanceScreen> {
                                               height: 40,
                                               child: Center(
                                                 child: Text(
-                                                    "${attendanceDates[index]["full_name"]}"),
+                                                    "${attendanceDates[index]["full_name"]}",
+                                                                            style: const TextStyle(
+                                                                              fontSize: 12,
+                                                                              color: Color.fromARGB(179, 0, 0, 0),
+                                                                              fontWeight: FontWeight.w500,
+                                                                            )),
                                               ),
                                             ),
                                             const SizedBox(width: 30),
