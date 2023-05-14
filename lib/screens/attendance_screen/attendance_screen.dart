@@ -48,6 +48,8 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
   void initState() {
     getData();
     super.initState();
+    print(
+        'selectedDate =============> ${DateFormat('dd/MM/yyyy').parse(DateFormat('dd/MM/yyyy').format(DateTime.now()))}');
   }
 
   checkAttendanceDateToday() {
@@ -93,7 +95,6 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
       final responseData = jsonDecode(res.body);
       //Navigator.of(context).pop();
       var data = parseJwtAndSave(responseData['data']);
-      debugPrint("individualAttendanceForStudent Data ********* $data");
       dynamic lastmarkedField = data['token']['lastmarked'];
 
       if (lastmarkedField is List<dynamic>) {
@@ -238,16 +239,18 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
   }
 
   Future<void> _selectDate(BuildContext context) async {
+    var data = DateFormat.yMd().format(DateTime.now());
+    print(data);
     final DateTime? picked = await showDatePicker(
         context: context,
         initialDate: selectedDate,
-        firstDate: DateTime(2015, 8),
+        firstDate: DateTime(2000, 8),
         lastDate: DateTime.now());
     if (picked != null && picked != selectedDate) {
       setState(() {
         selectedDate = picked;
       });
-      getStudentsData(dropdownvalue);
+      // getStudentsData(dropdownvalue);
     }
   }
 
@@ -270,7 +273,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                   Container(
                     padding: const EdgeInsets.all(4),
                     //padding: EdgeInsets.all(size.width * 0.03),
-                    height:50,
+                    height: 50,
                     //height: size.height * 0.07,
                     width: size.width * 0.40,
                     decoration: BoxDecoration(
@@ -315,7 +318,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                   Container(
                     padding: EdgeInsets.all(size.width * 0.014),
                     //height: size.height * 0.07,
-                    height:50,
+                    height: 50,
                     width: size.width * 0.50,
                     decoration: BoxDecoration(
                       borderRadius: const BorderRadius.all(Radius.circular(30)),
@@ -363,101 +366,130 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                     ? 'Last Marked Attendance Not Found...'
                     : 'Last Marked Attendance $currentMarkedAttendance'),
             const SizedBox(height: 20),
-            Expanded(
-              child: SingleChildScrollView(
-                child: DataTable(
-                  columnSpacing: 18,
-                  columns: <DataColumn>[
-                    const DataColumn(
-                      label: Text(
-                        'Id',
-                        style: TextStyle(fontStyle: FontStyle.italic),
-                      ),
-                    ),
-                    const DataColumn(
-                      label: Text(
-                        'Name',
-                        style: TextStyle(fontStyle: FontStyle.italic),
-                      ),
-                    ),
-                    DataColumn(
-                      label: Row(
-                        children: [
-                          Checkbox(
-                              value: checked1,
-                              onChanged: (val) {
-                                for (var i = 0; i < studentsList.length; i++) {
-                                  setState(() {
-                                    attendanceCheckers[i]['fn'] = !checked1;
-                                  });
-                                }
-                                setState(() {
-                                  checked1 = !checked1;
-                                });
-                              }),
-                          const Text(
-                            'FN',
-                            style: TextStyle(fontStyle: FontStyle.italic),
+            studentsList.length > 0
+                ? Expanded(
+                    child: SingleChildScrollView(
+                      child: DataTable(
+                        columnSpacing: 18,
+                        columns: <DataColumn>[
+                          const DataColumn(
+                            label: Text(
+                              'Id',
+                              style: TextStyle(fontStyle: FontStyle.italic),
+                            ),
+                          ),
+                          const DataColumn(
+                            label: Text(
+                              'Name',
+                              style: TextStyle(fontStyle: FontStyle.italic),
+                            ),
+                          ),
+                          DataColumn(
+                            label: Row(
+                              children: [
+                                Checkbox(
+                                    value: checked1,
+                                    onChanged: (val) {
+                                      for (var i = 0;
+                                          i < studentsList.length;
+                                          i++) {
+                                        setState(() {
+                                          attendanceCheckers[i]['fn'] =
+                                              !checked1;
+                                        });
+                                      }
+                                      setState(() {
+                                        checked1 = !checked1;
+                                      });
+                                    }),
+                                const Text(
+                                  'FN',
+                                  style: TextStyle(fontStyle: FontStyle.italic),
+                                ),
+                              ],
+                            ),
+                          ),
+                          DataColumn(
+                            label: Row(
+                              children: [
+                                Checkbox(
+                                    value: checked10,
+                                    onChanged: (val) {
+                                      for (var i = 0;
+                                          i < studentsList.length;
+                                          i++) {
+                                        setState(() {
+                                          attendanceCheckers[i]['an'] =
+                                              !checked10;
+                                        });
+                                      }
+                                      setState(() {
+                                        checked10 = !checked10;
+                                      });
+                                    }),
+                                const Text(
+                                  'AN',
+                                  style: TextStyle(fontStyle: FontStyle.italic),
+                                ),
+                              ],
+                            ),
                           ),
                         ],
-                      ),
-                    ),
-                    DataColumn(
-                      label: Row(
-                        children: [
-                          Checkbox(
-                              value: checked10,
-                              onChanged: (val) {
-                                for (var i = 0; i < studentsList.length; i++) {
-                                  setState(() {
-                                    attendanceCheckers[i]['an'] = !checked10;
-                                  });
-                                }
+                        rows: List.generate(studentsList.length, (index) {
+                          Map<String, dynamic> attendance =
+                              attendanceCheckers.firstWhere((item) =>
+                                  item['student_id'] ==
+                                  studentsList[index]["student_code"]);
+                          return DataRow(cells: <DataCell>[
+                            DataCell(Text('${index + 1}')),
+                            DataCell(
+                                Text('${studentsList[index]["full_name"]}')),
+                            DataCell(Checkbox(
+                              value: attendance["fn"],
+                              onChanged: (bool? val) {
                                 setState(() {
-                                  checked10 = !checked10;
+                                  attendance["fn"] = val!;
                                 });
-                              }),
-                          const Text(
-                            'AN',
-                            style: TextStyle(fontStyle: FontStyle.italic),
-                          ),
-                        ],
+                              },
+                            )),
+                            DataCell(Checkbox(
+                              value: attendance["an"],
+                              onChanged: (bool? val) {
+                                setState(() {
+                                  attendance["an"] = val!;
+                                });
+                              },
+                            )),
+                          ]);
+                        }),
                       ),
                     ),
-                  ],
-                  rows: List.generate(studentsList.length, (index) {
-                    Map<String, dynamic> attendance =
-                        attendanceCheckers.firstWhere((item) =>
-                            item['student_id'] ==
-                            studentsList[index]["student_code"]);
-                    return DataRow(cells: <DataCell>[
-                      DataCell(Text('${index + 1}')),
-                      DataCell(Text('${studentsList[index]["full_name"]}')),
-                      DataCell(Checkbox(
-                        value: attendance["fn"],
-                        onChanged: (bool? val) {
-                          setState(() {
-                            attendance["fn"] = val!;
-                          });
-                        },
-                      )),
-                      DataCell(Checkbox(
-                        value: attendance["an"],
-                        onChanged: (bool? val) {
-                          setState(() {
-                            attendance["an"] = val!;
-                          });
-                        },
-                      )),
-                    ]);
-                  }),
-                ),
-              ),
-            ),
+                  )
+                : Expanded(
+                    child: SingleChildScrollView(
+                        child: DataTable(
+                    columnSpacing: 18,
+                    columns: const <DataColumn>[
+                      DataColumn(
+                        label: Text(
+                          '',
+                          style: TextStyle(fontStyle: FontStyle.italic),
+                        ),
+                      ),
+                      DataColumn(
+                        label: Text(
+                          '',
+                          style: TextStyle(fontStyle: FontStyle.italic),
+                        ),
+                      ),
+                    ],
+                    rows: const [],
+                  ))),
             Column(
               children: [
                 SubmitButton(
                     label: "Submit",
+                    disabled: studentsList.length > 0 ? false : true,
                     onClick: () async {
                       showDialog(
                           // The user CANNOT close this dialog  by pressing outsite it

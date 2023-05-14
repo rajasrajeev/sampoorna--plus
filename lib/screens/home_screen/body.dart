@@ -152,6 +152,17 @@ class _BodyState extends State<Body> {
                     ),
                     SizedBox(width: size.width * 0.029),
                     Tile(
+                      label: "Exams",
+                      image: "assets/images/exam.png",
+                      onClick: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const ExamsScreen()),
+                        );
+                      },
+                    ),
+                    /* Tile(
                       label: "Calendar",
                       image: "assets/images/calendar.png",
                       onClick: () {
@@ -161,9 +172,22 @@ class _BodyState extends State<Body> {
                               builder: (context) => const Nothing()),
                         );
                       },
-                    ),
+                    ), */
                     SizedBox(width: size.width * 0.029),
-                    Tile(
+                    userType != "HM"
+                        ? Tile(
+                            label: "Messages",
+                            image: "assets/images/config.png",
+                            onClick: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const ChatSelect()),
+                              );
+                            },
+                          )
+                        : SizedBox(width: size.width * 0.29),
+                    /* Tile(
                       label: "Reports",
                       image: "assets/images/report.png",
                       onClick: () {
@@ -173,11 +197,11 @@ class _BodyState extends State<Body> {
                               builder: (context) => const Nothing()),
                         );
                       },
-                    ),
+                    ), */
                   ],
                 ),
                 SizedBox(height: size.width * 0.030),
-                Row(
+                /* Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
                     Tile(
@@ -212,7 +236,7 @@ class _BodyState extends State<Body> {
                       width: size.width * 0.29,
                     ),
                   ],
-                ),
+                ), */
               ],
             ),
           ),

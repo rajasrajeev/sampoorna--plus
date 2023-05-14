@@ -3,7 +3,12 @@ import 'package:flutter/material.dart';
 class SubmitButton extends StatelessWidget {
   final String label;
   final Function onClick;
-  const SubmitButton({super.key, required this.label, required this.onClick});
+  final bool disabled;
+  const SubmitButton(
+      {super.key,
+      required this.label,
+      required this.onClick,
+      this.disabled = false});
 
   @override
   Widget build(BuildContext context) {
@@ -11,7 +16,7 @@ class SubmitButton extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.all(size.width * 0.03),
       child: ElevatedButton(
-        onPressed: () => onClick(),
+        onPressed: () => disabled ? null : onClick(),
         style: ElevatedButton.styleFrom(
           shape: const StadiumBorder(),
           padding: EdgeInsets.all(size.width * 0.03),

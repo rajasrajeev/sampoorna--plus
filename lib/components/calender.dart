@@ -125,7 +125,7 @@ class _AttendanceListCalenderState extends State<AttendanceListCalender> {
           firstDay: kFirstDay,
           lastDay: kLastDay,
           focusedDay: _focusedDay,
-          selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
+          // selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
           // rangeStartDay: _rangeStart,
           // rangeEndDay: _rangeEnd,
           rowHeight: 75,
