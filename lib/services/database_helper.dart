@@ -47,7 +47,7 @@ class DatabaseHelper {
         $adminssionNo TEXT NOT NULL UNIQUE, 
         $absentFN INTEGER,
         $absentAN INTEGER,
-        $status INETEGER,
+        $status INTEGER,
         $totalAbsent REAL,
         $schoolID TEXT NOT NULL,
         $studentCode TEXT NOT NULL UNIQUE,

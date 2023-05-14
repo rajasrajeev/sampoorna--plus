@@ -67,6 +67,7 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
 
   getStudentsList() async {
     dynamic localStudents = await _db.getStudentsFromLocal(dropdownvalue);
+    print("Student data from database ===> ${localStudents}");
     if (localStudents.length > 0) {
       setState(() {
         studentsList = localStudents;
@@ -94,6 +95,7 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
     if (res.statusCode == 200) {
       Navigator.of(context).pop();
       var data = parseJwtAndSave(responseData['data']);
+      print("From API ===============> $data");
 
       setState(() {
         studentsList = data['token'];
@@ -309,11 +311,10 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
                                                                   index]
                                                               ['student_code']
                                                           .toString(),
-                                                          schoolId: studentsList[
-                                                                  index]
-                                                              ['school_id']
-                                                          .toString())
-                                                          ),
+                                                      schoolId:
+                                                          studentsList[index]
+                                                                  ['school_id']
+                                                              .toString())),
                                         );
                                       },
                                       child: Card(
