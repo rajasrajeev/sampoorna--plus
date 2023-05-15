@@ -260,6 +260,7 @@ Future individualAttendanceForStudent(data, token) async {
 
 //API TO POST LOGIN
 Future getPhotoOfStudent(data) async {
+  print(data);
   final prefs = await SharedPreferences.getInstance();
   var token = await prefs.getString('token');
   final response = await http.post(

@@ -1,4 +1,4 @@
-// ignore_for_file: unused_local_variable, use_build_context_synchronously
+// ignore_for_file: unused_local_variable, use_build_context_synchronously, avoid_print
 
 import 'dart:convert';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -44,7 +44,6 @@ class _ParentsDashboardScreenState extends State<ParentsDashboardScreen> {
     setState(() {
       childDetails = data;
     });
-    for (var i = 0; i < childDetails.length; i++) {}
   }
 
   getPastWeek() {

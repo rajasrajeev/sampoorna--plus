@@ -1,4 +1,4 @@
-// ignore_for_file: unrelated_type_equality_checks
+// ignore_for_file: unrelated_type_equality_checks, unnecessary_null_comparison
 
 import 'dart:convert';
 import 'dart:typed_data';
@@ -55,11 +55,14 @@ class _ChildCardState extends State<ChildCard> {
   List attendanceData = [];
   bool loading = false;
   List status = [];
+  bool _inProcess = false;
+  String photoData = "";
 
   @override
   void initState() {
     super.initState();
     getPastWeekAttendance();
+    getPhotoFromAPI(widget.studentCode);
   }
 
   getAttendanceStatus() {
@@ -134,6 +137,40 @@ class _ChildCardState extends State<ChildCard> {
       });
       Fluttertoast.showToast(
         msg: "Unable to Sync Last Week Attendance!! Try again Later.",
+        gravity: ToastGravity.TOP,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 15.0,
+      );
+    }
+  }
+
+  getPhotoFromAPI(String studentCode) async {
+    print("$studentCode ${widget.imageURL == ""}");
+    final prefs = await SharedPreferences.getInstance();
+    var data = {
+      "student_code": studentCode,
+      "school_id": widget.schoolId,
+    };
+    final photoResponse = await getPhotoOfStudent(data);
+    final photoResponseData = jsonDecode(photoResponse.body);
+    if (photoResponse.statusCode == 200) {
+      setState(() {
+        photoData = photoResponseData['photo_url'];
+
+        if (photoData == null) {
+          _inProcess = true;
+        }
+        _inProcess = false;
+      });
+    } else {
+      setState(() {
+        _inProcess = false;
+      });
+      Navigator.of(context).pop();
+      Fluttertoast.showToast(
+        msg: "Unable to Sync Student photo",
         gravity: ToastGravity.TOP,
         timeInSecForIosWeb: 1,
         backgroundColor: Colors.red,
