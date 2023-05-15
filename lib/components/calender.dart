@@ -68,34 +68,34 @@ class _AttendanceListCalenderState extends State<AttendanceListCalender> {
   }
 
   void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
-    if (!isSameDay(_selectedDay, selectedDay)) {
-      setState(() {
-        _selectedDay = selectedDay;
-        _focusedDay = focusedDay;
-        // _rangeStart = null; // Important to clean those
-        // _rangeEnd = null;
-        // _rangeSelectionMode = RangeSelectionMode.toggledOff;
-      });
+    // if (!isSameDay(_selectedDay, selectedDay)) {
+    setState(() {
+      _selectedDay = selectedDay;
+      _focusedDay = focusedDay;
+      // _rangeStart = null; // Important to clean those
+      // _rangeEnd = null;
+      // _rangeSelectionMode = RangeSelectionMode.toggledOff;
+    });
 
-      _selectedEvents.value = _getEventsForDay(selectedDay);
-      final DateFormat formatter = DateFormat('dd-MM-yyyy');
-      //final String formatted = formatter.format(_selectedDay!);
-      final String? formatted =
-          _selectedDay != null ? formatter.format(_selectedDay!) : null;
-      if (formatted != null) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => SingleDayAttendanceScreen(
-                    date: formatted,
-                    batchId: widget.batchId,
-                    schoolId: widget.schoolId,
-                    date1: widget.date1,
-                    date2: widget.date2,
-                  )),
-        );
-      }
+    _selectedEvents.value = _getEventsForDay(selectedDay);
+    final DateFormat formatter = DateFormat('dd-MM-yyyy');
+    //final String formatted = formatter.format(_selectedDay!);
+    final String? formatted =
+        _selectedDay != null ? formatter.format(_selectedDay!) : null;
+    if (formatted != null) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => SingleDayAttendanceScreen(
+                  date: formatted,
+                  batchId: widget.batchId,
+                  schoolId: widget.schoolId,
+                  date1: widget.date1,
+                  date2: widget.date2,
+                )),
+      );
     }
+    // }
   }
 
   // void _onRangeSelected(DateTime? start, DateTime? end, DateTime focusedDay) {
@@ -125,7 +125,7 @@ class _AttendanceListCalenderState extends State<AttendanceListCalender> {
           firstDay: kFirstDay,
           lastDay: kLastDay,
           focusedDay: _focusedDay,
-          // selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
+          selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
           // rangeStartDay: _rangeStart,
           // rangeEndDay: _rangeEnd,
           rowHeight: 75,

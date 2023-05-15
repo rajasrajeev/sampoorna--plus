@@ -314,7 +314,7 @@ class _ChatDetailState extends State<ChatDetail> {
           ),
         ],
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.miniEndTop,
+      /* floatingActionButtonLocation: FloatingActionButtonLocation.miniEndTop,
       floatingActionButton: userType == 'PARENT'
           ? FloatingActionButton.extended(
               heroTag: 'btn2',
@@ -332,7 +332,7 @@ class _ChatDetailState extends State<ChatDetail> {
                 );
               },
             )
-          : Container(),
+          : Container(), */
     );
   }
 }

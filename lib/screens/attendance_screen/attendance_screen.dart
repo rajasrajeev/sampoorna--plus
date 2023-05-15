@@ -242,6 +242,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
     var data = DateFormat.yMd().format(DateTime.now());
     print(data);
     final DateTime? picked = await showDatePicker(
+        locale: const Locale('en', 'IN'),
         context: context,
         initialDate: selectedDate,
         firstDate: DateTime(2000, 8),
@@ -334,7 +335,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                         children: <Widget>[
                           const Spacer(),
                           Text(
-                            selectedDate.toString().substring(0, 10),
+                            DateFormat('dd-MM-yyyy').format(selectedDate),
                             style: const TextStyle(
                               color: primaryColor,
                               fontSize: 16,
@@ -569,10 +570,11 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                           fontSize: 15.0,
                         );
                       } else {
+                        final responseData = jsonDecode(res.body);
                         // ignore: use_build_context_synchronously
                         Navigator.pop(context);
                         Fluttertoast.showToast(
-                          msg: "Something went wrong!!!",
+                          msg: responseData["message"],
                           gravity: ToastGravity.TOP,
                           timeInSecForIosWeb: 1,
                           backgroundColor: Colors.red,

@@ -150,7 +150,7 @@ class _ChildCardState extends State<ChildCard> {
     );
     Size size = MediaQuery.of(context).size;
     return Container(
-        height: size.height * 0.7,
+        height: size.height * 0.75,
         width: MediaQuery.of(context).size.width,
         constraints: BoxConstraints(maxWidth: size.width * 0.9),
         margin: const EdgeInsets.fromLTRB(5, 5, 5, 5),
@@ -397,6 +397,38 @@ class _ChildCardState extends State<ChildCard> {
                         'Attendance',
                       ),
                     ), */
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    TextButton.icon(
+                      style: TextButton.styleFrom(
+                        textStyle: const TextStyle(color: Colors.blue),
+                        backgroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      onPressed: () => {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => BroadcastDetail(
+                                  studentName:
+                                      "${widget.grade} ${widget.division}",
+                                  studentCode:
+                                      widget.batchId //Class List from dropdown
+                                  )),
+                        )
+                      },
+                      icon: const Icon(
+                        Icons.send_rounded,
+                      ),
+                      label: const Text(
+                        'Broadcast',
+                      ),
+                    ),
                   ],
                 ),
               ],
