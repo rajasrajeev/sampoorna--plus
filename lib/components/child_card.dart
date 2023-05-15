@@ -7,6 +7,10 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer_animation/shimmer_animation.dart';
+import 'package:student_management/components/image_asset.dart';
+import 'package:student_management/components/image_base64.dart';
+import 'package:student_management/components/profile_header.dart';
+import 'package:student_management/components/profile_header_file_image.dart';
 import 'package:student_management/components/student_profile_card.dart';
 import 'package:student_management/components/tile_link.dart';
 import 'package:student_management/constants.dart';
@@ -226,7 +230,14 @@ class _ChildCardState extends State<ChildCard> {
                     top: 50,
                     child: Row(
                       children: [
-                        CircleAvatar(
+                        (widget.imageURL == "" || photoData == "")
+                            ? const ImageAssets(
+                                imageUrl: "assets/images/studentProfile.png",
+                              )
+                            : ImageBase64(
+                                imageUrl: base64Decode(photoData).toString(),
+                              ),
+                        /* CircleAvatar(
                           radius: 50,
                           backgroundColor: primaryColor,
                           // ignore: unnecessary_null_comparison
@@ -244,7 +255,7 @@ class _ChildCardState extends State<ChildCard> {
                           //                            height:100,
                           //                            width:100,
                           //                           ),
-                        ),
+                        ), */
                         const SizedBox(width: 20),
                         SizedBox(
                           width: size.width * 0.5,
@@ -262,7 +273,7 @@ class _ChildCardState extends State<ChildCard> {
                                   ),
                                 ),
                               ),
-                              const SizedBox(height: 8),
+                              const SizedBox(height: 25),
                               Text(
                                 "${widget.grade} ${widget.division}",
                                 style: const TextStyle(
