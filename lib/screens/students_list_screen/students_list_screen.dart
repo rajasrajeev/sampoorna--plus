@@ -100,8 +100,8 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
       setState(() {
         studentsList = data['token'];
       });
-//       debugPrint("==================> studentsList");
-//  debugPrint("==================> $studentsList");
+      //       debugPrint("==================> studentsList");
+      //  debugPrint("==================> $studentsList");
       //To insert Value into database
       await syncStudentsList();
     } else {
@@ -118,6 +118,7 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
   }
 
   syncStudentsList() async {
+    await _db.studentDataDelete(dropdownvalue);
     for (int i = 0; i < studentsList.length; i++) {
       try {
         await _db.insertStudent({

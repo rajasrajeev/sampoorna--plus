@@ -52,7 +52,8 @@ class DatabaseHelper {
         $schoolID TEXT NOT NULL,
         $studentCode TEXT NOT NULL UNIQUE,
         $batchId TEXT NOT NULL,
-        $batchName TEXT, $photoUrl TEXT)''');
+        $batchName TEXT, 
+        $photoUrl TEXT)''');
   }
 
   Future<int> insertStudent(Map<String, dynamic> row) async {
@@ -76,15 +77,22 @@ class DatabaseHelper {
         whereArgs: ['%$dropdownBatchId%', '%$searchText%']);
   }
 
-  Future<void> delete() async {
-    Directory direcotry = await getApplicationDocumentsDirectory();
-    String path = join(direcotry.path, _dbName);
-    await deleteDatabase(path);
-  }
+//Delete database
+  // Future<void> delete() async {
+  //   Directory direcotry = await getApplicationDocumentsDirectory();
+  //   String path = join(direcotry.path, _dbName);
+  //   await deleteDatabase(path);
+  // }
 
   Future<int> studentDataDelete(batchId) async {
     Database db = await instance.database;
     return await db
         .delete(_studentTable, where: '$batchId = ?', whereArgs: [batchId]);
   }
+
+  //   Future<int> studentDataUpdate(batchId) async {
+  //   Database db = await instance.database;
+  //   return await db
+  //       .update(_studentTable, where: '$batchId = ?', whereArgs: [batchId]);
+  // }
 }
