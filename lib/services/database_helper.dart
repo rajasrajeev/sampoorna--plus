@@ -90,9 +90,20 @@ class DatabaseHelper {
         .delete(_studentTable, where: '$batchId = ?', whereArgs: [batchId]);
   }
 
-  //   Future<int> studentDataUpdate(batchId) async {
-  //   Database db = await instance.database;
-  //   return await db
-  //       .update(_studentTable, where: '$batchId = ?', whereArgs: [batchId]);
-  // }
+ studentDataUpdate(studentcode,photourl) async {
+  debugPrint("Studentcode----------- $photourl");
+  Database db = await instance.database;
+   await db.update(
+    _studentTable,
+    {photoUrl:photourl},
+    // where: '$studentCode = ? AND $batchId = ?',
+    // whereArgs: [studentCode, batchId],
+     where: '$studentCode = ?',
+    whereArgs: [studentcode],
+  );
+  //var batchid=1825108;
+//  debugPrint("StudentUpdated Details----------- ${db.query(_studentTable,
+//         where: '$batchId= ?', whereArgs: [batchid])}");
+}
+
 }

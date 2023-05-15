@@ -14,14 +14,18 @@ import 'package:student_management/components/profile_details.dart';
 import 'package:student_management/components/profile_header.dart';
 import 'package:student_management/constants.dart';
 import 'package:student_management/screens/main_screen/main_screen.dart';
+import 'package:student_management/screens/students_list_screen/students_list_screen.dart';
 import 'package:student_management/services/api_services.dart';
 import 'package:student_management/services/jwt_token_parser.dart';
 import '../../components/profile_header_file_image.dart';
 import 'package:image/image.dart' as img;
 
+import '../../services/database_helper.dart';
+
 class StudentsProfileScreen extends StatefulWidget {
   final String? studentCode;
   final String? schoolId;
+
   const StudentsProfileScreen(
       {required this.studentCode, required this.schoolId, super.key});
 
@@ -35,7 +39,7 @@ const int targetSizeKB = 30;
 const int quality = 100;
 const int maxFileSizeB = 30 * 1024;
 const int minFileSizeB = 20 * 1024;
-
+ DatabaseHelper _db = DatabaseHelper.instance;
 class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
   final GlobalKey<ScaffoldState> key = GlobalKey();
 
@@ -137,6 +141,7 @@ getPhotoFromAPI() async {
     // debugPrint("========photoData photo_url==========> ${photoResponseData['photo_url']}");
     if (photoResponse.statusCode == 200) {
       //  var data = parseJwtAndSave(photoResponseData['data']);
+     
       setState(() {
         photoData = photoResponseData['photo_url'];
 
@@ -311,6 +316,7 @@ getPhotoFromAPI() async {
 
     if (res.statusCode == 200) {
       final responseData = jsonDecode(res.body);
+       await _db.studentDataUpdate(widget.studentCode,base64Image);
       Fluttertoast.showToast(
         msg: responseData["message"],
         gravity: ToastGravity.TOP,
@@ -352,6 +358,23 @@ getPhotoFromAPI() async {
         appBar: AppBar(
           title: const Text("Profile"),
           elevation: 0,
+          leading: InkWell(
+          onTap: () {
+             setState(() {
+                    
+                  });
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const StudentsListScreen(),
+              ),
+            );
+          },
+          child: const Icon(
+            Icons.arrow_back,
+            color: Colors.white,
+          ),
+        ),
           actions: <Widget>[
             Padding(
                 padding: const EdgeInsets.only(right: 20.0),
