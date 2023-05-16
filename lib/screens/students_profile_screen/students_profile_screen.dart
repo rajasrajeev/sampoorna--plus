@@ -3,7 +3,6 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_cropper/image_cropper.dart';
@@ -14,12 +13,10 @@ import 'package:student_management/components/profile_details.dart';
 import 'package:student_management/components/profile_header.dart';
 import 'package:student_management/constants.dart';
 import 'package:student_management/screens/main_screen/main_screen.dart';
-import 'package:student_management/screens/students_list_screen/students_list_screen.dart';
 import 'package:student_management/services/api_services.dart';
 import 'package:student_management/services/jwt_token_parser.dart';
 import '../../components/profile_header_file_image.dart';
 import 'package:image/image.dart' as img;
-
 import '../../services/database_helper.dart';
 
 class StudentsProfileScreen extends StatefulWidget {
@@ -39,7 +36,8 @@ const int targetSizeKB = 30;
 const int quality = 100;
 const int maxFileSizeB = 30 * 1024;
 const int minFileSizeB = 20 * 1024;
- DatabaseHelper _db = DatabaseHelper.instance;
+DatabaseHelper _db = DatabaseHelper.instance;
+
 class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
   final GlobalKey<ScaffoldState> key = GlobalKey();
 
@@ -106,7 +104,6 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
         studentDetail = data;
 
         if (studentDetail['personal_details'] == null) {
-           
           _inProcess = true;
         }
         _inProcess = false;
@@ -126,13 +123,11 @@ class _StudentsProfileScreenState extends State<StudentsProfileScreen> {
         fontSize: 15.0,
       );
     }
-
-
-    
   }
-getPhotoFromAPI() async {
-      final prefs = await SharedPreferences.getInstance();
-  var dataForphoto = {
+
+  getPhotoFromAPI() async {
+    final prefs = await SharedPreferences.getInstance();
+    var dataForphoto = {
       "student_code": widget.studentCode,
       "school_id": prefs.getString('school_id'),
     };
@@ -141,13 +136,13 @@ getPhotoFromAPI() async {
     // debugPrint("========photoData photo_url==========> ${photoResponseData['photo_url']}");
     if (photoResponse.statusCode == 200) {
       //  var data = parseJwtAndSave(photoResponseData['data']);
-     
+
       setState(() {
         photoData = photoResponseData['photo_url'];
 
-         if (photoData== null) {
-           _inProcess = true;
-         }
+        if (photoData == null) {
+          _inProcess = true;
+        }
         _inProcess = false;
       });
       debugPrint("========photoData==========> $photoData");
@@ -165,7 +160,8 @@ getPhotoFromAPI() async {
         fontSize: 15.0,
       );
     }
-}
+  }
+
   void _handleError(dynamic error) {
     setState(() {
       _inProcess = false;
@@ -316,7 +312,7 @@ getPhotoFromAPI() async {
 
     if (res.statusCode == 200) {
       final responseData = jsonDecode(res.body);
-       await _db.studentDataUpdate(widget.studentCode,base64Image);
+      await _db.studentDataUpdate(widget.studentCode, base64Image);
       Fluttertoast.showToast(
         msg: responseData["message"],
         gravity: ToastGravity.TOP,
@@ -359,22 +355,15 @@ getPhotoFromAPI() async {
           title: const Text("Profile"),
           elevation: 0,
           leading: InkWell(
-          onTap: () {
-             setState(() {
-                    
-                  });
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const StudentsListScreen(),
-              ),
-            );
-          },
-          child: const Icon(
-            Icons.arrow_back,
-            color: Colors.white,
+            onTap: () {
+              setState(() {});
+              Navigator.pop(context);
+            },
+            child: const Icon(
+              Icons.arrow_back,
+              color: Colors.white,
+            ),
           ),
-        ),
           actions: <Widget>[
             Padding(
                 padding: const EdgeInsets.only(right: 20.0),
@@ -415,33 +404,30 @@ getPhotoFromAPI() async {
                                 decoration: const BoxDecoration(
                                     color: Color.fromARGB(214, 242, 242, 242)),
                                 child: (_selectedFile == null)
-                                    ? ( (photoData == null || photoData== "")
-                                       ?
-                                       ProfileHeader(
-                                        imageUrl:"assets/images/studentProfile.png",
-                                             
-                                        name: studentDetail['personal_details']
-                                            ['full_name'],
-                                        grade: studentDetail['current_details']
-                                                ['class'] +
-                                            studentDetail['current_details']
-                                                ['division']):
-                                        ProfileHeaderImageFile(
-                                        imageUrl:base64Decode(photoData!) ,
-                                        name: studentDetail['personal_details']
-                                                ['full_name']
-                                            .toString(),
-                                        grade: studentDetail['current_details']['class'].toString() +
-                                            studentDetail['current_details']['division'].toString())
-                                        
-                                      )
+                                    ? ((photoData == null || photoData == "")
+                                        ? ProfileHeader(
+                                            imageUrl:
+                                                "assets/images/studentProfile.png",
+                                            name: studentDetail['personal_details']
+                                                ['full_name'],
+                                            grade: studentDetail['current_details']
+                                                    ['class'] +
+                                                studentDetail['current_details']
+                                                    ['division'])
+                                        : ProfileHeaderImageFile(
+                                            imageUrl: base64Decode(photoData!),
+                                            name: studentDetail['personal_details']
+                                                    ['full_name']
+                                                .toString(),
+                                            grade: studentDetail['current_details']['class']
+                                                    .toString() +
+                                                studentDetail['current_details']
+                                                        ['division']
+                                                    .toString()))
                                     : ProfileHeaderImageFile(
                                         imageUrl: _selectedFile!,
-                                        name: studentDetail['personal_details']
-                                                ['full_name']
-                                            .toString(),
-                                        grade: studentDetail['current_details']['class'].toString() +
-                                            studentDetail['current_details']['division'].toString()),
+                                        name: studentDetail['personal_details']['full_name'].toString(),
+                                        grade: studentDetail['current_details']['class'].toString() + studentDetail['current_details']['division'].toString()),
                                 //   : Image.file(_selectedFile!, width: targetWidth, height: targetHeight, fit: BoxFit.cover),
                               ),
                             ),

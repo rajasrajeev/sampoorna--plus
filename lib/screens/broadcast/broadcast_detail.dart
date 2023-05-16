@@ -1,17 +1,12 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:student_management/services/api_services.dart';
 import 'package:student_management/services/jwt_token_parser.dart';
-
 import '../../constants.dart';
-import '../main_screen/main_screen.dart';
 import '../parents/dashboard/parents_dashboard_screen.dart';
 
 class BroadcastDetail extends StatefulWidget {
@@ -39,7 +34,6 @@ class _BroadcastDetailState extends State<BroadcastDetail> {
   List<ChatMessage> messages = [];
   String? userType = "";
   String? userId = "";
-  bool _loading = false;
   final TextEditingController searchController = TextEditingController();
 
   @override
@@ -59,9 +53,7 @@ class _BroadcastDetailState extends State<BroadcastDetail> {
     final res = await getBroadcastMessage(widget.studentCode);
 
     if (res.statusCode == 200) {
-      setState(() {
-        _loading = false;
-      });
+      setState(() {});
       final responseData = jsonDecode(res.body);
 
       // Navigator.of(context).pop();
@@ -77,9 +69,7 @@ class _BroadcastDetailState extends State<BroadcastDetail> {
         });
       }
     } else {
-      setState(() {
-        _loading = false;
-      });
+      setState(() {});
       // Navigator.of(context).pop();
       Fluttertoast.showToast(
         msg: "Unable to Sync Students List Now",
@@ -97,9 +87,7 @@ class _BroadcastDetailState extends State<BroadcastDetail> {
         widget.studentCode, searchController.text, 'Broadcast');
 
     if (res.statusCode == 200) {
-      setState(() {
-        _loading = false;
-      });
+      setState(() {});
       final responseData = jsonDecode(res.body);
       searchController.clear();
       // Navigator.of(context).pop();
@@ -110,9 +98,7 @@ class _BroadcastDetailState extends State<BroadcastDetail> {
         attendanceDates = data['attendance_data'];
       }); */
     } else {
-      setState(() {
-        _loading = false;
-      });
+      setState(() {});
       // Navigator.of(context).pop();
       Fluttertoast.showToast(
         msg: "Unable to Sync Students List Now",
