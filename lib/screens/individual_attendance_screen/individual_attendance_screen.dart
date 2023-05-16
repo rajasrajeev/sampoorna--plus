@@ -5,9 +5,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:student_management/components/app_bar.dart';
-import 'package:student_management/components/profile_details.dart';
-import 'package:student_management/components/profile_header.dart';
 import 'package:student_management/constants.dart';
 import 'package:student_management/services/api_services.dart';
 import 'package:student_management/services/jwt_token_parser.dart';
@@ -92,7 +89,7 @@ class _IndividualAttendanceScreenState
 
       Navigator.of(context).pop();
       var data = parseJwtAndSave(responseData['token']);
-        debugPrint("individualAttendanceForStudent Data ********* $data");
+      debugPrint("individualAttendanceForStudent Data ********* $data");
       setState(() {
         attendanceDates = data['attendance_data'];
       });
@@ -223,7 +220,8 @@ class _IndividualAttendanceScreenState
                               child: Padding(
                                   padding: const EdgeInsets.all(10),
                                   child: Row(
-                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       //const SizedBox(width: 30),
                                       SizedBox(
@@ -239,7 +237,7 @@ class _IndividualAttendanceScreenState
                                           attendanceDates[index]["absent_FN"],
                                           "FN",
                                           attendanceDates[index]["marked"]),
-                                     // const SizedBox(width: 5),
+                                      // const SizedBox(width: 5),
                                       forenoonOrAfternoon(
                                           attendanceDates[index]["absent_AN"],
                                           'AN',
@@ -252,7 +250,7 @@ class _IndividualAttendanceScreenState
                     : const Center(child: Text("Loading...")),
               ),
             ),
-            Center()
+            const Center()
           ],
         ),
         backgroundColor: Colors.white,

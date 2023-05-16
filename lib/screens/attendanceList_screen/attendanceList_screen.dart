@@ -43,8 +43,8 @@ class _AttendanceListState extends State<AttendanceList> {
 
   getData() async {
     final prefs = await SharedPreferences.getInstance();
-    var details = await prefs.getString('loginData');
-    schoolId = await prefs.getString('school_id');
+    var details = prefs.getString('loginData');
+    schoolId = prefs.getString('school_id');
     dynamic data = json.decode(details!);
     setState(() {
       userName =
@@ -122,15 +122,13 @@ class _AttendanceListState extends State<AttendanceList> {
       date2 = formatter.format(now);
       date1 = "${now.year}-${monthFormatter.format(now)}-01";
     });
-    print("-=-=-=-=$date1 =-=-=-=-=$date2");
+    // print("-=-=-=-=$date1 =-=-=-=-=$date2");
     getStudentsData(date1, date2, schoolId!, dropdownvalue);
     getLastMarkedAttendance();
   }
 
   getStudentsData(
       String date1, String date2, String schoolId, String batchId) async {
-    final prefs = await SharedPreferences.getInstance();
-
     showDialog(
         // The user CANNOT close this dialog  by pressing outsite it
         barrierDismissible: true,

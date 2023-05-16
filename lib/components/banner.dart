@@ -1,11 +1,8 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:student_management/components/bezier_clipper.dart';
 import 'package:student_management/constants.dart';
-import 'package:student_management/models/teachers.dart';
-
 import '../screens/attendance_screen/attendance_screen.dart';
 
 class CommonBanner extends StatefulWidget {
@@ -43,7 +40,7 @@ class _CommonBannerState extends State<CommonBanner> {
     setState(() {
       permittedBatches = data['permittedBatches'];
     });
-    print(permittedBatches);
+    //print(permittedBatches);
   }
 
   @override
@@ -83,7 +80,7 @@ class _CommonBannerState extends State<CommonBanner> {
                   // ignore: prefer_const_constructors
                   Column(
                     mainAxisAlignment: MainAxisAlignment.start,
-                   crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
                         widget.name,

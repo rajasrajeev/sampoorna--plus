@@ -1,7 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -12,7 +11,6 @@ import 'package:student_management/screens/students_profile_screen/students_prof
 import 'package:student_management/services/api_services.dart';
 import 'package:student_management/services/database_helper.dart';
 import 'package:student_management/services/jwt_token_parser.dart';
-
 import '../../components/custom_textfield.dart';
 
 class StudentsListScreen extends StatefulWidget {
@@ -31,7 +29,7 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
   final TextEditingController searchController = TextEditingController();
   // List of items in our dropdown menu
   List items = [];
-  DatabaseHelper _db = DatabaseHelper.instance;
+  final DatabaseHelper _db = DatabaseHelper.instance;
 
   @override
   void initState() {
@@ -41,7 +39,7 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
 
   getPermittedBatch() async {
     final prefs = await SharedPreferences.getInstance();
-    var details = await prefs.getString('loginData');
+    var details = prefs.getString('loginData');
     dynamic data = json.decode(details!);
     setState(() {
       userName =
@@ -67,7 +65,7 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
 
   getStudentsList() async {
     dynamic localStudents = await _db.getStudentsFromLocal(dropdownvalue);
-    print("Student data from database ===> ${localStudents}");
+    //print("Student data from database ===> ${localStudents}");
     if (localStudents.length > 0) {
       setState(() {
         studentsList = localStudents;
@@ -95,7 +93,7 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
     if (res.statusCode == 200) {
       Navigator.of(context).pop();
       var data = parseJwtAndSave(responseData['data']);
-      print("From API ===============> $data");
+      //print("From API ===============> $data");
 
       setState(() {
         studentsList = data['token'];
@@ -118,7 +116,20 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
   }
 
   syncStudentsList() async {
-    await _db.studentDataDelete(dropdownvalue);
+    try {
+      await _db.studentDataDelete(dropdownvalue);
+      //debugPrint("Success");
+    } catch (e) {
+      //debugPrint("$e");
+      Fluttertoast.showToast(
+        msg: "Syncing Disruption",
+        gravity: ToastGravity.TOP,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 15.0,
+      );
+    }
     for (int i = 0; i < studentsList.length; i++) {
       try {
         await _db.insertStudent({
@@ -303,7 +314,7 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
                                   itemBuilder: (context, index) {
                                     return GestureDetector(
                                       onTap: () {
-                                        Navigator.pop(context);
+                                        //Navigator.pop(context);
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(

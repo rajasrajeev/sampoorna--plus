@@ -4,7 +4,6 @@ import 'package:student_management/components/tile.dart';
 import 'package:student_management/screens/attendanceList_screen/attendanceList_screen.dart';
 import 'package:student_management/screens/attendance_screen/attendance_screen.dart';
 import 'package:student_management/screens/exams/exams.dart';
-import 'package:student_management/screens/nothing_screen/nothing_screen.dart';
 import 'package:student_management/screens/teachers_profile_screen/teachers_profile_screen.dart';
 import 'package:student_management/screens/students_list_screen/students_list_screen.dart';
 import 'package:student_management/components/banner.dart';
@@ -36,7 +35,7 @@ class _BodyState extends State<Body> {
     final prefs = await SharedPreferences.getInstance();
 
     userType = "${prefs.getString('user_type')}";
-    print("=============> ============> ${prefs.getString("loginData")}");
+    // print("=============> ============> ${prefs.getString("loginData")}");
     setState(() {
       userName =
           "${prefs.getString('first_name')} ${prefs.getString('last_name')}";
