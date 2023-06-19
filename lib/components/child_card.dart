@@ -191,7 +191,7 @@ class _ChildCardState extends State<ChildCard> {
     );
     Size size = MediaQuery.of(context).size;
     return Container(
-        height: size.height * 0.75,
+        height: size.height * 0.85,
         width: MediaQuery.of(context).size.width,
         constraints: BoxConstraints(maxWidth: size.width * 0.9),
         margin: const EdgeInsets.fromLTRB(5, 5, 5, 5),
@@ -226,7 +226,7 @@ class _ChildCardState extends State<ChildCard> {
                     ),
                   ),
                   Positioned(
-                    left: 11,
+                    left: 7.5,
                     top: 50,
                     child: Row(
                       children: [
@@ -268,7 +268,7 @@ class _ChildCardState extends State<ChildCard> {
                                 child: Text(
                                   widget.fullName.toString(),
                                   style: const TextStyle(
-                                    fontSize: 18,
+                                    fontSize: 16,
                                     color: Color(0xFFFFFFFF),
                                   ),
                                 ),
@@ -477,6 +477,7 @@ class _ChildCardState extends State<ChildCard> {
                         'Broadcast',
                       ),
                     ),
+                     SizedBox(width: size.width * 0.25),
                   ],
                 ),
               ],
