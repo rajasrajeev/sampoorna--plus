@@ -10,10 +10,10 @@ import '../../constants.dart';
 import '../parents/dashboard/parents_dashboard_screen.dart';
 
 class BroadcastDetail extends StatefulWidget {
-  final String? studentCode;
-  final String? studentName;
+  final String? schoolBatchId;
+  final String? schoolDiv;
   const BroadcastDetail(
-      {required this.studentCode, this.studentName, super.key});
+      {required this.schoolBatchId, this.schoolDiv, super.key});
 
   @override
   State<BroadcastDetail> createState() => _BroadcastDetailState();
@@ -50,7 +50,7 @@ class _BroadcastDetailState extends State<BroadcastDetail> {
   }
 
   getBroadcastMessages() async {
-    final res = await getBroadcastMessage(widget.studentCode);
+    final res = await getBroadcastMessage(widget.schoolBatchId);
 
     if (res.statusCode == 200) {
       setState(() {});
@@ -84,7 +84,7 @@ class _BroadcastDetailState extends State<BroadcastDetail> {
 
   postBroadcastMessages() async {
     final res = await sendBroadcastMessage(
-        widget.studentCode, searchController.text, 'Broadcast');
+        widget.schoolBatchId, searchController.text, 'Broadcast');
 
     if (res.statusCode == 200) {
       setState(() {});
@@ -159,7 +159,8 @@ class _BroadcastDetailState extends State<BroadcastDetail> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Text(
-                        "${widget.studentName.toString()} (${widget.studentCode.toString()})",
+                        "${widget.schoolDiv.toString()} (Broadcast Message)",
+                        //(${widget.schoolBatchId.toString()})",
                         style: const TextStyle(
                             fontSize: 16, fontWeight: FontWeight.w600),
                       ),

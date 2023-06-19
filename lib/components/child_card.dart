@@ -463,9 +463,9 @@ class _ChildCardState extends State<ChildCard> {
                           context,
                           MaterialPageRoute(
                               builder: (context) => BroadcastDetail(
-                                  studentName:
+                                  schoolDiv:
                                       "${widget.grade} ${widget.division}",
-                                  studentCode:
+                                  schoolBatchId:
                                       widget.batchId //Class List from dropdown
                                   )),
                         )
