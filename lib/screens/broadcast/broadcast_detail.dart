@@ -65,7 +65,7 @@ class _BroadcastDetailState extends State<BroadcastDetail> {
               messageContent: data['token'][i]['body'],
               messageType:
                   userId == data['token'][i]['user_id'] ? 'sender' : 'receiver',
-              timeOfMessage: data['token'][i]['created_at']));
+              timeOfMessage:changeDateFormat( data['token'][i]['created_at'])));
         });
       }
     } else {
@@ -81,7 +81,10 @@ class _BroadcastDetailState extends State<BroadcastDetail> {
       );
     }
   }
-
+changeDateFormat(String date){
+final List<String> splitDate = date.split(RegExp(r"[-\s:]"));
+  return '${splitDate[2]}-${splitDate[1]}-${splitDate[0]} ${splitDate[3]}:${splitDate[4]}:${splitDate[5]}';
+}
   postBroadcastMessages() async {
     final res = await sendBroadcastMessage(
         widget.schoolBatchId, searchController.text, 'Broadcast');
@@ -101,7 +104,7 @@ class _BroadcastDetailState extends State<BroadcastDetail> {
       setState(() {});
       // Navigator.of(context).pop();
       Fluttertoast.showToast(
-        msg: "Unable to Sync Students List Now",
+        msg: "Unable to Sync Message Now",
         gravity: ToastGravity.TOP,
         timeInSecForIosWeb: 1,
         backgroundColor: Colors.red,

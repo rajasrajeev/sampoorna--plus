@@ -103,6 +103,9 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
       //To insert Value into database
       await syncStudentsList();
     } else {
+      setState(() {
+        studentsList = [];
+      });
       Navigator.of(context).pop();
       Fluttertoast.showToast(
         msg: "Unable to Sync Students List Now",
