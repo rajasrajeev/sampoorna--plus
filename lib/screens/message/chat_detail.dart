@@ -80,7 +80,7 @@ class _ChatDetailState extends State<ChatDetail> {
               messageType: userId == data['token'][i]['sender_id']
                   ? 'sender'
                   : 'receiver',
-              timeOfMessage: data['token'][i]['created_at']));
+              timeOfMessage:changeDateFormat(data['token'][i]['created_at'])));
         });
       }
       print("======================> $messages <==========================");
@@ -100,7 +100,10 @@ class _ChatDetailState extends State<ChatDetail> {
       );
     }
   }
-
+changeDateFormat(String date){
+final List<String> splitDate = date.split(RegExp(r"[-\s:]"));
+  return '${splitDate[2]}-${splitDate[1]}-${splitDate[0]} ${splitDate[3]}:${splitDate[4]}:${splitDate[5]}';
+}
   postMessages() async {
     final res = await sendMessage(searchController.text, widget.studentCode);
 

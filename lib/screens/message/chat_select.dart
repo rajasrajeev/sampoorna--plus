@@ -131,8 +131,8 @@ class _ChatSelectState extends State<ChatSelect> {
               //             ['student_code']
               //         .toString())
               BroadcastDetail(
-                  studentName: selectedGrade,
-                  studentCode: studentsClassList //Class List from dropdown
+                  schoolDiv: selectedGrade,
+                  schoolBatchId: studentsClassList //Class List from dropdown
                   )),
     );
   }

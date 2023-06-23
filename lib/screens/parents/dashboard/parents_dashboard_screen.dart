@@ -1,6 +1,7 @@
 // ignore_for_file: unused_local_variable, use_build_context_synchronously, avoid_print
 
 import 'dart:convert';
+import 'dart:io';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 
@@ -10,6 +11,7 @@ import 'package:student_management/components/child_card.dart';
 import 'package:student_management/components/sidebar.dart';
 import 'package:student_management/services/api_services.dart';
 import 'package:student_management/services/jwt_token_parser.dart';
+import 'package:upgrader/upgrader.dart';
 
 class ParentsDashboardScreen extends StatefulWidget {
   const ParentsDashboardScreen({super.key});
@@ -78,40 +80,54 @@ class _ParentsDashboardScreenState extends State<ParentsDashboardScreen> {
           elevation: 0,
         ),
         drawer: const SideBar(),
-        body: Padding(
-          padding: const EdgeInsets.all(15),
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(
-                  height: size.height * 0.85,
-                  child: ListView.builder(
-                      itemCount: childDetails.length,
-                      //shrinkWrap: true,
-                      itemBuilder: (context, index) {
-                        return Column(
-                          children: [
-                            ChildCard(
-                              day: day,
-                              date: date,
-                              fullName: childDetails[index]['full_name'],
-                              grade: childDetails[index]['class'],
-                              division: childDetails[index]['name'],
-                              school: childDetails[index]['school_name'],
-                              studentCode: childDetails[index]['student_code'],
-                              admissionNo: childDetails[index]['admission_no'],
-                              schoolId: childDetails[index]['school_id'],
-                              batchId: childDetails[index]['batch_id'],
-                              imageURL:
-                                  (childDetails[index]['photo_url'].toString()),
-                            ),
-                            SizedBox(height: size.height * 0.030),
-                          ],
-                        );
-                      }),
-                ),
-              ],
+        body: UpgradeAlert(
+          upgrader: Upgrader(
+            //  appcastConfig: cfg,
+            debugLogging: true,
+            shouldPopScope: () => true,
+            canDismissDialog: true,
+            durationUntilAlertAgain: const Duration(hours: 1),
+            dialogStyle: Platform.isIOS
+                ? UpgradeDialogStyle.cupertino
+                : UpgradeDialogStyle.material,
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(8),
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    height: size.height * 0.85,
+                    child: ListView.builder(
+                        itemCount: childDetails.length,
+                        //shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          return Column(
+                            children: [
+                              ChildCard(
+                                day: day,
+                                date: date,
+                                fullName: childDetails[index]['full_name'],
+                                grade: childDetails[index]['class'],
+                                division: childDetails[index]['name'],
+                                school: childDetails[index]['school_name'],
+                                studentCode: childDetails[index]
+                                    ['student_code'],
+                                admissionNo: childDetails[index]
+                                    ['admission_no'],
+                                schoolId: childDetails[index]['school_id'],
+                                batchId: childDetails[index]['batch_id'],
+                                imageURL: (childDetails[index]['photo_url']
+                                    .toString()),
+                              ),
+                              SizedBox(height: size.height * 0.030),
+                            ],
+                          );
+                        }),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

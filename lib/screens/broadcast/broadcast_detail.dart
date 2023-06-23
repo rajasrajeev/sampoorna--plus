@@ -10,10 +10,10 @@ import '../../constants.dart';
 import '../parents/dashboard/parents_dashboard_screen.dart';
 
 class BroadcastDetail extends StatefulWidget {
-  final String? studentCode;
-  final String? studentName;
+  final String? schoolBatchId;
+  final String? schoolDiv;
   const BroadcastDetail(
-      {required this.studentCode, this.studentName, super.key});
+      {required this.schoolBatchId, this.schoolDiv, super.key});
 
   @override
   State<BroadcastDetail> createState() => _BroadcastDetailState();
@@ -50,7 +50,7 @@ class _BroadcastDetailState extends State<BroadcastDetail> {
   }
 
   getBroadcastMessages() async {
-    final res = await getBroadcastMessage(widget.studentCode);
+    final res = await getBroadcastMessage(widget.schoolBatchId);
 
     if (res.statusCode == 200) {
       setState(() {});
@@ -65,7 +65,7 @@ class _BroadcastDetailState extends State<BroadcastDetail> {
               messageContent: data['token'][i]['body'],
               messageType:
                   userId == data['token'][i]['user_id'] ? 'sender' : 'receiver',
-              timeOfMessage: data['token'][i]['created_at']));
+              timeOfMessage:changeDateFormat( data['token'][i]['created_at'])));
         });
       }
     } else {
@@ -81,10 +81,13 @@ class _BroadcastDetailState extends State<BroadcastDetail> {
       );
     }
   }
-
+changeDateFormat(String date){
+final List<String> splitDate = date.split(RegExp(r"[-\s:]"));
+  return '${splitDate[2]}-${splitDate[1]}-${splitDate[0]} ${splitDate[3]}:${splitDate[4]}:${splitDate[5]}';
+}
   postBroadcastMessages() async {
     final res = await sendBroadcastMessage(
-        widget.studentCode, searchController.text, 'Broadcast');
+        widget.schoolBatchId, searchController.text, 'Broadcast');
 
     if (res.statusCode == 200) {
       setState(() {});
@@ -101,7 +104,7 @@ class _BroadcastDetailState extends State<BroadcastDetail> {
       setState(() {});
       // Navigator.of(context).pop();
       Fluttertoast.showToast(
-        msg: "Unable to Sync Students List Now",
+        msg: "Unable to Sync Message Now",
         gravity: ToastGravity.TOP,
         timeInSecForIosWeb: 1,
         backgroundColor: Colors.red,
@@ -159,7 +162,8 @@ class _BroadcastDetailState extends State<BroadcastDetail> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Text(
-                        "${widget.studentName.toString()} (${widget.studentCode.toString()})",
+                        "${widget.schoolDiv.toString()} (Broadcast Message)",
+                        //(${widget.schoolBatchId.toString()})",
                         style: const TextStyle(
                             fontSize: 16, fontWeight: FontWeight.w600),
                       ),

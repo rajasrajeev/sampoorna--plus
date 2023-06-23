@@ -1,8 +1,11 @@
 // ignore_for_file: override_on_non_overriding_member
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:student_management/components/sidebar.dart';
 import 'package:student_management/screens/home_screen/body.dart';
+import 'package:upgrader/upgrader.dart';
 
 
 class HomeScreen extends StatelessWidget {
@@ -26,11 +29,21 @@ class HomeScreen extends StatelessWidget {
         //     ),
         //   ),
         // ),
-        body: const Body(),
+        body:UpgradeAlert(
+          upgrader:Upgrader(
+          //  appcastConfig: cfg,
+          debugLogging: true,
+            shouldPopScope: () => true,
+            canDismissDialog: true,
+            durationUntilAlertAgain: const Duration(hours: 1),
+            dialogStyle: Platform.isIOS ?UpgradeDialogStyle.cupertino :UpgradeDialogStyle.material,
+          ) ,
+          child: const Body(),),
         drawer: const SideBar(),
         backgroundColor: Colors.white,
-      //  bottomNavigationBar: BottomBar(),
-      ),
+        //  bottomNavigationBar: BottomBar(),
+      
+      )
     );
   }
 
