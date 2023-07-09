@@ -102,9 +102,10 @@ class _SingleDayAttendanceScreenState extends State<SingleDayAttendanceScreen> {
       setState(() {
         _loading = false;
       });
+      final responseData = jsonDecode(res.body);
       Navigator.of(context).pop();
       Fluttertoast.showToast(
-        msg: "Unable to Sync Students List Now",
+        msg: responseData["message"],
         gravity: ToastGravity.TOP,
         timeInSecForIosWeb: 1,
         backgroundColor: Colors.red,
