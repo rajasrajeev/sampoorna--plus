@@ -108,19 +108,20 @@ final List<String> splitDate = date.split(RegExp(r"[-\s:]"));
     final res = await sendMessage(searchController.text, widget.studentCode);
 
     if (res.statusCode == 200) {
-      // final responseData = jsonDecode(res.body);
+       //final responseData = jsonDecode(res.body);
       setState(() {
         _loading = false;
       });
       searchController.clear();
       getMessages();
     } else {
+       final responseData = jsonDecode(res.body);
       setState(() {
         _loading = false;
       });
       // Navigator.of(context).pop();
       Fluttertoast.showToast(
-        msg: "Unable to Sync Students List Now",
+        msg: responseData["message"],
         gravity: ToastGravity.TOP,
         timeInSecForIosWeb: 1,
         backgroundColor: Colors.red,
@@ -301,7 +302,11 @@ final List<String> splitDate = date.split(RegExp(r"[-\s:]"));
                   FloatingActionButton(
                     heroTag: 'btn1',
                     onPressed: () {
-                      postMessages();
+                       String value = searchController.text.trim();
+                             if(searchController.text.isNotEmpty && !(RegExp(r'^\s*$').hasMatch(value))) {
+                               postMessages();
+                             }
+                     
                     },
                     backgroundColor: primaryColor,
                     elevation: 0,

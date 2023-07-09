@@ -121,7 +121,8 @@ class _StudentsListScreenState extends State<StudentsListScreen> {
   syncStudentsList() async {
     try {
       await _db.studentDataDelete(dropdownvalue);
-      //debugPrint("Success");
+      debugPrint("Batch ID"+dropdownvalue);
+      debugPrint("Batch ID: ${dropdownvalue.runtimeType}");
     } catch (e) {
       //debugPrint("$e");
       Fluttertoast.showToast(

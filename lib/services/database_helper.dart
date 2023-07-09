@@ -86,8 +86,10 @@ class DatabaseHelper {
 
   Future<int> studentDataDelete(batchId) async {
     Database db = await instance.database;
-    return await db
-        .delete(_studentTable, where: '$batchId = ?', whereArgs: [batchId]);
+    // return await db
+    //     .delete(_studentTable, where: '$batchId = ?', whereArgs: [batchId]);
+        return await db
+        .rawDelete('DELETE FROM students WHERE batch_id LIKE $batchId');
   }
 
  studentDataUpdate(studentcode,photourl) async {
