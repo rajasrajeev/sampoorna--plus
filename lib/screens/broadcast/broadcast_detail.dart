@@ -286,7 +286,6 @@ final List<String> splitDate = date.split(RegExp(r"[-\s:]"));
                       ? FloatingActionButton(
                           onPressed: () {
                             String value = searchController.text.trim();
-                            //value.isEmpty || RegExp(r'^\s*$').hasMatch(value);
                              if(searchController.text.isNotEmpty && !(RegExp(r'^\s*$').hasMatch(value))) {
                               postBroadcastMessages();
                              }
