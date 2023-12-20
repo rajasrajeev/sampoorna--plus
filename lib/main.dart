@@ -76,6 +76,7 @@ class _MyAppState extends State<MyApp> {
       title: 'Sampoorna',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
+          useMaterial3: true,
           colorScheme: ColorScheme.fromSwatch().copyWith(
             primary: primaryColor,
             secondary: secondaryColor,
@@ -84,7 +85,9 @@ class _MyAppState extends State<MyApp> {
       initialRoute: '/',
       routes: {
         '/': (context) => const SplashScreen(),
-        '/login': (context) => const LoginScreen(passedRoles: "",),
+        '/login': (context) => const LoginScreen(
+              passedRoles: "",
+            ),
         '/home': (context) => const HomeScreen()
       },
     );
