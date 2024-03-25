@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:student_management/screens/login_screen/body.dart';
 
 class LoginScreen extends StatelessWidget {
-    final String passedRoles;
-  const LoginScreen({super.key,required this.passedRoles});
+  final String passedRoles;
+  const LoginScreen({super.key, required this.passedRoles});
 
   @override
   Widget build(BuildContext context) {
@@ -13,9 +13,11 @@ class LoginScreen extends StatelessWidget {
           image: DecorationImage(
               image: AssetImage("assets/images/login_background.jpg"),
               fit: BoxFit.cover)),
-      child:  Scaffold(
+      child: Scaffold(
         backgroundColor: Colors.transparent,
-        body: Body(passedRole:passedRoles,),
+        body: Body(
+          passedRole: passedRoles,
+        ),
       ),
     );
   }

@@ -1,7 +1,6 @@
 // ignore_for_file: unrelated_type_equality_checks, unnecessary_null_comparison
 
 import 'dart:convert';
-import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -9,19 +8,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer_animation/shimmer_animation.dart';
 import 'package:student_management/components/image_asset.dart';
 import 'package:student_management/components/image_base64.dart';
-import 'package:student_management/components/profile_header.dart';
-import 'package:student_management/components/profile_header_file_image.dart';
 import 'package:student_management/components/student_profile_card.dart';
-import 'package:student_management/components/tile_link.dart';
 import 'package:student_management/constants.dart';
 import 'package:student_management/screens/exams/exams.dart';
-import 'package:student_management/screens/individual_attendance_screen/individual_attendance_screen.dart';
 import 'package:student_management/screens/message/chat_detail.dart';
 import 'package:student_management/services/api_services.dart';
 import 'package:student_management/services/jwt_token_parser.dart';
 
 import '../screens/broadcast/broadcast_detail.dart';
-import '../screens/message/chat_select.dart';
 import 'package:intl/intl.dart';
 
 class ChildCard extends StatefulWidget {
@@ -59,7 +53,6 @@ class _ChildCardState extends State<ChildCard> {
   List attendanceData = [];
   bool loading = false;
   List status = [];
-  bool _inProcess = false;
   String photoData = "";
 
   @override
@@ -106,7 +99,7 @@ class _ChildCardState extends State<ChildCard> {
       loading = true;
     });
     final prefs = await SharedPreferences.getInstance();
-    String? pastData = prefs.getString('pastWeekAttendance');
+    prefs.getString('pastWeekAttendance');
     // print("$pastData");
 
     /* if (prefs.getString('currentDate') ==
@@ -151,8 +144,6 @@ class _ChildCardState extends State<ChildCard> {
   }
 
   getPhotoFromAPI(String studentCode) async {
-    print("$studentCode ${widget.imageURL == ""}");
-    final prefs = await SharedPreferences.getInstance();
     var data = {
       "student_code": studentCode,
       "school_id": widget.schoolId,
@@ -163,15 +154,10 @@ class _ChildCardState extends State<ChildCard> {
       setState(() {
         photoData = photoResponseData['photo_url'];
 
-        if (photoData == null) {
-          _inProcess = true;
-        }
-        _inProcess = false;
+        if (photoData == null) {}
       });
     } else {
-      setState(() {
-        _inProcess = false;
-      });
+      setState(() {});
       Navigator.of(context).pop();
       Fluttertoast.showToast(
         msg: "Unable to Sync Student photo",
@@ -191,7 +177,7 @@ class _ChildCardState extends State<ChildCard> {
     );
     Size size = MediaQuery.of(context).size;
     return Container(
-        height: size.height * 0.85,
+        height: size.height * 0.70,
         width: MediaQuery.of(context).size.width,
         constraints: BoxConstraints(maxWidth: size.width * 0.9),
         margin: const EdgeInsets.fromLTRB(5, 5, 5, 5),
@@ -226,8 +212,8 @@ class _ChildCardState extends State<ChildCard> {
                     ),
                   ),
                   Positioned(
-                    left: 7.5,
-                    top: 50,
+                    left: 3,
+                    top: 40,
                     child: Row(
                       children: [
                         (widget.imageURL == "" || photoData == "")
@@ -477,7 +463,7 @@ class _ChildCardState extends State<ChildCard> {
                         'Broadcast',
                       ),
                     ),
-                     SizedBox(width: size.width * 0.25),
+                    SizedBox(width: size.width * 0.25),
                   ],
                 ),
               ],
@@ -541,7 +527,7 @@ class _ChildCardState extends State<ChildCard> {
                                                   : Radius.zero,
                                         ),
                                       ),
-                                      height: size.height * 0.070,
+                                      height: size.height * 0.065,
                                       child: Center(
                                         child: Text(
                                           widget.date[index].toString(),
@@ -633,7 +619,8 @@ class _ChildCardState extends State<ChildCard> {
                                   child: Column(children: [
                                     Shimmer(
                                       duration: const Duration(seconds: 2),
-                                      color: Color.fromARGB(255, 67, 67, 67),
+                                      color:
+                                          const Color.fromARGB(255, 67, 67, 67),
                                       enabled: loading,
                                       child: Container(
                                         height: size.height * 0.030,
@@ -647,7 +634,8 @@ class _ChildCardState extends State<ChildCard> {
                                     ),
                                     Shimmer(
                                       duration: const Duration(seconds: 2),
-                                      color: Color.fromARGB(255, 170, 152, 152),
+                                      color: const Color.fromARGB(
+                                          255, 170, 152, 152),
                                       enabled: loading,
                                       child: Container(
                                         decoration: BoxDecoration(
@@ -662,13 +650,14 @@ class _ChildCardState extends State<ChildCard> {
                                                     : Radius.zero,
                                           ),
                                         ),
-                                        height: size.height * 0.070,
+                                        height: size.height * 0.065,
                                         child: const Center(),
                                       ),
                                     ),
                                     Shimmer(
                                       duration: const Duration(seconds: 2),
-                                      color: Color.fromARGB(255, 67, 67, 67),
+                                      color:
+                                          const Color.fromARGB(255, 67, 67, 67),
                                       enabled: loading,
                                       child: Container(
                                         height: 25,
@@ -684,11 +673,11 @@ class _ChildCardState extends State<ChildCard> {
                                                     : Radius.zero,
                                           ),
                                         ),
-                                        child: Center(
+                                        child: const Center(
                                           child: Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceEvenly,
-                                            children: const [],
+                                            children: [],
                                           ),
                                         ),
                                       ),

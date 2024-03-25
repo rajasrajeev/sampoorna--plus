@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:student_management/constants.dart';
 
 class SubmitButton extends StatelessWidget {
   final String label;
@@ -18,10 +19,10 @@ class SubmitButton extends StatelessWidget {
       child: ElevatedButton(
         onPressed: () => disabled ? null : onClick(),
         style: ElevatedButton.styleFrom(
-          shape: const StadiumBorder(),
-          padding: EdgeInsets.all(size.width * 0.03),
-          minimumSize: const Size.fromHeight(54),
-        ),
+            shape: const StadiumBorder(),
+            padding: EdgeInsets.all(size.width * 0.03),
+            minimumSize: const Size.fromHeight(54),
+            backgroundColor: primaryColor),
         child: Text(
           label,
           style: const TextStyle(
